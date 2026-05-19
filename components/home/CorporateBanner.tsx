@@ -15,8 +15,8 @@ export default function CorporateBanner() {
               <Building2 size={12} />
               For Businesses & Teams
             </div>
-            <h2 id="corporate-banner-heading" className="text-3xl sm:text-4xl font-black text-brand-black mb-3">
-              Need Bulk Orders<br />for Your Business?
+            <h2 id="corporate-banner-heading" className="text-3xl sm:text-4xl font-serif font-light text-brand-black mb-3 leading-tight tracking-tight">
+              Need Bulk Orders<br />for Your <span className="italic font-normal">Business?</span>
             </h2>
             <p className="text-brand-muted max-w-md text-sm leading-relaxed">
               Corporate gifting, team merchandise, event swag — we handle everything.

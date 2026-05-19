@@ -25,6 +25,7 @@ export default function Logo({ className, light = false, ...props }: LogoProps) 
             .serif-initial {
               font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
               font-weight: 400;
+              font-style: italic;
               fill: ${textColor};
               transition: fill 0.3s ease;
             }

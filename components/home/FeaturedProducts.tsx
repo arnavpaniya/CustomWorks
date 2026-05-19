@@ -96,11 +96,11 @@ export default function FeaturedProducts() {
         {/* Header */}
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-accent mb-2">
+            <p className="text-[10px] font-black uppercase tracking-widest text-brand-orange mb-2">
               Popular Products
             </p>
-            <h2 id="featured-heading" className="text-3xl sm:text-4xl font-black text-brand-black">
-              Trending Custom Products
+            <h2 id="featured-heading" className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light text-brand-black tracking-tight mt-1">
+              Trending Custom <span className="italic font-normal">Products</span>
             </h2>
           </div>
           <Link

@@ -79,22 +79,30 @@ export default function Header() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+            <nav className="hidden md:flex items-center gap-2" aria-label="Main navigation">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-150",
+                    "px-4 py-2 text-sm font-semibold transition-colors duration-200 relative",
                     pathname === link.href
-                      ? "text-brand-black bg-brand-surface"
-                      : "text-brand-muted hover:text-brand-black hover:bg-brand-surface",
+                      ? "text-brand-black font-bold"
+                      : "text-brand-muted hover:text-brand-black",
                   )}
                 >
                   {link.label}
+                  {pathname === link.href && (
+                    <motion.div
+                      layoutId="activeNavIndicator"
+                      className="absolute bottom-0 left-4 right-4 h-0.5 bg-brand-black rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
             </nav>
+
 
             {/* Actions */}
             <div className="flex items-center gap-1">
