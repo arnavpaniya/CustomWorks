@@ -182,3 +182,13 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* Infinite Marquee Scroll Loop (GPU Accelerated) */
+@keyframes marquee-scroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee-loop {
+  animation: marquee-scroll 25s linear infinite;
+}

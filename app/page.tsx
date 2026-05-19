@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import HeroBanner from "@/components/home/HeroBanner";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
+import MarqueeDivider from "@/components/home/MarqueeDivider";
 import HowItWorks from "@/components/home/HowItWorks";
+import DesignSandbox from "@/components/home/DesignSandbox";
 import WhyUs from "@/components/home/WhyUs";
 import Testimonials from "@/components/home/Testimonials";
 import CorporateBanner from "@/components/home/CorporateBanner";
@@ -17,7 +19,9 @@ export default function HomePage() {
     <>
       <HeroBanner />
       <FeaturedProducts />
+      <MarqueeDivider />
       <HowItWorks />
+      <DesignSandbox />
       <WhyUs />
       <Testimonials />
       <CorporateBanner />
