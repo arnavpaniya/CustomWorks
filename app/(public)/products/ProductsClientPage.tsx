@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard, { Product } from "@/components/product/ProductCard";
@@ -32,11 +31,15 @@ const SORT_OPTIONS = [
   { value: "popular", label: "Most Popular" },
 ];
 
-export default function ProductsClientPage() {
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("q") ?? "";
-  const urlCategory = searchParams.get("category") ?? "All";
+interface ProductsClientPageProps {
+  searchQuery?: string;
+  urlCategory?: string;
+}
 
+export default function ProductsClientPage({
+  searchQuery = "",
+  urlCategory = "All",
+}: ProductsClientPageProps) {
   const [selectedCategory, setSelectedCategory] = useState(urlCategory);
   const [sort, setSort] = useState("newest");
   const [filterOpen, setFilterOpen] = useState(false);

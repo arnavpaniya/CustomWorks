@@ -25,10 +25,20 @@ function ProductsLoading() {
   );
 }
 
-export default function ProductsPage() {
+export default async function ProductsPage(props: {
+  searchParams: Promise<{ q?: string; category?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const searchQuery = searchParams.q ?? "";
+  const urlCategory = searchParams.category ?? "All";
+
   return (
     <Suspense fallback={<ProductsLoading />}>
-      <ProductsClientPage />
+      <ProductsClientPage
+        key={`${searchQuery}-${urlCategory}`}
+        searchQuery={searchQuery}
+        urlCategory={urlCategory}
+      />
     </Suspense>
   );
 }
