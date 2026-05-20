@@ -6,19 +6,14 @@
         font-family: 'Bodoni Moda', Georgia, serif;
         font-weight: 400;
         font-style: italic;
-        fill: #0A0A0A;
-      }
-      @media (prefers-color-scheme: dark) {
-        .serif-char {
-          fill: #FAFAFA;
-        }
+        fill: #000000;
       }
     </style>
   </defs>
   
-  <!-- 'C' Character -->
-  <text x="15" y="320" fontSize="370" class="serif-char">C</text>
+  <rect width="512" height="512" fill="#FFFFFF" />
   
-  <!-- 'W' Character overlapping nicely -->
-  <text x="115" y="470" fontSize="360" class="serif-char">W</text>
+  <text x="35" y="320" fontSize="370" class="serif-char">C</text>
+  
+  <text x="135" y="470" fontSize="360" class="serif-char">W</text>
 </svg>
