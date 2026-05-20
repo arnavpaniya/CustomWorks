@@ -3,24 +3,12 @@
 import { useState, useMemo } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import ProductCard, { Product } from "@/components/product/ProductCard";
+import ProductCard from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
 
-const PRODUCTS: Product[] = [
-  { id: "1", slug: "custom-printed-tshirt", name: "Custom Printed T-Shirt", basePrice: 499, images: ["/images/placeholder-product.jpg"], category: "T-Shirts", rating: 4.8, reviewCount: 124, isNew: true },
-  { id: "2", slug: "custom-ceramic-mug", name: "Custom Ceramic Mug", basePrice: 299, images: ["/images/placeholder-product.jpg"], category: "Mugs", rating: 4.6, reviewCount: 89 },
-  { id: "3", slug: "custom-snapback-cap", name: "Custom Snapback Cap", basePrice: 599, images: ["/images/placeholder-product.jpg"], category: "Caps", rating: 4.7, reviewCount: 56, badge: "Popular" },
-  { id: "4", slug: "custom-hoodie", name: "Custom Embroidered Hoodie", basePrice: 999, images: ["/images/placeholder-product.jpg"], category: "Hoodies", rating: 4.9, reviewCount: 201, isNew: true },
-  { id: "5", slug: "custom-tote-bag", name: "Custom Canvas Tote Bag", basePrice: 349, images: ["/images/placeholder-product.jpg"], category: "Bags", rating: 4.5, reviewCount: 43 },
-  { id: "6", slug: "custom-phone-case", name: "Custom Phone Case", basePrice: 399, images: ["/images/placeholder-product.jpg"], category: "Accessories", rating: 4.4, reviewCount: 67 },
-  { id: "7", slug: "custom-polo-shirt", name: "Custom Polo Shirt", basePrice: 649, images: ["/images/placeholder-product.jpg"], category: "T-Shirts", rating: 4.7, reviewCount: 88, badge: "Best Seller" },
-  { id: "8", slug: "custom-water-bottle", name: "Custom Steel Water Bottle", basePrice: 549, images: ["/images/placeholder-product.jpg"], category: "Drinkware", rating: 4.6, reviewCount: 35 },
-  { id: "9", slug: "custom-notebook", name: "Custom Printed Notebook", basePrice: 249, images: ["/images/placeholder-product.jpg"], category: "Stationery", rating: 4.3, reviewCount: 22 },
-  { id: "10", slug: "custom-cushion", name: "Custom Photo Cushion", basePrice: 449, images: ["/images/placeholder-product.jpg"], category: "Home Decor", rating: 4.5, reviewCount: 58 },
-  { id: "11", slug: "custom-keychain", name: "Custom Metal Keychain", basePrice: 149, images: ["/images/placeholder-product.jpg"], category: "Accessories", rating: 4.2, reviewCount: 114 },
-  { id: "12", slug: "custom-apron", name: "Custom Printed Apron", basePrice: 399, images: ["/images/placeholder-product.jpg"], category: "Home Decor", rating: 4.6, reviewCount: 31 },
-];
+const PRODUCTS = PRODUCTS_CATALOG;
 
 const CATEGORIES = ["All", ...Array.from(new Set(PRODUCTS.map((p) => p.category)))];
 
@@ -43,7 +31,7 @@ export default function ProductsClientPage({
   const [selectedCategory, setSelectedCategory] = useState(urlCategory);
   const [sort, setSort] = useState("newest");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [priceMax, setPriceMax] = useState(2000);
+  const [priceMax, setPriceMax] = useState(3000);
 
   const filtered = useMemo(() => {
     let list = [...PRODUCTS];
@@ -145,8 +133,8 @@ export default function ProductsClientPage({
                 </label>
                 <input
                   type="range"
-                  min={100}
-                  max={2000}
+                  min={0}
+                  max={3000}
                   step={50}
                   value={priceMax}
                   onChange={(e) => setPriceMax(Number(e.target.value))}
@@ -163,7 +151,7 @@ export default function ProductsClientPage({
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
           <p className="text-brand-muted text-lg mb-4">No products found</p>
-          <Button variant="outline" onClick={() => { setSelectedCategory("All"); setPriceMax(2000); }}>
+          <Button variant="outline" onClick={() => { setSelectedCategory("All"); setPriceMax(3000); }}>
             Clear filters
           </Button>
         </div>

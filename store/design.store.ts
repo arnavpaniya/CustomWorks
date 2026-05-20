@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { PRODUCTS_CATALOG, ProductCatalogItem, PriceTier } from "@/lib/products-catalog";
+import { calculatePricing, PricingResult } from "@/lib/pricing-engine";
 
 export interface DesignElement {
   type: "text" | "image";
@@ -13,12 +15,6 @@ export interface DesignElement {
   color?: string;
   bold?: boolean;
   italic?: boolean;
-}
-
-export interface PriceTier {
-  min: number;
-  max: number;
-  price: number;
 }
 
 interface DesignState {
@@ -41,8 +37,8 @@ interface DesignState {
   selectedSize: string;
   selectedColor: string;
 
-  // Wholesale tiered pricing catalog
-  priceTiers: PriceTier[];
+  // Key-value store for product-specific custom choices (sides, corners, bannerDimensions, lanyardHook, finish, texture, foil)
+  options: Record<string, any>;
 
   // Setters & Actions
   setStep: (step: number) => void;
@@ -65,8 +61,10 @@ interface DesignState {
   setItalic: (i: boolean) => void;
   setSelectedSize: (size: string) => void;
   setSelectedColor: (color: string) => void;
+  setOption: (key: string, value: any) => void;
 
-  // High-leverage Pricing Engine Methods
+  // Deep pricing calculations
+  getPricingResult: () => PricingResult;
   getUnitPrice: () => number;
   getTotalPrice: () => number;
   
@@ -75,12 +73,12 @@ interface DesignState {
 
 const defaultState = {
   step: 1,
-  productId: "",
-  variantId: "",
+  productId: "business-cards",
+  variantId: "300gsm-standard",
   placement: "Front",
   elements: [],
   baseColor: "#FFFFFF",
-  quantity: 1,
+  quantity: 200, // set default qty to MOQ threshold
   previewUrl: "",
 
   // Defaults for text monogram elements
@@ -93,20 +91,32 @@ const defaultState = {
   selectedSize: "M",
   selectedColor: "White",
 
-  // Curated pricing tiers
-  priceTiers: [
-    { min: 1, max: 4, price: 499 },
-    { min: 5, max: 9, price: 449 },
-    { min: 10, max: 49, price: 399 },
-    { min: 50, max: 999, price: 349 },
-  ],
+  // Key-value store for product options
+  options: {},
 };
 
 export const useDesignStore = create<DesignState>((set, get) => ({
   ...defaultState,
   
   setStep: (step) => set({ step }),
-  setProduct: (productId) => set({ productId }),
+  setProduct: (productId) => {
+    const product = PRODUCTS_CATALOG.find(p => p.id === productId || p.slug === productId);
+    const defaultVariant = product?.subproducts?.[0]?.id || "";
+    const defaultMoq = product?.moq || 10;
+    
+    // Set some defaults based on options schema
+    const initialOptions: Record<string, any> = {};
+    product?.options?.forEach(opt => {
+      initialOptions[opt.key] = opt.defaultValue;
+    });
+
+    set({ 
+      productId: product?.id || productId, 
+      variantId: defaultVariant,
+      quantity: defaultMoq,
+      options: initialOptions
+    });
+  },
   setVariant: (variantId) => set({ variantId }),
   setPlacement: (placement) => set({ placement }),
   addElement: (el) =>
@@ -131,20 +141,32 @@ export const useDesignStore = create<DesignState>((set, get) => ({
   setItalic: (italic) => set({ italic }),
   setSelectedSize: (selectedSize) => set({ selectedSize }),
   setSelectedColor: (selectedColor) => set({ selectedColor }),
+  setOption: (key, value) => set((s) => ({
+    options: { ...s.options, [key]: value }
+  })),
 
-  // High-leverage Pricing logic
-  getUnitPrice: () => {
+  // Deep pricing calculations
+  getPricingResult: () => {
     const s = get();
-    const tier = s.priceTiers.find(
-      (t) => s.quantity >= t.min && s.quantity <= t.max
-    );
-    return tier ? tier.price : 499;
+    const product = PRODUCTS_CATALOG.find(p => p.id === s.productId);
+    if (!product) {
+      return {
+        unitPrice: 0,
+        totalPrice: 0,
+        isWhatsAppEnquiry: false
+      };
+    }
+    return calculatePricing(product, s.variantId, s.quantity, s.options);
+  },
+
+  getUnitPrice: () => {
+    return get().getPricingResult().unitPrice;
   },
 
   getTotalPrice: () => {
-    const s = get();
-    return s.getUnitPrice() * s.quantity;
+    return get().getPricingResult().totalPrice;
   },
 
   reset: () => set(defaultState),
 }));
+

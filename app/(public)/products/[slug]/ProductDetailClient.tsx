@@ -1,72 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Star, Share2, ChevronRight } from "lucide-react";
+import { Heart, Star, Share2, ChevronRight, Info, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import CustomizationWizard from "@/components/customizer/CustomizationWizard";
+import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
+import { useDesignStore } from "@/store/design.store";
 
 interface ProductDetailClientProps {
   slug: string;
 }
 
-const MOCK_PRODUCT = {
-  id: "1",
-  slug: "custom-printed-tshirt",
-  name: "Custom Printed T-Shirt",
-  description:
-    "Premium 180 GSM cotton T-shirt with full-color printing. Available in multiple colors and sizes. Perfect for personal use, team uniforms, or brand merchandise. DTF printing ensures vibrant colors that last.",
-  basePrice: 499,
-  images: [
-    "/images/placeholder-product.jpg",
-    "/images/placeholder-product.jpg",
-    "/images/placeholder-product.jpg",
-  ],
-  category: "T-Shirts",
-  rating: 4.8,
-  reviewCount: 124,
-  badge: "Best Seller",
-  variants: [
-    { id: "v1", size: "S", color: "White", material: "Cotton", priceAdj: 0, stockQty: 50 },
-    { id: "v2", size: "M", color: "White", material: "Cotton", priceAdj: 0, stockQty: 45 },
-    { id: "v3", size: "L", color: "White", material: "Cotton", priceAdj: 0, stockQty: 40 },
-    { id: "v4", size: "XL", color: "White", material: "Cotton", priceAdj: 50, stockQty: 30 },
-    { id: "v5", size: "XXL", color: "White", material: "Cotton", priceAdj: 100, stockQty: 20 },
-  ],
-  colors: ["White", "Black", "Navy", "Grey", "Red"],
-  priceTiers: [
-    { minQty: 1, maxQty: 4, price: 499 },
-    { minQty: 5, maxQty: 9, price: 449 },
-    { minQty: 10, maxQty: 49, price: 399 },
-    { minQty: 50, maxQty: 999, price: 349 },
-  ],
-};
-
-const COLOR_MAP: Record<string, string> = {
-  White: "#FFFFFF",
-  Black: "#0A0A0A",
-  Navy: "#1A237E",
-  Grey: "#9E9E9E",
-  Red: "#E53935",
-};
-
 export default function ProductDetailClient({ slug }: ProductDetailClientProps) {
-  const product = MOCK_PRODUCT;
   const [activeImage, setActiveImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("White");
   const [showWizard, setShowWizard] = useState(false);
 
-  const sizes = Array.from(new Set(product.variants.map((v) => v.size)));
+  const product = PRODUCTS_CATALOG.find((p) => p.slug === slug || p.id === slug);
+  
+  const setProduct = useDesignStore((s) => s.setProduct);
+  const selectedVariantId = useDesignStore((s) => s.variantId);
+  const setVariant = useDesignStore((s) => s.setVariant);
+  const quantity = useDesignStore((s) => s.quantity);
+  const setQuantity = useDesignStore((s) => s.setQuantity);
+  const getUnitPrice = useDesignStore((s) => s.getUnitPrice);
+  const getPricingResult = useDesignStore((s) => s.getPricingResult);
 
-  const currentPrice =
-    product.basePrice +
-    (product.variants.find((v) => v.size === selectedSize)?.priceAdj ?? 0);
+  // Initialize the design store with this product on mount
+  useEffect(() => {
+    if (product) {
+      setProduct(product.id);
+    }
+  }, [product, setProduct]);
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+        <p className="text-brand-muted mb-8">The printing category you requested does not exist or has been moved.</p>
+        <Link href="/products">
+          <Button variant="accent">Browse All Products</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // Get active subproduct details
+  const activeSubproduct = product.subproducts?.find(sp => sp.id === selectedVariantId) || product.subproducts?.[0];
+  const activeTiers = activeSubproduct?.priceTiers || product.priceTiers || [];
+
+  const priceResult = getPricingResult();
+  const unitPrice = priceResult.unitPrice;
+  const isWhatsApp = priceResult.isWhatsAppEnquiry;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -83,32 +73,34 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
         {/* Image gallery */}
         <div className="flex gap-4">
           {/* Thumbnails */}
-          <div className="hidden sm:flex flex-col gap-2">
-            {product.images.map((img, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImage(i)}
-                className={cn(
-                  "w-16 h-16 rounded-lg overflow-hidden border-2 transition-all",
-                  activeImage === i ? "border-[#0A0A0A]" : "border-transparent hover:border-[#E5E5E5]",
-                )}
-                aria-label={`Product image ${i + 1}`}
-              >
-                <Image
-                  src={img}
-                  alt={`${product.name} view ${i + 1}`}
-                  width={64}
-                  height={64}
-                  className="object-cover w-full h-full"
-                />
-              </button>
-            ))}
-          </div>
+          {product.images.length > 1 && (
+            <div className="hidden sm:flex flex-col gap-2">
+              {product.images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveImage(i)}
+                  className={cn(
+                    "w-16 h-16 rounded-lg overflow-hidden border-2 transition-all",
+                    activeImage === i ? "border-[#0A0A0A]" : "border-transparent hover:border-[#E5E5E5]",
+                  )}
+                  aria-label={`Product image ${i + 1}`}
+                >
+                  <Image
+                    src={img}
+                    alt={`${product.name} view ${i + 1}`}
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Main image */}
-          <div className="flex-1 relative aspect-square rounded-2xl overflow-hidden bg-[#F5F5F5]">
+          <div className="flex-1 relative aspect-square rounded-2xl overflow-hidden bg-[#F5F5F5] border border-brand-border">
             <Image
-              src={product.images[activeImage]}
+              src={product.images[activeImage] ?? "/images/placeholder-product.jpg"}
               alt={product.name}
               fill
               className="object-contain p-4"
@@ -140,93 +132,150 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 <Star
                   key={s}
                   size={14}
-                  className={s <= Math.round(product.rating) ? "fill-amber-400 text-amber-400" : "fill-[#E5E5E5] text-[#E5E5E5]"}
+                  className={s <= Math.round(product.rating || 5) ? "fill-amber-400 text-amber-400" : "fill-[#E5E5E5] text-[#E5E5E5]"}
                 />
               ))}
             </div>
             <span className="text-sm text-[#6B6B6B]">
-              {product.rating} ({product.reviewCount} reviews)
+              {product.rating || 5.0} ({product.reviewCount || 10} corporate orders)
             </span>
           </div>
 
-          {/* Price */}
-          <p className="text-3xl font-black text-[#0A0A0A] mb-2">
-            {formatPrice(currentPrice)}
-          </p>
-
-          {/* Bulk pricing */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {product.priceTiers.map((tier) => (
-              <span key={tier.minQty} className="text-xs px-2.5 py-1 bg-[#F5F5F5] rounded-full text-[#6B6B6B]">
-                {tier.minQty === tier.maxQty
-                  ? `${tier.minQty}+`
-                  : `${tier.minQty}–${tier.maxQty}`} pcs: {formatPrice(tier.price)}/ea
-              </span>
-            ))}
+          {/* Price display */}
+          <div className="mb-6 p-4 rounded-xl bg-brand-surface border border-brand-border">
+            <p className="text-sm text-brand-muted mb-1">Wholesale Pricing Starting From</p>
+            {isWhatsApp ? (
+              <p className="text-2xl font-black text-brand-orange">Quote on Request</p>
+            ) : (
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-brand-black">
+                  {formatPrice(product.basePrice)}
+                </span>
+                <span className="text-sm text-brand-muted">per unit</span>
+              </div>
+            )}
+            <p className="text-xs text-brand-muted mt-2">
+              * Rates decrease significantly with higher volume bulk tiers.
+            </p>
           </div>
 
-          {/* Color selector */}
-          <div className="mb-5">
-            <p className="text-sm font-semibold text-[#0A0A0A] mb-2">
-              Color: <span className="font-normal text-[#6B6B6B]">{selectedColor}</span>
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {product.colors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  aria-label={`Select ${color}`}
-                  className={cn(
-                    "h-8 w-8 rounded-full border-2 transition-all",
-                    selectedColor === color ? "border-[#0A0A0A] scale-110" : "border-transparent hover:scale-105",
-                    color === "White" && "shadow-sm border-[#E5E5E5]",
-                  )}
-                  style={{ background: COLOR_MAP[color] ?? color }}
-                />
-              ))}
+          {/* MOQs & Quantity */}
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-semibold text-brand-black">Order Quantity</span>
+              <span className="text-xs text-brand-muted bg-white border px-2 py-0.5 rounded">
+                Min. Order Qty (MOQ): {product.moq}
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                min={product.moq}
+                value={quantity}
+                onChange={(e) => setQuantity(Math.max(product.moq, Number(e.target.value)))}
+                className="w-32 h-10 px-3 border border-brand-border rounded-lg bg-white text-brand-black font-semibold text-center focus:outline-none focus:ring-2 focus:ring-brand-black"
+              />
+              {quantity < product.moq && (
+                <span className="text-xs text-red-500 flex items-center gap-1 font-medium">
+                  <Info size={12} /> MOQ of {product.moq} required
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Size selector */}
-          <div className="mb-8">
-            <p className="text-sm font-semibold text-[#0A0A0A] mb-2">Size</p>
-            <div className="flex flex-wrap gap-2">
-              {sizes.map((size) => {
-                const variant = product.variants.find((v) => v.size === size);
-                const outOfStock = (variant?.stockQty ?? 0) === 0;
-                return (
+          {/* Subproduct selector (Variants) */}
+          {product.subproducts && product.subproducts.length > 0 && (
+            <div className="mb-6">
+              <p className="text-sm font-semibold text-brand-black mb-2">Select Printing Type / Variant</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {product.subproducts.map((sp) => (
                   <button
-                    key={size}
-                    onClick={() => !outOfStock && setSelectedSize(size)}
-                    disabled={outOfStock}
+                    key={sp.id}
+                    onClick={() => setVariant(sp.id)}
                     className={cn(
-                      "h-10 min-w-10 px-3 rounded-lg border text-sm font-medium transition-all",
-                      selectedSize === size
-                        ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                        : "bg-white text-[#0A0A0A] border-[#E5E5E5] hover:border-[#0A0A0A]",
-                      outOfStock && "opacity-40 cursor-not-allowed line-through",
+                      "px-4 py-3 rounded-lg border text-left text-sm font-medium transition-all flex flex-col justify-between h-16",
+                      selectedVariantId === sp.id
+                        ? "bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-md"
+                        : "bg-white text-brand-black border-brand-border hover:border-brand-black"
                     )}
                   >
-                    {size}
+                    <span>{sp.name}</span>
+                    {sp.basePrice > 0 && (
+                      <span className={cn("text-xs font-semibold mt-1", selectedVariantId === sp.id ? "text-brand-orange" : "text-brand-muted")}>
+                        From {formatPrice(sp.basePrice)}
+                      </span>
+                    )}
                   </button>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Wholesale Bulk Tier Matrix */}
+          {activeTiers.length > 0 && (
+            <div className="mb-8">
+              <p className="text-sm font-semibold text-brand-black mb-2 flex items-center gap-1">
+                Wholesale Price Matrix
+              </p>
+              <div className="bg-white border border-brand-border rounded-xl overflow-hidden text-xs">
+                <div className="grid grid-cols-2 bg-brand-surface border-b border-brand-border p-2 font-bold text-brand-muted uppercase tracking-wider">
+                  <div>Quantity Bracket</div>
+                  <div className="text-right">Price per piece</div>
+                </div>
+                <div className="max-h-40 overflow-y-auto divide-y divide-brand-border">
+                  {activeTiers.map((tier, idx) => (
+                    <div
+                      key={idx}
+                      className={cn(
+                        "grid grid-cols-2 p-2 transition-colors",
+                        quantity >= tier.min && quantity <= tier.max
+                          ? "bg-brand-orange/5 font-semibold text-brand-black"
+                          : "text-brand-muted hover:bg-brand-surface/40"
+                      )}
+                    >
+                      <div>
+                        {tier.max > 99999 ? `${tier.min}+ pcs` : `${tier.min} – ${tier.max} pcs`}
+                      </div>
+                      <div className="text-right text-brand-black font-bold">
+                        {formatPrice(tier.price)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <Button
-              variant="accent"
-              size="lg"
-              className="flex-1"
-              onClick={() => setShowWizard(true)}
-            >
-              Customize Now
-            </Button>
-            <Button variant="outline" size="lg" className="flex-1">
-              Add to Cart
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            {isWhatsApp ? (
+              <a
+                href={`https://wa.me/919999999999?text=${encodeURIComponent(
+                  `Hi CustomWorks, I want to enquire about "${product.name}" (${activeSubproduct?.name || "Standard"}), Quantity: ${quantity}. Please share a quote!`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1"
+              >
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white border-none"
+                >
+                  <PhoneCall size={16} />
+                  Enquire via WhatsApp
+                </Button>
+              </a>
+            ) : (
+              <Button
+                variant="accent"
+                size="lg"
+                className="flex-1"
+                onClick={() => setShowWizard(true)}
+              >
+                Customize & Design Now
+              </Button>
+            )}
             <button
               className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-lg border border-[#E5E5E5] hover:border-[#0A0A0A] transition-colors"
               aria-label="Add to wishlist"
@@ -243,8 +292,16 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
           {/* Description */}
           <div className="border-t border-[#E5E5E5] pt-6">
-            <h2 className="text-sm font-bold text-[#0A0A0A] mb-2">Product Details</h2>
-            <p className="text-sm text-[#6B6B6B] leading-relaxed">{product.description}</p>
+            <h2 className="text-sm font-bold text-[#0A0A0A] mb-2">Corporate Category Details</h2>
+            <p className="text-sm text-[#6B6B6B] leading-relaxed mb-4">{product.description}</p>
+            {product.moq > 1 && (
+              <div className="p-3 bg-brand-surface rounded-lg border border-dashed border-brand-border flex items-start gap-2.5">
+                <Info size={14} className="text-brand-orange mt-0.5" />
+                <span className="text-xs text-brand-muted">
+                  <strong>Notice:</strong> This is a bulk contract category. Single piece samples are not available. Minimum bulk run is strictly set to <strong>{product.moq} items</strong>.
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

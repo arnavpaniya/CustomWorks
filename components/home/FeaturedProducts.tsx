@@ -2,92 +2,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProductCard, { Product } from "@/components/product/ProductCard";
 
-const DEMO_PRODUCTS: Product[] = [
-  {
-    id: "1",
-    slug: "custom-printed-tshirt",
-    name: "Custom Printed T-Shirt",
-    basePrice: 499,
-    images: ["/images/placeholder-product.jpg"],
-    category: "T-Shirts",
-    rating: 4.8,
-    reviewCount: 124,
-    isNew: true,
-  },
-  {
-    id: "2",
-    slug: "custom-ceramic-mug",
-    name: "Custom Ceramic Mug",
-    basePrice: 299,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Mugs",
-    rating: 4.6,
-    reviewCount: 89,
-  },
-  {
-    id: "3",
-    slug: "custom-snapback-cap",
-    name: "Custom Snapback Cap",
-    basePrice: 599,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Caps",
-    rating: 4.7,
-    reviewCount: 56,
-    badge: "Popular",
-  },
-  {
-    id: "4",
-    slug: "custom-hoodie",
-    name: "Custom Embroidered Hoodie",
-    basePrice: 999,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Hoodies",
-    rating: 4.9,
-    reviewCount: 201,
-    isNew: true,
-  },
-  {
-    id: "5",
-    slug: "custom-tote-bag",
-    name: "Custom Canvas Tote Bag",
-    basePrice: 349,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Bags",
-    rating: 4.5,
-    reviewCount: 43,
-  },
-  {
-    id: "6",
-    slug: "custom-phone-case",
-    name: "Custom Phone Case",
-    basePrice: 399,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Accessories",
-    rating: 4.4,
-    reviewCount: 67,
-  },
-  {
-    id: "7",
-    slug: "custom-polo-shirt",
-    name: "Custom Polo Shirt",
-    basePrice: 649,
-    images: ["/images/placeholder-product.jpg"],
-    category: "T-Shirts",
-    rating: 4.7,
-    reviewCount: 88,
-    badge: "Best Seller",
-  },
-  {
-    id: "8",
-    slug: "custom-water-bottle",
-    name: "Custom Steel Water Bottle",
-    basePrice: 549,
-    images: ["/images/placeholder-product.jpg"],
-    category: "Drinkware",
-    rating: 4.6,
-    reviewCount: 35,
-  },
-];
+import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
+
+const DEMO_PRODUCTS = PRODUCTS_CATALOG.slice(0, 8);
 
 export default function FeaturedProducts() {
   return (
