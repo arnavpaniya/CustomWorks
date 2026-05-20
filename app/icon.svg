@@ -1,0 +1,24 @@
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,700&amp;display=swap');
+      .serif-char {
+        font-family: 'Bodoni Moda', Georgia, serif;
+        font-weight: 400;
+        font-style: italic;
+        fill: #0A0A0A;
+      }
+      @media (prefers-color-scheme: dark) {
+        .serif-char {
+          fill: #FAFAFA;
+        }
+      }
+    </style>
+  </defs>
+  
+  <!-- 'C' Character -->
+  <text x="15" y="320" fontSize="370" class="serif-char">C</text>
+  
+  <!-- 'W' Character overlapping nicely -->
+  <text x="115" y="470" fontSize="360" class="serif-char">W</text>
+</svg>

@@ -29,6 +29,10 @@ export const metadata: Metadata = {
     description: "Design your own products. Made-to-order.",
   },
   robots: { index: true, follow: true },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export const viewport: Viewport = {
