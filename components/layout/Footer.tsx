@@ -147,7 +147,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="md:col-span-2 lg:col-span-2 space-y-6">
             <Link href="/" className="inline-block h-12 w-32 md:w-36 transition-transform hover:scale-[1.02]" aria-label="CustomWorks Home">
-              <Logo className="h-full w-full filter brightness-0 invert" light={true} />
+              <Logo className="h-full w-full" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
               Design customized premium apparel and accessories. Crafted with rich premium elements, manufactured with high organic care, and delivered to your doorstep.

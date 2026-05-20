@@ -7,15 +7,15 @@ interface LogoProps extends React.SVGProps<SVGSVGElement> {
   light?: boolean;
 }
 
-export default function Logo({ className, light = false, ...props }: LogoProps) {
-  const textColor = light ? "#FAFAFA" : "#0A0A0A";
+export default function Logo({ className, ...props }: LogoProps) {
+  const textColor = "#000000";
 
   return (
     <svg
       viewBox="0 0 540 380"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("select-none w-full h-auto", className)}
+      className={cn("select-none w-full h-auto rounded-xl", className)}
       {...props}
     >
       <defs>
@@ -39,6 +39,9 @@ export default function Logo({ className, light = false, ...props }: LogoProps) 
           `}
         </style>
       </defs>
+
+      {/* Solid White Background matching the uploaded image */}
+      <rect width="540" height="380" fill="#FFFFFF" />
 
       {/* Large Initial 'C' */}
       <text
