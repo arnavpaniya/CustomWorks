@@ -42,7 +42,7 @@ export default function HowItWorks() {
             How It <span className="italic font-normal">Works</span>
           </h2>
           <p className="text-sm text-brand-muted mt-3 max-w-md mx-auto leading-relaxed">
-            From design to delivery, we've streamlined custom ordering in three effortless steps.
+            From design to delivery, we&apos;ve streamlined custom ordering in three effortless steps.
           </p>
         </div>
 
