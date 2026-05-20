@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg",
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
   },
 };
 
