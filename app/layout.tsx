@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: "/images/logo.png",
-    apple: "/images/logo.png",
+    icon: "/images/Customworks favicon.png",
+    apple: "/images/Customworks favicon.png",
   },
 };
 
