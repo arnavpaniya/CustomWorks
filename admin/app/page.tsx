@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("adminToken");
       if (token) {
-        router.push("/admin/dashboard");
+        router.push("/dashboard");
       }
     }
   }, [router]);
@@ -44,7 +44,7 @@ export default function AdminLoginPage() {
       localStorage.setItem("adminUser", data.username);
 
       // Redirect to dashboard
-      router.push("/admin/dashboard");
+      router.push("/dashboard");
     } catch (err: any) {
       console.error("Admin Auth Error:", err);
       setError(err.message || "Invalid credentials or network failure.");

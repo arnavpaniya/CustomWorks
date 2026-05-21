@@ -218,7 +218,7 @@ export default function AdminDashboard() {
       const user = localStorage.getItem("adminUser");
       if (!token) {
         toast.error("Access Denied: Admin session missing");
-        router.push("/admin");
+        router.push("/");
       } else {
         setAdminToken(token);
         if (user) setOperatorName(user);
@@ -424,7 +424,7 @@ export default function AdminDashboard() {
       localStorage.removeItem("adminToken");
       localStorage.removeItem("adminUser");
       toast.success("Administrator session securely terminated");
-      router.push("/admin");
+      router.push("/");
     }
   };
 
