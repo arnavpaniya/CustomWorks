@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CustomWorks Operations — Console",
+  title: "Admin | CustomWorks Operations",
   description: "Secure operational control center for CustomWorks.",
   robots: { index: false, follow: false },
   icons: {
@@ -24,10 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full bg-[#0A0A0C] text-zinc-100 font-sans antialiased relative overflow-x-hidden selection:bg-[#FF5E36]/30 selection:text-white flex flex-col">
+      <body className="min-h-full bg-[#02040A] text-zinc-100 font-sans antialiased relative overflow-x-hidden selection:bg-[#3b82f6]/30 selection:text-white flex flex-col">
         {/* Ambient glows */}
-        <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-radial-gradient from-[#FF5E36]/10 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
-        <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-radial-gradient from-[#FF5E36]/10 to-transparent rounded-full blur-[100px] pointer-events-none z-0"></div>
+        <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
+        <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
 
         <div className="relative z-10 min-h-screen flex flex-col">
           {children}

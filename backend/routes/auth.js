@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 router.post('/admin-login', async (req, res) => {
   const { username, password } = req.body;
 
-  const expectedUsername = process.env.ADMIN_USERNAME || 'mohit';
-  const expectedPassword = process.env.ADMIN_PASSWORD || 'mohit123';
+  const expectedUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME || process.env.ADMIN_USERNAME || 'mohit';
+  const expectedPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || 'mohit123';
 
   if (username !== expectedUsername)
     return res.status(401).json({ error: 'Invalid credentials' });

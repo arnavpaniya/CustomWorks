@@ -320,11 +320,11 @@ export default function AdminDashboard() {
               {
                 label: "Gross collections (INR)",
                 data: values,
-                borderColor: "#FF5E36",
-                backgroundColor: "rgba(255, 94, 54, 0.05)",
+                borderColor: "#3b82f6",
+                backgroundColor: "rgba(59, 130, 246, 0.05)",
                 borderWidth: 3,
-                pointBackgroundColor: "#FF5E36",
-                pointBorderColor: "#0A0A0C",
+                pointBackgroundColor: "#3b82f6",
+                pointBorderColor: "#02040A",
                 pointBorderWidth: 2,
                 pointRadius: 4,
                 pointHoverRadius: 6,
@@ -383,12 +383,12 @@ export default function AdminDashboard() {
               {
                 data: values,
                 backgroundColor: [
-                  "rgba(255, 94, 54, 0.85)",
-                  "rgba(255, 120, 90, 0.85)",
-                  "rgba(255, 160, 130, 0.85)",
+                  "rgba(59, 130, 246, 0.85)",
+                  "rgba(96, 165, 250, 0.85)",
+                  "rgba(147, 197, 253, 0.85)",
                   "rgba(35, 35, 47, 0.85)",
                 ],
-                borderColor: "#23232F",
+                borderColor: "#1e293b",
                 borderWidth: 2,
               },
             ],
@@ -733,12 +733,12 @@ export default function AdminDashboard() {
   })();
 
   return (
-    <div className="flex h-screen w-screen bg-[#0A0A0C] text-zinc-100 font-sans relative overflow-hidden select-none">
+    <div className="flex h-screen w-screen bg-[#02040A] text-zinc-100 font-sans relative overflow-hidden select-none">
       <Toaster position="top-right" theme="dark" />
       
       {/* Background radial glows */}
-      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(255,94,54,0.06)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(255,94,54,0.06)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
+      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59, 130, 246,0.06)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(59, 130, 246,0.06)_0%,rgba(0,0,0,0)_75%)] rounded-full blur-[100px] pointer-events-none z-0"></div>
 
       {/* Screen Initializing Loader */}
       <AnimatePresence>
@@ -747,13 +747,13 @@ export default function AdminDashboard() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-[#0A0A0C] z-[100] flex flex-col items-center justify-center gap-4"
+            className="fixed inset-0 bg-[#02040A] z-[100] flex flex-col items-center justify-center gap-4"
           >
             <h1 className="text-3xl font-black tracking-tighter uppercase inline-flex items-center gap-2">
-              Custom<span className="text-[#FF5E36]">Works</span>
+              Custom<span className="text-[#3b82f6]">Works</span>
             </h1>
             <div className="h-1.5 w-40 bg-zinc-800 rounded-full overflow-hidden relative">
-              <div className="absolute h-full w-2/3 bg-[#FF5E36] rounded-full animate-[pulse_1.5s_infinite] left-1/3"></div>
+              <div className="absolute h-full w-2/3 bg-[#3b82f6] rounded-full animate-[pulse_1.5s_infinite] left-1/3"></div>
             </div>
             <p className="text-xs text-[#A1A1AA] uppercase tracking-widest font-semibold">
               Initializing Secure Session...
@@ -763,8 +763,8 @@ export default function AdminDashboard() {
       </AnimatePresence>
 
       {/* Sidebar Navigation Panel */}
-      <aside className="w-72 bg-[#121217] border-r border-[#23232F]/60 flex flex-col justify-between shrink-0 select-none relative z-20 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-40 bg-[#FF5E36]/5 blur-[50px] pointer-events-none"></div>
+      <aside className="w-72 bg-[#0d111d] border-r border-[#1e293b]/60 flex flex-col justify-between shrink-0 select-none relative z-20 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-40 bg-[#3b82f6]/5 blur-[50px] pointer-events-none"></div>
 
         <div className="flex flex-col pt-6 flex-1 overflow-hidden">
           {/* Brand Logo */}
@@ -778,19 +778,19 @@ export default function AdminDashboard() {
                 className="object-contain object-left"
               />
             </div>
-            <span className="bg-[#FF5E36]/15 text-[#FF5E36] border border-[#FF5E36]/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
+            <span className="bg-[#3b82f6]/15 text-[#3b82f6] border border-[#3b82f6]/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
               PRO CRM
             </span>
           </div>
 
           {/* Active Operator Details */}
           <div className="px-4 mb-6">
-            <div className="bg-[#121217]/40 border border-[#23232F]/60 rounded-xl p-3 flex items-center gap-3">
+            <div className="bg-[#0d111d]/40 border border-[#1e293b]/60 rounded-xl p-3 flex items-center gap-3">
               <div className="relative">
-                <div className="h-9 w-9 rounded-full bg-[#FF5E36]/25 text-[#FF5E36] border border-[#FF5E36]/20 font-bold flex items-center justify-center text-sm font-serif">
+                <div className="h-9 w-9 rounded-full bg-[#3b82f6]/25 text-[#3b82f6] border border-[#3b82f6]/20 font-bold flex items-center justify-center text-sm font-serif">
                   {operatorName.charAt(0)}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-[#0A0A0C]"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-[#02040A]"></div>
               </div>
               <div>
                 <p className="text-xs font-bold text-white leading-tight">{operatorName}</p>
@@ -827,7 +827,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3 z-10">
                     <Icon
                       className={`w-4 h-4 transition-colors ${
-                        isActive ? "text-[#FF5E36]" : "text-zinc-500 group-hover:text-zinc-300"
+                        isActive ? "text-[#3b82f6]" : "text-zinc-500 group-hover:text-zinc-300"
                       }`}
                     />
                     <span className="text-xs font-semibold tracking-wide">{tab.label}</span>
@@ -836,7 +836,7 @@ export default function AdminDashboard() {
                     <span
                       className={`text-[10px] font-black px-2 py-0.5 rounded-full z-10 ${
                         tab.highlight
-                          ? "bg-[#FF5E36] text-white animate-pulse"
+                          ? "bg-[#3b82f6] text-white animate-pulse"
                           : "bg-white/10 text-zinc-300"
                       }`}
                     >
@@ -846,7 +846,7 @@ export default function AdminDashboard() {
                   {isActive && (
                     <motion.div
                       layoutId="sidebar-active-indicator"
-                      className="absolute left-0 top-2 bottom-2 w-0.5 bg-[#FF5E36] rounded-full"
+                      className="absolute left-0 top-2 bottom-2 w-0.5 bg-[#3b82f6] rounded-full"
                     />
                   )}
                 </button>
@@ -856,10 +856,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sidebar Terminate Session Panel */}
-        <div className="p-4 border-t border-[#23232F]/60">
+        <div className="p-4 border-t border-[#1e293b]/60">
           <button
             onClick={handleSignOut}
-            className="w-full bg-[#181822] hover:bg-red-500/10 hover:text-red-400 border border-[#23232F] hover:border-red-500/20 text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+            className="w-full bg-[#070a13] hover:bg-red-500/10 hover:text-red-400 border border-[#1e293b] hover:border-red-500/20 text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
           >
             <LogOut className="w-4 h-4" />
             <span>Terminate Session</span>
@@ -868,14 +868,14 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col overflow-hidden relative z-10 bg-[#0A0A0C]">
+      <main className="flex-1 flex flex-col overflow-hidden relative z-10 bg-[#02040A]">
         {/* Header Console Topbar */}
-        <header className="h-20 border-b border-[#23232F]/60 px-8 flex items-center justify-between bg-[#0A0A0C]/90 backdrop-blur-md shrink-0 z-30">
+        <header className="h-20 border-b border-[#1e293b]/60 px-8 flex items-center justify-between bg-[#02040A]/90 backdrop-blur-md shrink-0 z-30">
           <div className="flex items-center gap-4">
             <h2 className="text-xl font-bold tracking-tight text-white capitalize">
               {activeTab === "overview" ? "Overview Dashboard" : activeTab.replace(/_/g, " ")}
             </h2>
-            <div className="h-4 w-px bg-[#23232F]/60"></div>
+            <div className="h-4 w-px bg-[#1e293b]/60"></div>
             <div className="flex items-center gap-2 text-xs text-[#A1A1AA]">
               <Calendar className="w-3.5 h-3.5" />
               <span>
@@ -893,16 +893,16 @@ export default function AdminDashboard() {
             <button
               onClick={() => fetchData()}
               disabled={loading}
-              className="h-10 w-10 bg-[#121217] hover:bg-white/[0.04] border border-[#23232F] rounded-xl flex items-center justify-center transition-colors group disabled:opacity-50"
+              className="h-10 w-10 bg-[#0d111d] hover:bg-white/[0.04] border border-[#1e293b] rounded-xl flex items-center justify-center transition-colors group disabled:opacity-50"
               title="Sync Ledger"
             >
               <RefreshCw
-                className={`w-4 h-4 text-[#FF5E36] transition-transform duration-500 ${
+                className={`w-4 h-4 text-[#3b82f6] transition-transform duration-500 ${
                   loading ? "animate-spin" : "group-hover:rotate-180"
                 }`}
               />
             </button>
-            <div className="h-6 w-px bg-[#23232F]/60"></div>
+            <div className="h-6 w-px bg-[#1e293b]/60"></div>
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-[10px] font-black uppercase tracking-wider text-[#A1A1AA]">
               Operational
@@ -932,7 +932,7 @@ export default function AdminDashboard() {
                         value: formatINR(analytics.summary?.totalRevenue || 0),
                         desc: "Gross cumulative collections",
                         icon: CreditCard,
-                        color: "text-[#FF5E36]",
+                        color: "text-[#3b82f6]",
                       },
                       {
                         title: "Orders Logged",
@@ -954,7 +954,7 @@ export default function AdminDashboard() {
                         desc: "Customer claims in queue",
                         icon: RefreshCw,
                         color:
-                          (analytics.summary?.returnRequests || 0) > 0 ? "text-[#FF5E36]" : "text-zinc-500",
+                          (analytics.summary?.returnRequests || 0) > 0 ? "text-[#3b82f6]" : "text-zinc-500",
                         alert: (analytics.summary?.returnRequests || 0) > 0,
                       },
                     ].map((metric, i) => {
@@ -962,9 +962,9 @@ export default function AdminDashboard() {
                       return (
                         <div
                           key={i}
-                          className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 hover:border-[#FF5E36]/20"
+                          className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 relative overflow-hidden transition-all duration-300 hover:border-[#3b82f6]/20"
                         >
-                          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#FF5E36]/35 to-transparent opacity-0 hover:opacity-100 transition-opacity"></div>
+                          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#3b82f6]/35 to-transparent opacity-0 hover:opacity-100 transition-opacity"></div>
                           <div className="flex items-start justify-between">
                             <div>
                               <p className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-bold mb-1.5">
@@ -975,12 +975,12 @@ export default function AdminDashboard() {
                                 {metric.desc}
                               </p>
                             </div>
-                            <div className="h-10 w-10 bg-[#181822] rounded-xl border border-[#23232F] flex items-center justify-center">
+                            <div className="h-10 w-10 bg-[#070a13] rounded-xl border border-[#1e293b] flex items-center justify-center">
                               <Icon className={`w-5 h-5 ${metric.color}`} />
                             </div>
                           </div>
                           {metric.alert && (
-                            <div className="absolute bottom-2 right-2 text-[8px] font-black uppercase text-[#FF5E36] bg-[#FF5E36]/10 px-1.5 py-0.5 rounded border border-[#FF5E36]/20 animate-pulse">
+                            <div className="absolute bottom-2 right-2 text-[8px] font-black uppercase text-[#3b82f6] bg-[#3b82f6]/10 px-1.5 py-0.5 rounded border border-[#3b82f6]/20 animate-pulse">
                               Action Required
                             </div>
                           )}
@@ -992,7 +992,7 @@ export default function AdminDashboard() {
                   {/* Weekly Graph + Placement progress columns */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Graph Column */}
-                    <div className="lg:col-span-2 bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 flex flex-col justify-between h-[360px]">
+                    <div className="lg:col-span-2 bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 flex flex-col justify-between h-[360px]">
                       <div className="flex justify-between items-center mb-4">
                         <div>
                           <h4 className="text-sm font-bold text-white">Revenue Collections Trend</h4>
@@ -1000,7 +1000,7 @@ export default function AdminDashboard() {
                             Weekly ledger statement progress curve
                           </p>
                         </div>
-                        <span className="bg-[#FF5E36]/10 border border-[#FF5E36]/25 text-[#FF5E36] text-[9px] font-bold uppercase px-2 py-0.5 rounded tracking-wide">
+                        <span className="bg-[#3b82f6]/10 border border-[#3b82f6]/25 text-[#3b82f6] text-[9px] font-bold uppercase px-2 py-0.5 rounded tracking-wide">
                           Gross INR
                         </span>
                       </div>
@@ -1010,7 +1010,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Placements customization ratios */}
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-bold text-white mb-0.5">Embellishment Placements</h4>
                         <p className="text-[10px] text-[#A1A1AA] font-medium mb-4">
@@ -1030,9 +1030,9 @@ export default function AdminDashboard() {
                                 <span className="text-zinc-300 font-bold">{p.name}</span>
                                 <span className="text-[#A1A1AA]">{p.count} selections</span>
                               </div>
-                              <div className="h-1.5 w-full bg-[#181822] rounded-full overflow-hidden">
+                              <div className="h-1.5 w-full bg-[#070a13] rounded-full overflow-hidden">
                                 <div
-                                  className="h-full bg-[#FF5E36] rounded-full transition-all duration-500"
+                                  className="h-full bg-[#3b82f6] rounded-full transition-all duration-500"
                                   style={{ width: `${percentage}%` }}
                                 ></div>
                               </div>
@@ -1046,7 +1046,7 @@ export default function AdminDashboard() {
                   {/* Fabrics colors matrix + bestsellers */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Bestsellers table */}
-                    <div className="lg:col-span-2 bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6">
+                    <div className="lg:col-span-2 bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6">
                       <div className="flex justify-between items-center mb-4">
                         <div>
                           <h4 className="text-sm font-bold text-white">Registry Bestsellers</h4>
@@ -1059,18 +1059,18 @@ export default function AdminDashboard() {
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                           <thead>
-                            <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                            <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
                               <th className="py-2">Base Product</th>
                               <th className="py-2">Orders count</th>
                               <th className="py-2">Custom items</th>
                               <th className="py-2 text-right">Yield Revenue</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                          <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                             {analytics.bestsellers?.map((b, idx) => (
                               <tr key={idx} className="hover:bg-white/[0.01] transition-colors">
                                 <td className="py-3.5 font-bold text-white flex items-center gap-2">
-                                  <Package className="w-3.5 h-3.5 text-[#FF5E36]" />
+                                  <Package className="w-3.5 h-3.5 text-[#3b82f6]" />
                                   <span>{b.product}</span>
                                 </td>
                                 <td className="py-3.5 text-[#A1A1AA]">{b.orders} orders</td>
@@ -1086,7 +1086,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Fabrics Color Matrix */}
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-bold text-white mb-0.5">Fabric Color Matrix</h4>
                         <p className="text-[10px] text-[#A1A1AA] font-medium mb-4">
@@ -1106,9 +1106,9 @@ export default function AdminDashboard() {
                                 <span className="text-zinc-300 font-bold">{c.name}</span>
                                 <span className="text-[#A1A1AA]">{c.count} items</span>
                               </div>
-                              <div className="h-1.5 w-full bg-[#181822] rounded-full overflow-hidden">
+                              <div className="h-1.5 w-full bg-[#070a13] rounded-full overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-[#FF5E36] to-[#ff8060] rounded-full transition-all duration-500"
+                                  className="h-full bg-gradient-to-r from-[#3b82f6] to-[#93c5fd] rounded-full transition-all duration-500"
                                   style={{ width: `${percentage}%` }}
                                 ></div>
                               </div>
@@ -1125,7 +1125,7 @@ export default function AdminDashboard() {
               {activeTab === "orders" && (
                 <div className="space-y-6">
                   {/* Search and filter toolbar */}
-                  <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
                     {/* Search query field */}
                     <div className="w-full md:w-96 relative">
                       <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5" />
@@ -1134,21 +1134,21 @@ export default function AdminDashboard() {
                         placeholder="Search Client ID, Name, or Email..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-[#181822] border border-[#23232F] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 transition-colors font-medium"
+                        className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 transition-colors font-medium"
                       />
                     </div>
 
                     {/* Status & payment select widgets */}
                     <div className="flex items-center gap-3 w-full md:w-auto">
                       <div className="flex items-center gap-2">
-                        <Filter className="w-3.5 h-3.5 text-[#FF5E36]" />
+                        <Filter className="w-3.5 h-3.5 text-[#3b82f6]" />
                         <span className="text-[10px] font-black uppercase text-zinc-500">Filters:</span>
                       </div>
 
                       <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="bg-[#181822] border border-[#23232F] rounded-xl px-3 py-2 text-[10px] font-bold uppercase text-zinc-300 focus:outline-none focus:border-[#FF5E36]/50"
+                        className="bg-[#070a13] border border-[#1e293b] rounded-xl px-3 py-2 text-[10px] font-bold uppercase text-zinc-300 focus:outline-none focus:border-[#3b82f6]/50"
                       >
                         <option value="all">ALL STATUSES</option>
                         <option value="designing">DESIGNING</option>
@@ -1162,7 +1162,7 @@ export default function AdminDashboard() {
                       <select
                         value={paymentFilter}
                         onChange={(e) => setPaymentFilter(e.target.value)}
-                        className="bg-[#181822] border border-[#23232F] rounded-xl px-3 py-2 text-[10px] font-bold uppercase text-zinc-300 focus:outline-none focus:border-[#FF5E36]/50"
+                        className="bg-[#070a13] border border-[#1e293b] rounded-xl px-3 py-2 text-[10px] font-bold uppercase text-zinc-300 focus:outline-none focus:border-[#3b82f6]/50"
                       >
                         <option value="all">ALL PAYMENTS</option>
                         <option value="paid">PAID</option>
@@ -1174,11 +1174,11 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Master orders table ledger */}
-                  <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                  <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                          <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                             <th className="py-4 px-6">ID</th>
                             <th className="py-4 px-6">Timestamp</th>
                             <th className="py-4 px-6">Customer Snapshot</th>
@@ -1188,7 +1188,7 @@ export default function AdminDashboard() {
                             <th className="py-4 px-6 text-right"></th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                        <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                           {filteredOrders.length === 0 ? (
                             <tr>
                               <td colSpan={7} className="py-12 text-center text-zinc-500 italic">
@@ -1232,7 +1232,7 @@ export default function AdminDashboard() {
                               return (
                                 <tr
                                   key={o.id}
-                                  className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                                  className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                                 >
                                   <td className="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">
                                     {o.id}
@@ -1262,7 +1262,7 @@ export default function AdminDashboard() {
                                   <td className="py-4 px-6 text-right">
                                     <button
                                       onClick={() => setInspectedOrderId(o.id)}
-                                      className="bg-[#181822] hover:bg-[#FF5E36] hover:text-white border border-[#23232F] hover:border-[#FF5E36]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
+                                      className="bg-[#070a13] hover:bg-[#3b82f6] hover:text-white border border-[#1e293b] hover:border-[#3b82f6]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
                                     >
                                       <span>Inspect</span>
                                       <ChevronRight className="w-3 h-3" />
@@ -1283,7 +1283,7 @@ export default function AdminDashboard() {
               {activeTab === "designs" && (
                 <div className="space-y-6">
                   {designs.length === 0 ? (
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-12 text-center flex flex-col items-center justify-center gap-3">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-12 text-center flex flex-col items-center justify-center gap-3">
                       <Check className="w-10 h-10 text-emerald-500 bg-emerald-500/10 p-2.5 rounded-full" />
                       <h4 className="text-sm font-bold text-white">All Clear!</h4>
                       <p className="text-xs text-zinc-500">
@@ -1298,13 +1298,13 @@ export default function AdminDashboard() {
                         return (
                           <div
                             key={index}
-                            className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between hover:border-[#FF5E36]/30 transition-all duration-300"
+                            className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between hover:border-[#3b82f6]/30 transition-all duration-300"
                           >
                             <div className="absolute top-0 left-0 w-full h-[3px] bg-amber-500/50"></div>
 
                             <div className="flex flex-col md:flex-row gap-6 mb-6">
                               {/* Layout Canvas preview */}
-                              <div className="w-full md:w-36 h-36 bg-[#181822] border border-[#23232F] rounded-xl overflow-hidden shrink-0 flex items-center justify-center relative group">
+                              <div className="w-full md:w-36 h-36 bg-[#070a13] border border-[#1e293b] rounded-xl overflow-hidden shrink-0 flex items-center justify-center relative group">
                                 <img
                                   src={mockImage}
                                   alt="Custom design preview"
@@ -1325,7 +1325,7 @@ export default function AdminDashboard() {
                               <div className="flex-1 space-y-3">
                                 <div>
                                   <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-[10px] font-mono font-black text-[#FF5E36] uppercase">
+                                    <span className="text-[10px] font-mono font-black text-[#3b82f6] uppercase">
                                       {d.orderId}
                                     </span>
                                     <div className="h-2 w-2 rounded-full bg-amber-500"></div>
@@ -1339,7 +1339,7 @@ export default function AdminDashboard() {
                                   </p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2 text-[10px] bg-[#181822] p-2.5 rounded-lg border border-[#23232F]">
+                                <div className="grid grid-cols-2 gap-2 text-[10px] bg-[#070a13] p-2.5 rounded-lg border border-[#1e293b]">
                                   <div>
                                     <span className="text-zinc-500 block">PLACEMENT:</span>
                                     <span className="text-white font-bold">{d.customization.placement}</span>
@@ -1368,12 +1368,12 @@ export default function AdminDashboard() {
                             </div>
 
                             {/* Revision Decision triggers */}
-                            <div className="space-y-4 pt-4 border-t border-[#23232F]/40">
+                            <div className="space-y-4 pt-4 border-t border-[#1e293b]/40">
                               <div>
                                 <span className="text-[9px] font-black uppercase text-zinc-500 block mb-1">
                                   Customization Instruction notes:
                                 </span>
-                                <p className="text-xs text-zinc-400 bg-[#0A0A0C]/50 p-3 rounded-lg border border-[#23232F] italic">
+                                <p className="text-xs text-zinc-400 bg-[#02040A]/50 p-3 rounded-lg border border-[#1e293b] italic">
                                   "{d.customization.additionalNotes || "No special requirements logged."}"
                                 </p>
                               </div>
@@ -1388,7 +1388,7 @@ export default function AdminDashboard() {
                                 </button>
                                 <button
                                   onClick={() => handleApproveDesign(d.orderId, d.itemId)}
-                                  className="px-5 py-2.5 rounded-xl bg-[#FF5E36] hover:bg-[#ff704d] text-xs font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
+                                  className="px-5 py-2.5 rounded-xl bg-[#3b82f6] hover:bg-[#60a5fa] text-xs font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
                                 >
                                   <Check className="w-3.5 h-3.5" />
                                   <span>Approve design</span>
@@ -1405,11 +1405,11 @@ export default function AdminDashboard() {
 
               {/* Tab: Payments Hub */}
               {activeTab === "payments" && (
-                <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                        <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                           <th className="py-4 px-6">ID</th>
                           <th className="py-4 px-6">Customer SNAPSHOT</th>
                           <th className="py-4 px-6">Invoice value</th>
@@ -1419,7 +1419,7 @@ export default function AdminDashboard() {
                           <th className="py-4 px-6 text-right"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                      <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                         {orders.map((o) => {
                           const outstanding =
                             o.payment.status === "paid"
@@ -1441,7 +1441,7 @@ export default function AdminDashboard() {
                           return (
                             <tr
                               key={o.id}
-                              className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                              className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                             >
                               <td className="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">
                                 {o.id}
@@ -1462,7 +1462,7 @@ export default function AdminDashboard() {
                               </td>
                               <td
                                 className={`py-4 px-6 font-black ${
-                                  outstanding > 0 ? "text-[#FF5E36]" : "text-zinc-500"
+                                  outstanding > 0 ? "text-[#3b82f6]" : "text-zinc-500"
                                 }`}
                               >
                                 {formatINR(outstanding)}
@@ -1481,7 +1481,7 @@ export default function AdminDashboard() {
                                 ) : (
                                   <button
                                     onClick={() => handleRecordSettlement(o.id)}
-                                    className="bg-[#FF5E36] hover:bg-[#ff704d] text-white border border-[#FF5E36]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
+                                    className="bg-[#3b82f6] hover:bg-[#60a5fa] text-white border border-[#3b82f6]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
                                   >
                                     <CreditCard className="w-3 h-3" />
                                     <span>Record Settlement</span>
@@ -1499,11 +1499,11 @@ export default function AdminDashboard() {
 
               {/* Tab: Invoice Desk */}
               {activeTab === "invoices" && (
-                <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                        <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                           <th className="py-4 px-6">ID</th>
                           <th className="py-4 px-6">Recipient Name</th>
                           <th className="py-4 px-6">Compiled date</th>
@@ -1512,7 +1512,7 @@ export default function AdminDashboard() {
                           <th className="py-4 px-6 text-right"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                      <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                         {orders.map((o) => {
                           const d = new Date(o.date);
                           const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d.getFullYear()}`;
@@ -1521,7 +1521,7 @@ export default function AdminDashboard() {
                           return (
                             <tr
                               key={o.id}
-                              className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                              className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                             >
                               <td className="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">
                                 {o.id}
@@ -1550,15 +1550,15 @@ export default function AdminDashboard() {
                                     href={`${API_URL}/invoices/${o.id}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="bg-[#181822] hover:bg-white/[0.04] border border-[#23232F] text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 hover:text-white mr-2"
+                                    className="bg-[#070a13] hover:bg-white/[0.04] border border-[#1e293b] text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 hover:text-white mr-2"
                                   >
-                                    <FileDown className="w-3 h-3 text-[#FF5E36]" />
+                                    <FileDown className="w-3 h-3 text-[#3b82f6]" />
                                     <span>Download PDF</span>
                                   </a>
                                 )}
                                 <button
                                   onClick={() => handleCompileInvoice(o.id)}
-                                  className="bg-[#FF5E36] hover:bg-[#ff704d] text-white border border-[#FF5E36]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
+                                  className="bg-[#3b82f6] hover:bg-[#60a5fa] text-white border border-[#3b82f6]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 cursor-pointer"
                                 >
                                   <RefreshCw className="w-3 h-3" />
                                   <span>{hasInvoice ? "Re-compile" : "Compile PDF"}</span>
@@ -1579,7 +1579,7 @@ export default function AdminDashboard() {
                   {/* Summary progress metric columns */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Placements layout distribution doughnut */}
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 h-[340px] flex flex-col justify-between">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 h-[340px] flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-bold text-white">Visual Customization Distribution</h4>
                         <p className="text-[10px] text-[#A1A1AA] font-medium mb-4">
@@ -1592,7 +1592,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Coupons code utilization progress bars */}
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-bold text-white mb-0.5">Coupon Utilization Ratio</h4>
                         <p className="text-[10px] text-[#A1A1AA] font-medium mb-4">
@@ -1604,10 +1604,10 @@ export default function AdminDashboard() {
                         {analytics.customizations?.coupons?.map((cp, idx) => (
                           <div
                             key={idx}
-                            className="bg-[#181822] border border-[#23232F] rounded-xl p-3 flex items-center justify-between hover:border-[#FF5E36]/30 transition-all duration-300"
+                            className="bg-[#070a13] border border-[#1e293b] rounded-xl p-3 flex items-center justify-between hover:border-[#3b82f6]/30 transition-all duration-300"
                           >
                             <div>
-                              <span className="text-[10px] font-black uppercase bg-[#FF5E36]/15 text-[#FF5E36] border border-[#FF5E36]/20 px-2 py-0.5 rounded font-mono">
+                              <span className="text-[10px] font-black uppercase bg-[#3b82f6]/15 text-[#3b82f6] border border-[#3b82f6]/20 px-2 py-0.5 rounded font-mono">
                                 {cp.code}
                               </span>
                               <p className="text-[10px] text-zinc-500 font-bold mt-1">
@@ -1625,7 +1625,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* General Customization Stats summary */}
-                    <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-6 flex flex-col justify-between">
                       <div>
                         <h4 className="text-sm font-bold text-white mb-0.5">Customizer Performance</h4>
                         <p className="text-[10px] text-[#A1A1AA] font-medium mb-4">
@@ -1634,25 +1634,25 @@ export default function AdminDashboard() {
                       </div>
 
                       <div className="space-y-3.5 font-semibold text-xs text-zinc-400">
-                        <div className="bg-[#181822] border border-[#23232F] p-4 rounded-xl flex items-center justify-between">
+                        <div className="bg-[#070a13] border border-[#1e293b] p-4 rounded-xl flex items-center justify-between">
                           <span>Awaiting Approvals</span>
                           <span className="text-amber-400 font-bold">
                             {analytics.summary?.pendingDesignApprovals || 0} layouts
                           </span>
                         </div>
-                        <div className="bg-[#181822] border border-[#23232F] p-4 rounded-xl flex items-center justify-between">
+                        <div className="bg-[#070a13] border border-[#1e293b] p-4 rounded-xl flex items-center justify-between">
                           <span>Return claims ratio</span>
                           <span
                             className={
                               (analytics.summary?.returnRequests || 0) > 0
-                                ? "text-[#FF5E36] font-bold"
+                                ? "text-[#3b82f6] font-bold"
                                 : "text-emerald-500 font-bold"
                             }
                           >
                             {analytics.summary?.returnRequests || 0} claims pending
                           </span>
                         </div>
-                        <div className="bg-[#181822] border border-[#23232F] p-4 rounded-xl flex items-center justify-between">
+                        <div className="bg-[#070a13] border border-[#1e293b] p-4 rounded-xl flex items-center justify-between">
                           <span>Total conversions value</span>
                           <span className="text-white font-black text-sm">
                             {formatINR(analytics.summary?.totalRevenue || 0)}
@@ -1666,11 +1666,11 @@ export default function AdminDashboard() {
 
               {/* Tab: Customer CRM */}
               {activeTab === "customers" && (
-                <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                        <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                           <th className="py-4 px-6">Customer profile</th>
                           <th className="py-4 px-6">Contact registry</th>
                           <th className="py-4 px-6">Orders conversions</th>
@@ -1679,7 +1679,7 @@ export default function AdminDashboard() {
                           <th className="py-4 px-6 text-right"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                      <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                         {customerCRMList.map((c, idx) => {
                           let seg = "VIP Client";
                           let segClass = "bg-purple-500/10 text-purple-400 border border-purple-500/20";
@@ -1695,10 +1695,10 @@ export default function AdminDashboard() {
                           return (
                             <tr
                               key={idx}
-                              className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                              className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                             >
                               <td className="py-4 px-6 font-bold text-white flex items-center gap-2">
-                                <div className="h-7 w-7 rounded-full bg-[#FF5E36]/10 text-[#FF5E36] font-bold text-xs flex items-center justify-center font-serif border border-[#FF5E36]/20">
+                                <div className="h-7 w-7 rounded-full bg-[#3b82f6]/10 text-[#3b82f6] font-bold text-xs flex items-center justify-center font-serif border border-[#3b82f6]/20">
                                   {c.name.charAt(0)}
                                 </div>
                                 <span>{c.name}</span>
@@ -1719,7 +1719,7 @@ export default function AdminDashboard() {
                                 </span>
                               </td>
                               <td className="py-4 px-6 text-right">
-                                <span className="text-[10px] font-bold text-[#FF5E36] uppercase">
+                                <span className="text-[10px] font-bold text-[#3b82f6] uppercase">
                                   Active Segment
                                 </span>
                               </td>
@@ -1734,11 +1734,11 @@ export default function AdminDashboard() {
 
               {/* Tab: Returns Board */}
               {activeTab === "returns" && (
-                <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                        <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                           <th className="py-4 px-6">ID</th>
                           <th className="py-4 px-6">Order ID</th>
                           <th className="py-4 px-6">Client Name</th>
@@ -1748,7 +1748,7 @@ export default function AdminDashboard() {
                           <th className="py-4 px-6 text-right"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                      <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                         {returns.length === 0 ? (
                           <tr>
                             <td colSpan={7} className="py-12 text-center text-zinc-500 italic">
@@ -1772,7 +1772,7 @@ export default function AdminDashboard() {
                             return (
                               <tr
                                 key={r.id}
-                                className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                                className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                               >
                                 <td className="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">
                                   {r.id}
@@ -1799,7 +1799,7 @@ export default function AdminDashboard() {
                                       </button>
                                       <button
                                         onClick={() => handleResolveReturn(r.id, "approved")}
-                                        className="bg-[#FF5E36] hover:bg-[#ff704d] text-white border border-[#FF5E36]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 cursor-pointer"
+                                        className="bg-[#3b82f6] hover:bg-[#60a5fa] text-white border border-[#3b82f6]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 cursor-pointer"
                                       >
                                         Approve Refund
                                       </button>
@@ -1824,7 +1824,7 @@ export default function AdminDashboard() {
               {activeTab === "products" && (
                 <div className="space-y-6">
                   {/* Product CRUD Action toolbar */}
-                  <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl p-5 flex justify-between items-center">
+                  <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl p-5 flex justify-between items-center">
                     <div>
                       <h4 className="text-sm font-bold text-white">Registered Materials Catalog</h4>
                       <p className="text-[10px] text-[#A1A1AA] font-medium">
@@ -1834,7 +1834,7 @@ export default function AdminDashboard() {
 
                     <button
                       onClick={() => handleOpenProductModal()}
-                      className="bg-[#FF5E36] hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all duration-300 flex items-center gap-1.5 shadow-lg shadow-[#FF5E36]/10 cursor-pointer"
+                      className="bg-[#3b82f6] hover:bg-[#60a5fa] text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all duration-300 flex items-center gap-1.5 shadow-lg shadow-[#3b82f6]/10 cursor-pointer"
                     >
                       <Plus className="w-4 h-4 animate-pulse" />
                       <span>Register Base Product</span>
@@ -1842,11 +1842,11 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Registered materials grid */}
-                  <div className="bg-[#121217]/65 border border-[#23232F]/70 rounded-2xl overflow-hidden">
+                  <div className="bg-[#0d111d]/65 border border-[#1e293b]/70 rounded-2xl overflow-hidden">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-[#23232F]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
+                          <tr className="border-b border-[#1e293b]/60 text-[10px] text-zinc-500 font-bold uppercase tracking-wider bg-white/[0.01]">
                             <th className="py-4 px-6">ID</th>
                             <th className="py-4 px-6">Product details name</th>
                             <th className="py-4 px-6">Base Unit Price</th>
@@ -1856,7 +1856,7 @@ export default function AdminDashboard() {
                             <th className="py-4 px-6 text-right"></th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#23232F]/30 text-xs font-semibold">
+                        <tbody className="divide-y divide-[#1e293b]/30 text-xs font-semibold">
                           {products.map((p) => {
                             let statusClass = "bg-zinc-800 text-zinc-400 border border-zinc-700";
                             if (p.status === "Active")
@@ -1870,13 +1870,13 @@ export default function AdminDashboard() {
                             return (
                               <tr
                                 key={p.id}
-                                className="hover:bg-white/[0.01] border-b border-[#23232F]/30 transition-colors"
+                                className="hover:bg-white/[0.01] border-b border-[#1e293b]/30 transition-colors"
                               >
                                 <td className="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">
                                   {p.id}
                                 </td>
                                 <td className="py-4 px-6 font-bold text-white flex items-center gap-2">
-                                  <Package className="w-3.5 h-3.5 text-[#FF5E36]" />
+                                  <Package className="w-3.5 h-3.5 text-[#3b82f6]" />
                                   <span>{p.name}</span>
                                 </td>
                                 <td className="py-4 px-6 font-black text-zinc-100">
@@ -1898,9 +1898,9 @@ export default function AdminDashboard() {
                                 <td className="py-4 px-6 text-right">
                                   <button
                                     onClick={() => handleOpenProductModal(p)}
-                                    className="bg-[#181822] hover:bg-[#FF5E36] hover:text-white border border-[#23232F] hover:border-[#FF5E36]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 mr-2 cursor-pointer"
+                                    className="bg-[#070a13] hover:bg-[#3b82f6] hover:text-white border border-[#1e293b] hover:border-[#3b82f6]/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 mr-2 cursor-pointer"
                                   >
-                                    <Sliders className="w-3 h-3 text-[#FF5E36]" />
+                                    <Sliders className="w-3 h-3 text-[#3b82f6]" />
                                     <span>Adjust</span>
                                   </button>
                                   <button
@@ -1944,28 +1944,28 @@ export default function AdminDashboard() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-[550px] bg-[#121217] border-l border-[#23232F] shadow-2xl z-50 flex flex-col justify-between overflow-hidden"
+              className="fixed top-0 right-0 bottom-0 w-full max-w-[550px] bg-[#0d111d] border-l border-[#1e293b] shadow-2xl z-50 flex flex-col justify-between overflow-hidden"
             >
               {/* Drawer Top Header */}
-              <div className="h-20 px-6 border-b border-[#23232F] flex items-center justify-between bg-[#121217] relative">
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#FF5E36] to-transparent"></div>
+              <div className="h-20 px-6 border-b border-[#1e293b] flex items-center justify-between bg-[#0d111d] relative">
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#3b82f6] to-transparent"></div>
                 <h3 className="text-sm font-black uppercase text-white tracking-widest inline-flex items-center gap-2">
-                  <Sliders className="w-4 h-4 text-[#FF5E36]" />
+                  <Sliders className="w-4 h-4 text-[#3b82f6]" />
                   <span>Order Inspect: #{inspectedOrderId}</span>
                 </h3>
                 <button
                   onClick={() => setInspectedOrderId(null)}
-                  className="h-8 w-8 rounded-lg bg-zinc-800 hover:bg-[#FF5E36] hover:text-white border border-[#23232F] hover:border-transparent flex items-center justify-center transition-colors cursor-pointer"
+                  className="h-8 w-8 rounded-lg bg-zinc-800 hover:bg-[#3b82f6] hover:text-white border border-[#1e293b] hover:border-transparent flex items-center justify-center transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Drawer Scrollable Content */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[#0A0A0C]/50">
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[#02040A]/50">
                 {drawerLoading ? (
                   <div className="flex flex-col items-center justify-center py-24 gap-3 text-zinc-500">
-                    <RefreshCw className="w-8 h-8 animate-spin text-[#FF5E36]" />
+                    <RefreshCw className="w-8 h-8 animate-spin text-[#3b82f6]" />
                     <p className="text-xs uppercase tracking-wider font-bold">
                       Retrieving Order Ledger details...
                     </p>
@@ -1973,7 +1973,7 @@ export default function AdminDashboard() {
                 ) : inspectedOrder ? (
                   <>
                     {/* Status Advance Action bar */}
-                    <div className="flex gap-3 bg-[#181822]/60 p-4 border border-[#23232F] rounded-2xl">
+                    <div className="flex gap-3 bg-[#070a13]/60 p-4 border border-[#1e293b] rounded-2xl">
                       {(() => {
                         const workflow = ["designing", "processing", "ready_to_ship", "dispatched", "delivered"];
                         const curIdx = workflow.indexOf(inspectedOrder.status);
@@ -1982,7 +1982,7 @@ export default function AdminDashboard() {
                         return canAdvance ? (
                           <button
                             onClick={() => handleAdvanceStatus(inspectedOrder.id, inspectedOrder.status)}
-                            className="flex-1 bg-[#FF5E36] hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                            className="flex-1 bg-[#3b82f6] hover:bg-[#60a5fa] text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <Truck className="w-4 h-4" />
                             <span>Advance: {workflow[curIdx + 1].toUpperCase().replace(/_/g, " ")}</span>
@@ -1998,16 +1998,16 @@ export default function AdminDashboard() {
                       {inspectedOrder.payment.status !== "paid" && (
                         <button
                           onClick={() => handleRecordSettlement(inspectedOrder.id)}
-                          className="flex-1 bg-[#121217] hover:bg-white/[0.04] border border-[#23232F] hover:border-[#FF5E36]/30 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="flex-1 bg-[#0d111d] hover:bg-white/[0.04] border border-[#1e293b] hover:border-[#3b82f6]/30 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                         >
-                          <CreditCard className="w-4 h-4 text-[#FF5E36]" />
+                          <CreditCard className="w-4 h-4 text-[#3b82f6]" />
                           <span>Reconcile balance</span>
                         </button>
                       )}
                     </div>
 
                     {/* Profile and Destination details */}
-                    <div className="grid grid-cols-2 gap-6 bg-[#181822]/20 border border-[#23232F]/60 p-5 rounded-2xl">
+                    <div className="grid grid-cols-2 gap-6 bg-[#070a13]/20 border border-[#1e293b]/60 p-5 rounded-2xl">
                       <div>
                         <span className="text-[10px] font-black uppercase text-zinc-500 tracking-wider block mb-2">
                           Customer Profile
@@ -2051,9 +2051,9 @@ export default function AdminDashboard() {
                         return (
                           <div
                             key={index}
-                            className="bg-[#121217] border border-[#23232F] rounded-xl p-4 flex gap-4"
+                            className="bg-[#0d111d] border border-[#1e293b] rounded-xl p-4 flex gap-4"
                           >
-                            <div className="w-20 h-20 bg-[#181822] border border-[#23232F] rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
+                            <div className="w-20 h-20 bg-[#070a13] border border-[#1e293b] rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
                               <img
                                 src={mockImage}
                                 alt="thumbnail"
@@ -2070,7 +2070,7 @@ export default function AdminDashboard() {
                                 Qty: {item.quantity} × {formatINR(item.unitPrice)} • size:{" "}
                                 {item.variant.size} • color: {item.variant.color}
                               </p>
-                              <div className="text-[10px] bg-[#0A0A0C]/50 p-2 rounded border border-[#23232F] text-zinc-400 mt-2 space-y-1 font-medium">
+                              <div className="text-[10px] bg-[#02040A]/50 p-2 rounded border border-[#1e293b] text-zinc-400 mt-2 space-y-1 font-medium">
                                 <p>
                                   <span className="text-zinc-500 font-semibold">CUSTOM text:</span> "
                                   {item.customization.text || "N/A"}"
@@ -2085,7 +2085,7 @@ export default function AdminDashboard() {
                                 </p>
                                 <p>
                                   <span className="text-zinc-500 font-semibold">DESIGN:</span>{" "}
-                                  <span className="text-[#FF5E36] uppercase font-bold">
+                                  <span className="text-[#3b82f6] uppercase font-bold">
                                     {item.designStatus.replace(/_/g, " ")}
                                   </span>
                                 </p>
@@ -2097,7 +2097,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Reconcile details calculations pricing */}
-                    <div className="bg-[#121217] border border-[#23232F]/60 p-5 rounded-2xl space-y-3.5">
+                    <div className="bg-[#0d111d] border border-[#1e293b]/60 p-5 rounded-2xl space-y-3.5">
                       <span className="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">
                         Ledger statement pricing details
                       </span>
@@ -2107,7 +2107,7 @@ export default function AdminDashboard() {
                           <span className="text-white">{formatINR(inspectedOrder.pricing.subtotal)}</span>
                         </div>
                         {inspectedOrder.pricing.discountAmount > 0 && (
-                          <div className="flex justify-between text-[#FF5E36]">
+                          <div className="flex justify-between text-[#3b82f6]">
                             <span>Discount (applied {inspectedOrder.pricing.discountCode})</span>
                             <span>-{formatINR(inspectedOrder.pricing.discountAmount)}</span>
                           </div>
@@ -2122,10 +2122,10 @@ export default function AdminDashboard() {
                             {formatINR(inspectedOrder.pricing.shippingCharge)}
                           </span>
                         </div>
-                        <div className="h-px bg-[#23232F]/60 my-2"></div>
+                        <div className="h-px bg-[#1e293b]/60 my-2"></div>
                         <div className="flex justify-between text-white font-bold text-sm">
                           <span>Grand Invoice Total</span>
-                          <span className="text-[#FF5E36]">
+                          <span className="text-[#3b82f6]">
                             {formatINR(inspectedOrder.pricing.totalAmount)}
                           </span>
                         </div>
@@ -2137,7 +2137,7 @@ export default function AdminDashboard() {
                       <span className="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">
                         Ledger tracking Status timeline logs
                       </span>
-                      <div className="bg-[#121217]/50 border border-[#23232F]/60 rounded-2xl p-5 space-y-4">
+                      <div className="bg-[#0d111d]/50 border border-[#1e293b]/60 rounded-2xl p-5 space-y-4">
                         {inspectedOrder.statusHistory.map((h, i) => {
                           const d = new Date(h.changedAt);
                           const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d
@@ -2147,9 +2147,9 @@ export default function AdminDashboard() {
                           return (
                             <div
                               key={i}
-                              className="relative pl-6 pb-4 last:pb-0 border-l border-[#23232F]/60"
+                              className="relative pl-6 pb-4 last:pb-0 border-l border-[#1e293b]/60"
                             >
-                              <div className="absolute -left-1.5 top-1 h-3 w-3 rounded-full bg-[#FF5E36]/30 border border-[#FF5E36]"></div>
+                              <div className="absolute -left-1.5 top-1 h-3 w-3 rounded-full bg-[#3b82f6]/30 border border-[#3b82f6]"></div>
                               <p className="text-xs font-bold text-white capitalize leading-none">
                                 {h.status.replace(/_/g, " ")}
                               </p>
@@ -2177,11 +2177,11 @@ export default function AdminDashboard() {
                             placeholder="Log internal operator details..."
                             value={newNote}
                             onChange={(e) => setNewNote(e.target.value)}
-                            className="flex-1 bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 font-medium"
+                            className="flex-1 bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 font-medium"
                           />
                           <button
                             onClick={() => handleAddNote(inspectedOrder.id)}
-                            className="bg-[#FF5E36] hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-widest px-4 rounded-xl transition-all duration-300 cursor-pointer"
+                            className="bg-[#3b82f6] hover:bg-[#60a5fa] text-white font-bold text-xs uppercase tracking-widest px-4 rounded-xl transition-all duration-300 cursor-pointer"
                           >
                             Log
                           </button>
@@ -2201,10 +2201,10 @@ export default function AdminDashboard() {
                               return (
                                 <div
                                   key={i}
-                                  className="bg-[#181822] border border-[#23232F] rounded-xl p-3 space-y-1"
+                                  className="bg-[#070a13] border border-[#1e293b] rounded-xl p-3 space-y-1"
                                 >
                                   <div className="flex justify-between">
-                                    <span className="text-[9px] font-black uppercase text-[#FF5E36] tracking-wider">
+                                    <span className="text-[9px] font-black uppercase text-[#3b82f6] tracking-wider">
                                       {n.addedBy}
                                     </span>
                                     <span className="text-[9px] text-zinc-500 font-semibold">{dStr}</span>
@@ -2245,7 +2245,7 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#121217] border border-[#23232F] rounded-2xl w-full max-w-[480px] p-6 shadow-2xl relative overflow-hidden z-10"
+              className="bg-[#0d111d] border border-[#1e293b] rounded-2xl w-full max-w-[480px] p-6 shadow-2xl relative overflow-hidden z-10"
             >
               <div className="absolute top-0 left-0 w-full h-[3px] bg-red-500"></div>
 
@@ -2279,14 +2279,14 @@ export default function AdminDashboard() {
                     value={revisionReason}
                     onChange={(e) => setRevisionReason(e.target.value)}
                     placeholder="e.g. Please align the text centered on the chest block, keeping within raw bounding constraints..."
-                    className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-red-500/50 font-medium resize-none"
+                    className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-red-500/50 font-medium resize-none"
                   ></textarea>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">
                   <button
                     onClick={() => setRevisionTarget(null)}
-                    className="px-4 py-2.5 bg-[#181822] hover:bg-zinc-800 text-zinc-300 border border-[#23232F] text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer"
+                    className="px-4 py-2.5 bg-[#070a13] hover:bg-zinc-800 text-zinc-300 border border-[#1e293b] text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -2321,13 +2321,13 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-[#121217] border border-[#23232F] rounded-2xl w-full max-w-[500px] p-6 shadow-2xl relative overflow-hidden z-10 animate-fade-in"
+              className="bg-[#0d111d] border border-[#1e293b] rounded-2xl w-full max-w-[500px] p-6 shadow-2xl relative overflow-hidden z-10 animate-fade-in"
             >
-              <div className="absolute top-0 left-0 w-full h-[3px] bg-[#FF5E36]"></div>
+              <div className="absolute top-0 left-0 w-full h-[3px] bg-[#3b82f6]"></div>
 
               <div className="flex justify-between items-center mb-6">
                 <h4 className="text-sm font-black uppercase tracking-widest text-white inline-flex items-center gap-2">
-                  <Sliders className="w-4 h-4 text-[#FF5E36]" />
+                  <Sliders className="w-4 h-4 text-[#3b82f6]" />
                   <span>{editingProduct ? "Adjust Registered Product" : "Register New Base Product"}</span>
                 </h4>
                 <button
@@ -2349,7 +2349,7 @@ export default function AdminDashboard() {
                     value={prodForm.name}
                     onChange={(e) => setProdForm({ ...prodForm, name: e.target.value })}
                     placeholder="e.g. Classic Oversized Heavyweight Tee"
-                    className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 font-medium"
+                    className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 font-medium"
                   />
                 </div>
 
@@ -2365,7 +2365,7 @@ export default function AdminDashboard() {
                       value={prodForm.price}
                       onChange={(e) => setProdForm({ ...prodForm, price: e.target.value })}
                       placeholder="e.g. 1499"
-                      className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 font-medium"
+                      className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 font-medium"
                     />
                   </div>
 
@@ -2380,7 +2380,7 @@ export default function AdminDashboard() {
                       value={prodForm.stock}
                       onChange={(e) => setProdForm({ ...prodForm, stock: e.target.value })}
                       placeholder="e.g. 120"
-                      className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 font-medium"
+                      className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 font-medium"
                     />
                   </div>
                 </div>
@@ -2395,7 +2395,7 @@ export default function AdminDashboard() {
                     value={prodForm.variants}
                     onChange={(e) => setProdForm({ ...prodForm, variants: e.target.value })}
                     placeholder="e.g. S, M, L, XL / Black, White, Charcoal, Beige"
-                    className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 placeholder-zinc-600 font-medium"
+                    className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 placeholder-zinc-600 font-medium"
                   />
                 </div>
 
@@ -2408,7 +2408,7 @@ export default function AdminDashboard() {
                     onChange={(e) =>
                       setProdForm({ ...prodForm, status: e.target.value as "Active" | "Draft" | "Archived" })
                     }
-                    className="w-full bg-[#181822] border border-[#23232F] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#FF5E36]/50 uppercase font-bold"
+                    className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#3b82f6]/50 uppercase font-bold"
                   >
                     <option value="Active">ACTIVE IN CATALOG</option>
                     <option value="Draft">DRAFT / DORMANT</option>
@@ -2416,17 +2416,17 @@ export default function AdminDashboard() {
                   </select>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-[#23232F]/40">
+                <div className="flex justify-end gap-3 pt-4 border-t border-[#1e293b]/40">
                   <button
                     type="button"
                     onClick={() => setProductModalOpen(false)}
-                    className="px-4 py-2.5 bg-[#181822] hover:bg-zinc-800 text-zinc-300 border border-[#23232F] text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer"
+                    className="px-4 py-2.5 bg-[#070a13] hover:bg-zinc-800 text-zinc-300 border border-[#1e293b] text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 bg-[#FF5E36] hover:bg-[#ff704d] text-white text-xs font-bold rounded-xl shadow-lg transition-all duration-300 cursor-pointer"
+                    className="px-5 py-2.5 bg-[#3b82f6] hover:bg-[#60a5fa] text-white text-xs font-bold rounded-xl shadow-lg transition-all duration-300 cursor-pointer"
                   >
                     Save material profile
                   </button>
