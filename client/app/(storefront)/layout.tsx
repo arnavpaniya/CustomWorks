@@ -41,17 +41,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#FFFFFF] text-brand-black">
-        <Header />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <WhatsAppButton />
-      </body>
-    </html>
+    <>
+      <Header />
+      <main id="main-content" className="flex-1">
+        {children}
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </>
   );
 }
