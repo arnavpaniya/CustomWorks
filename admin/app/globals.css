@@ -33,19 +33,19 @@
 }
 
 :root {
-  --background: #FCFCFD;
-  --foreground: #09090B;
+  --background: #0A0A0C;
+  --foreground: #FAFAFA;
   --radius: 1rem;
-  --brand-accent: #0A0A0A;
-  --brand-accent-hover: #1E1E24;
+  --brand-accent: #FF5E36;
+  --brand-accent-hover: #FF7D5C;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #FCFCFD;
-    --foreground: #09090B;
-    --brand-accent: #0A0A0A;
-    --brand-accent-hover: #1E1E24;
+    --background: #0A0A0C;
+    --foreground: #FAFAFA;
+    --brand-accent: #FF5E36;
+    --brand-accent-hover: #FF7D5C;
   }
 }
 
@@ -110,17 +110,18 @@ body {
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4F4F5;
+  background: #0A0A0C;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4D4D8;
+  background: #23232F;
   border-radius: 4px;
-  border: 2px solid #F4F4F5;
+  border: 2px solid #0A0A0C;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A1A1AA;
+  background: #3F3F46;
 }
 
 /* Focus visible */
@@ -178,7 +179,7 @@ body {
 
 /* Skeleton shimmer */
 .skeleton {
-  background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
+  background: linear-gradient(90deg, #181822 25%, #23232F 50%, #181822 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

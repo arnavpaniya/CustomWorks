@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { AlertCircle, ArrowRight } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -57,11 +58,17 @@ export default function AdminLoginPage() {
     <div className="flex-1 flex items-center justify-center p-4">
       <div className="w-full max-w-[440px] z-10">
         {/* Brand Header */}
-        <div className="text-center mb-8 select-none">
-          <h1 className="text-3xl font-black tracking-tighter uppercase inline-flex items-center gap-2 text-white">
-            Custom<span className="text-[#FF5E36]">Works</span>
-          </h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest mt-1 font-semibold">
+        <div className="text-center mb-8 select-none flex flex-col items-center">
+          <div className="relative w-56 h-14 mb-3">
+            <Image
+              src="/images/logo.png"
+              alt="CustomWorks Logo"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
+          <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-black">
             Pro Operations Console
           </p>
         </div>

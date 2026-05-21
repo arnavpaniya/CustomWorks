@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Activity,
@@ -767,11 +768,17 @@ export default function AdminDashboard() {
 
         <div className="flex flex-col pt-6 flex-1 overflow-hidden">
           {/* Brand Logo */}
-          <div className="px-6 mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-black tracking-tighter uppercase inline-flex items-center gap-1.5 text-white">
-              Custom<span className="text-[#FF5E36]">Works</span>
-            </h1>
-            <span className="bg-[#FF5E36]/15 text-[#FF5E36] border border-[#FF5E36]/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 mt-1 rounded">
+          <div className="px-6 mb-6 flex items-center justify-between gap-3">
+            <div className="relative w-36 h-10 select-none">
+              <Image
+                src="/images/logo.png"
+                alt="CustomWorks Logo"
+                fill
+                priority
+                className="object-contain object-left"
+              />
+            </div>
+            <span className="bg-[#FF5E36]/15 text-[#FF5E36] border border-[#FF5E36]/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
               PRO CRM
             </span>
           </div>
