@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "CustomWorks Operations — Console",
   description: "Secure operational control center for CustomWorks.",
   robots: { index: false, follow: false },
+  icons: {
+    icon: "/images/Customworks favicon.png",
+    apple: "/images/Customworks favicon.png",
+  },
 };
 
 export const viewport: Viewport = {
