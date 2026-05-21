@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CustomWorks CRM — Admin Dashboard</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0A0A0C',
+                            surface: '#121217',
+                            border: '#23232F',
+                            orange: '#FF5E36',
+                            muted: '#A1A1AA',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A0A0C;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #23232F;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5E36;
+        }
+        .glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 94, 54, 0.06) 0%, rgba(0,0,0,0) 75%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .glass {
+            background: rgba(18, 18, 23, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(35, 35, 47, 0.7);
+        }
+        .drawer-overlay {
+            background: rgba(10, 10, 12, 0.6);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen text-zinc-100 flex relative overflow-hidden">
+    <!-- Background Ambient Glows -->
+    <div class="glow -top-60 -left-60"></div>
+    <div class="glow -bottom-60 -right-60"></div>
+
+    <!-- Active State Screen Loader -->
+    <div id="screenLoader" class="fixed inset-0 bg-[#0A0A0C] z-[100] flex flex-col items-center justify-center gap-4 transition-opacity duration-300">
+        <h1 class="text-3xl font-black tracking-tighter uppercase inline-flex items-center gap-2">
+            Custom<span class="text-brand-orange">Works</span>
+        </h1>
+        <div class="h-1.5 w-40 bg-zinc-800 rounded-full overflow-hidden relative">
+            <div class="absolute h-full w-2/3 bg-brand-orange rounded-full animate-[pulse_1.5s_infinite] left-1/3"></div>
+        </div>
+        <p class="text-xs text-brand-muted uppercase tracking-widest font-semibold">Initializing Secure Session...</p>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[60] bg-white border border-brand-orange/30 text-brand-black px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="h-2.5 w-2.5 rounded-full bg-brand-orange animate-ping"></div>
+        <span id="toastText" class="text-xs font-bold uppercase tracking-wider">Operation Completed Successfully</span>
+    </div>
+
+    <!-- ==========================================
+    // SIDEBAR NAVIGATION PANEL
+    // ========================================== -->
+    <aside class="w-72 bg-[#121217] border-r border-brand-border/60 flex flex-col justify-between shrink-0 select-none relative z-20">
+        <div class="absolute top-0 left-0 w-full h-40 bg-brand-orange/5 blur-[50px] pointer-events-none"></div>
+
+        <div class="flex flex-col pt-6 flex-1 overflow-hidden">
+            <!-- Brand Logo -->
+            <div class="px-6 mb-6 flex items-center justify-between">
+                <h1 class="text-2xl font-black tracking-tighter uppercase inline-flex items-center gap-1.5">
+                    Custom<span class="text-brand-orange">Works</span>
+                </h1>
+                <span class="bg-brand-orange/15 text-brand-orange border border-brand-orange/20 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 mt-1 rounded">
+                    PRO CRM
+                </span>
+            </div>
+
+            <!-- Active Operator Details -->
+            <div class="px-4 mb-6">
+                <div class="bg-brand-surface/40 border border-brand-border/60 rounded-xl p-3 flex items-center gap-3">
+                    <div class="relative">
+                        <div class="h-9 w-9 rounded-full bg-brand-orange/25 text-brand-orange border border-brand-orange/20 font-bold flex items-center justify-center text-sm font-serif">
+                            M
+                        </div>
+                        <div class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-[#0A0A0C]"></div>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white leading-tight" id="opName">Mohit Malhotra</p>
+                        <p class="text-[10px] text-brand-muted font-medium">Operations Commander</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scrollable Navigation Items -->
+            <nav class="flex-1 px-3 space-y-1 overflow-y-auto" id="navItemsList">
+                <button onclick="switchTab('overview')" id="btn-overview" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-white bg-white/[0.04] border border-white/5 shadow-md">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="activity" class="w-4 h-4 text-brand-orange transition-colors"></i>
+                        <span class="text-xs font-semibold tracking-wide">Overview</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full" id="indicator-overview"></div>
+                </button>
+
+                <button onclick="switchTab('orders')" id="btn-orders" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Orders Ledger</span>
+                    </div>
+                    <span id="badge-orders" class="text-[10px] font-black px-2 py-0.5 rounded-full z-10 bg-white/10 text-zinc-300 hidden">0</span>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-orders"></div>
+                </button>
+
+                <button onclick="switchTab('designs')" id="btn-designs" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="clock" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Design Approvals</span>
+                    </div>
+                    <span id="badge-designs" class="text-[10px] font-black px-2 py-0.5 rounded-full z-10 bg-brand-orange text-white animate-pulse hidden">0</span>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-designs"></div>
+                </button>
+
+                <button onclick="switchTab('payments')" id="btn-payments" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="credit-card" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Payments Hub</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-payments"></div>
+                </button>
+
+                <button onclick="switchTab('invoices')" id="btn-invoices" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="file-text" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Invoice Desk</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-invoices"></div>
+                </button>
+
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Insights & Charts</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-analytics"></div>
+                </button>
+
+                <button onclick="switchTab('customers')" id="btn-customers" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="users" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Customer CRM</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-customers"></div>
+                </button>
+
+                <button onclick="switchTab('returns')" id="btn-returns" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Returns Board</span>
+                    </div>
+                    <span id="badge-returns" class="text-[10px] font-black px-2 py-0.5 rounded-full z-10 bg-brand-orange text-white animate-pulse hidden">0</span>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-returns"></div>
+                </button>
+
+                <button onclick="switchTab('products')" id="btn-products" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]">
+                    <div class="flex items-center gap-3 z-10">
+                        <i data-lucide="package" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-300"></i>
+                        <span class="text-xs font-semibold tracking-wide">Products Registry</span>
+                    </div>
+                    <div class="absolute left-0 top-2 bottom-2 w-0.5 bg-brand-orange rounded-full hidden" id="indicator-products"></div>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Sidebar Sign Out Panel -->
+        <div class="p-4 border-t border-brand-border/60">
+            <button onclick="signout()" class="w-full bg-[#181822] hover:bg-red-500/10 hover:text-red-400 border border-brand-border hover:border-red-500/20 text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Terminate Session</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==========================================
+    // MAIN WRAPPER SCROLL AREA
+    // ========================================== -->
+    <main class="flex-1 flex flex-col overflow-hidden relative z-10 bg-[#0A0A0C]">
+        
+        <!-- Sticky Main Dashboard Topbar -->
+        <header class="h-20 border-b border-brand-border/60 px-8 flex items-center justify-between bg-[#0A0A0C]/90 backdrop-blur-md shrink-0 z-30">
+            <!-- Left Header details -->
+            <div class="flex items-center gap-4">
+                <h2 id="currentTabTitle" class="text-xl font-bold tracking-tight text-white capitalize">Overview Dashboard</h2>
+                <div class="h-4 w-px bg-brand-border/60"></div>
+                <div class="flex items-center gap-2 text-xs text-brand-muted">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span id="currentDateStr">Thursday, 21st May 2026</span>
+                </div>
+            </div>
+
+            <!-- Action panel -->
+            <div class="flex items-center gap-4">
+                <!-- Sync button -->
+                <button onclick="fetchStateData()" class="h-10 w-10 bg-[#121217] hover:bg-white/[0.04] border border-brand-border rounded-xl flex items-center justify-center transition-colors group" title="Sync Ledger">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-brand-orange group-hover:rotate-180 transition-transform duration-500"></i>
+                </button>
+                <div class="h-6 w-px bg-brand-border/60"></div>
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[10px] font-black uppercase tracking-wider text-brand-muted">Operational</span>
+            </div>
+        </header>
+
+        <!-- ==========================================
+        // DYNAMIC CONTENT REGION
+        // ========================================== -->
+        <div class="flex-1 overflow-y-auto px-8 py-8" id="mainContentArea">
+            
+            <!-- OVERVIEW TAB -->
+            <section id="tab-overview" class="space-y-8">
+                <!-- Summary Metrics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass rounded-2xl p-6 relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-orange/5 blur-xl pointer-events-none rounded-full"></div>
+                        <p class="text-[11px] font-black uppercase tracking-wider text-brand-muted mb-1">Lifetime Gross Revenue</p>
+                        <h3 class="text-2xl font-black text-white tracking-tight" id="metric-revenue">₹0.00</h3>
+                        <div class="mt-4 flex items-center gap-1.5 text-xs text-emerald-500 font-semibold">
+                            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                            <span>+14.8% vs last week</span>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 relative overflow-hidden">
+                        <p class="text-[11px] font-black uppercase tracking-wider text-brand-muted mb-1">Active Ledger Orders</p>
+                        <h3 class="text-2xl font-black text-white tracking-tight" id="metric-orders">0</h3>
+                        <div class="mt-4 flex items-center gap-1.5 text-xs text-zinc-500">
+                            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                            <span>Fully indexed database</span>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 relative overflow-hidden">
+                        <p class="text-[11px] font-black uppercase tracking-wider text-brand-muted mb-1">Awaiting Custom Approvals</p>
+                        <h3 class="text-2xl font-black text-brand-orange tracking-tight animate-[pulse_2s_infinite]" id="metric-pending-designs">0</h3>
+                        <div class="mt-4 flex items-center gap-1.5 text-xs text-zinc-500">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span>Garment layout verification</span>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 relative overflow-hidden">
+                        <p class="text-[11px] font-black uppercase tracking-wider text-brand-muted mb-1">Active Refund / Return claims</p>
+                        <h3 class="text-2xl font-black text-white tracking-tight" id="metric-returns">0</h3>
+                        <div class="mt-4 flex items-center gap-1.5 text-xs text-[#FF5E36] font-semibold" id="metric-returns-alert">
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+                            <span>Requires operational audit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphs & Analytics Details -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Chart Panel -->
+                    <div class="glass rounded-2xl p-6 lg:col-span-2 flex flex-col h-[400px]">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-white">Daily Operational Revenue (Growth trend)</h4>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">Live</span>
+                        </div>
+                        <div class="flex-1 relative">
+                            <canvas id="revenueChart" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Customizer Placement Analytics -->
+                    <div class="glass rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Embellishment Positions</h4>
+                            <p class="text-xs text-brand-muted mb-6">Popular placement coordinate choices on custom garments.</p>
+                        </div>
+                        <div class="space-y-4" id="placementsProgressList">
+                            <!-- JS populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bestsellers & Stats Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Bestselling items catalog -->
+                    <div class="glass rounded-2xl p-6 lg:col-span-2">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Bestselling Custom Garments</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                        <th class="py-3">Product Spec</th>
+                                        <th class="py-3">Unique Orders</th>
+                                        <th class="py-3">Total Qty Sold</th>
+                                        <th class="py-3 text-right">Revenue Yield</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="bestsellersTableBody">
+                                    <!-- JS populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Design Color Utilization -->
+                    <div class="glass rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Fabric Color Matrix</h4>
+                            <p class="text-xs text-brand-muted mb-6">Aggregate fabric raw materials choices inside customized cart.</p>
+                        </div>
+                        <div class="space-y-4" id="colorsProgressList">
+                            <!-- JS populated -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ORDERS LEDGER TAB -->
+            <section id="tab-orders" class="space-y-6 hidden">
+                <!-- Search and Filters Panel -->
+                <div class="glass rounded-2xl p-5 flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <!-- Search input -->
+                    <div class="w-full md:w-96 relative">
+                        <i data-lucide="search" class="absolute left-4 top-3.5 w-4.5 h-4.5 text-zinc-500"></i>
+                        <input 
+                            type="text" 
+                            id="orderSearchInput"
+                            oninput="filterOrdersList()"
+                            placeholder="Search orders by ID, customer name or email..." 
+                            class="w-full bg-[#0A0A0C]/50 border border-brand-border rounded-xl pl-12 pr-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-brand-orange/50 transition-colors"
+                        >
+                    </div>
+
+                    <!-- Filters panel -->
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[11px] font-black uppercase text-brand-muted tracking-wider">Status</label>
+                            <select 
+                                id="orderStatusFilter"
+                                onchange="filterOrdersList()"
+                                class="bg-[#121217] border border-brand-border rounded-xl text-xs text-white px-3 py-2 focus:outline-none focus:border-brand-orange/50"
+                            >
+                                <option value="all">All Statuses</option>
+                                <option value="designing">Designing</option>
+                                <option value="processing">Processing</option>
+                                <option value="ready_to_ship">Ready to Ship</option>
+                                <option value="dispatched">Dispatched</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="returned">Returned</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <label class="text-[11px] font-black uppercase text-brand-muted tracking-wider">Payment</label>
+                            <select 
+                                id="orderPaymentFilter"
+                                onchange="filterOrdersList()"
+                                class="bg-[#121217] border border-brand-border rounded-xl text-xs text-white px-3 py-2 focus:outline-none focus:border-brand-orange/50"
+                            >
+                                <option value="all">All States</option>
+                                <option value="paid">Paid</option>
+                                <option value="partial">Partial</option>
+                                <option value="pending">Pending</option>
+                                <option value="cod">COD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Table Card -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Order ID</th>
+                                    <th class="py-4 px-6">Placed At</th>
+                                    <th class="py-4 px-6">Customer Snap</th>
+                                    <th class="py-4 px-6">Total Amount</th>
+                                    <th class="py-4 px-6">Payment status</th>
+                                    <th class="py-4 px-6">Fulfillment status</th>
+                                    <th class="py-4 px-6 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="ordersTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DESIGN APPROVALS TAB -->
+            <section id="tab-designs" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Custom Garment Approvals</h3>
+                    <p class="text-xs text-brand-muted">Operational queue for reviewing designs, embroidery patches, custom lettering, and mockups uploaded by customers.</p>
+                </div>
+
+                <!-- Empty state -->
+                <div id="designsEmptyState" class="glass rounded-2xl p-12 text-center space-y-4 hidden">
+                    <i data-lucide="check-circle" class="w-12 h-12 text-zinc-600 mx-auto"></i>
+                    <p class="text-xs text-brand-muted uppercase tracking-wider font-bold">Embroidery queue is clean</p>
+                    <p class="text-xs text-zinc-500 max-w-sm mx-auto">All custom garment customer designs are validated, approved, and currently pushed to the sewing floor.</p>
+                </div>
+
+                <!-- Design cards grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="designApprovalsGrid">
+                    <!-- JS populated -->
+                </div>
+            </section>
+
+            <!-- PAYMENTS HUB TAB -->
+            <section id="tab-payments" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Outstanding Ledger Clearance Desk</h3>
+                    <p class="text-xs text-brand-muted">Manually reconcile payments from Cash On Delivery or partial bank deposit accounts for custom orders.</p>
+                </div>
+
+                <!-- Ledger list card -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Order ID</th>
+                                    <th class="py-4 px-6">Customer Details</th>
+                                    <th class="py-4 px-6">Order Total</th>
+                                    <th class="py-4 px-6">Amount Collected</th>
+                                    <th class="py-4 px-6">Balance Outstanding</th>
+                                    <th class="py-4 px-6">Payment mode</th>
+                                    <th class="py-4 px-6 text-right">Reconcile</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="paymentsTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INVOICE DESK TAB -->
+            <section id="tab-invoices" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Invoice Desk & Documentation Center</h3>
+                    <p class="text-xs text-brand-muted">Compile and upload official PDF documentation invoices for bookkeeping. Generates and streams secure downloadable records.</p>
+                </div>
+
+                <!-- Invoices list -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Order ID</th>
+                                    <th class="py-4 px-6">Billing Name</th>
+                                    <th class="py-4 px-6">Order Date</th>
+                                    <th class="py-4 px-6">Grand Total</th>
+                                    <th class="py-4 px-6">Invoice Status</th>
+                                    <th class="py-4 px-6 text-right">Compile & Sync</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="invoicesTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INSIGHTS & CHARTS TAB -->
+            <section id="tab-analytics" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Deep Business Analytical Intelligence</h3>
+                    <p class="text-xs text-brand-muted">Full catalog report of coupon conversions, bestseller analytics, color matrixes, and placement distributions.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Coupon codes usage -->
+                    <div class="glass rounded-2xl p-6">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Promotional Code utilization</h4>
+                        <div class="space-y-4" id="couponsProgressList">
+                            <!-- JS populated -->
+                        </div>
+                    </div>
+
+                    <!-- Placements chart matrix -->
+                    <div class="glass rounded-2xl p-6 col-span-2">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Visual placement breakdown</h4>
+                        <p class="text-xs text-brand-muted mb-6">Percentage coordinates of all embellishments across client customizer.</p>
+                        <div class="h-64 relative">
+                            <canvas id="placementsPieChart" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CUSTOMER CRM TAB -->
+            <section id="tab-customers" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Customer CRM Directory</h3>
+                    <p class="text-xs text-brand-muted">Track customer history, total purchases, lifetime values, and engagement segments.</p>
+                </div>
+
+                <!-- Customer table card -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Customer Name</th>
+                                    <th class="py-4 px-6">Contact Coordinates</th>
+                                    <th class="py-4 px-6">Lifetime Orders</th>
+                                    <th class="py-4 px-6">Lifetime Spending</th>
+                                    <th class="py-4 px-6">Engagement Segment</th>
+                                    <th class="py-4 px-6 text-right">Ledger</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="customersTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RETURNS BOARD TAB -->
+            <section id="tab-returns" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6">
+                    <h3 class="text-base font-bold text-white mb-2">Return & Refund Claims Desk</h3>
+                    <p class="text-xs text-brand-muted">Review, approve, or reject customer sizing exchanges and return requests. Integrated ledger handles credit generation.</p>
+                </div>
+
+                <!-- Returns table card -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Claim ID</th>
+                                    <th class="py-4 px-6">Order Ref</th>
+                                    <th class="py-4 px-6">Customer Snapshot</th>
+                                    <th class="py-4 px-6">Garment Specifics</th>
+                                    <th class="py-4 px-6">Reason for return</th>
+                                    <th class="py-4 px-6">Resolution Status</th>
+                                    <th class="py-4 px-6 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="returnsTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRODUCTS REGISTRY TAB -->
+            <section id="tab-products" class="space-y-6 hidden">
+                <div class="glass rounded-2xl p-6 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-2">Raw Catalog & Registry Manager</h3>
+                        <p class="text-xs text-brand-muted font-medium">Create, edit, or adjust product stock levels and core pricing for customized base materials.</p>
+                    </div>
+                    <button onclick="openProductModal()" class="bg-brand-orange hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-xl shadow-lg transition-all duration-300 flex items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Register Product</span>
+                    </button>
+                </div>
+
+                <!-- Products registry table -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-white/[0.02] border-b border-brand-border/60 text-brand-muted uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Product ID</th>
+                                    <th class="py-4 px-6">Product name</th>
+                                    <th class="py-4 px-6">Core price</th>
+                                    <th class="py-4 px-6">Stock Level</th>
+                                    <th class="py-4 px-6">Available Sizes/Specs</th>
+                                    <th class="py-4 px-6">Registry status</th>
+                                    <th class="py-4 px-6 text-right">Registry options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/30 text-white font-medium" id="productsTableBody">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ==========================================
+    // SLIDE-OUT ORDER DETAILS DRAWER PANEL
+    // ========================================== -->
+    <div id="orderDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 drawer-overlay" onclick="closeOrderDrawer()"></div>
+        
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-2xl bg-[#0F0F13] border-l border-brand-border shadow-2xl relative flex flex-col">
+                <!-- Top Header accent -->
+                <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-orange to-transparent"></div>
+
+                <!-- Drawer Header -->
+                <div class="p-6 border-b border-brand-border flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-black text-white" id="drawerTitle">Order Details</h3>
+                        <p class="text-xs text-brand-muted" id="drawerSub">View shipping configurations and timeline notes</p>
+                    </div>
+                    <button onclick="closeOrderDrawer()" class="h-9 w-9 bg-zinc-800/50 border border-brand-border rounded-lg flex items-center justify-center text-zinc-400 hover:text-white transition-colors">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Drawer Scrollable Content -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6" id="drawerContent">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    // CUSTOM REVISION REASON MODAL PANEL
+    // ========================================== -->
+    <div id="revisionModal" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden hidden">
+        <div class="absolute inset-0 bg-[#0A0A0C]/80 backdrop-blur-sm" onclick="closeRevisionModal()"></div>
+        
+        <div class="glass max-w-md w-full rounded-2xl p-6 relative z-10 shadow-2xl animate-[scaleIn_0.2s_ease-out]">
+            <h3 class="text-base font-bold text-white mb-2">Request Customizer Revision</h3>
+            <p class="text-xs text-brand-muted mb-4">Please log the design alignment details or color issues to send back to the customer.</p>
+            
+            <textarea 
+                id="revisionReasonText" 
+                rows="4" 
+                placeholder="e.g. Sizing alignment is off-center by 2 inches. Please re-align font layout block..." 
+                class="w-full bg-[#181822] border border-brand-border rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-orange/50 placeholder-zinc-600 focus:ring-1 focus:ring-brand-orange/30"
+            ></textarea>
+            
+            <div class="flex justify-end gap-3 mt-5">
+                <button onclick="closeRevisionModal()" class="px-4 py-2.5 rounded-xl border border-brand-border text-xs font-bold text-brand-muted hover:text-white transition-colors">
+                    Discard
+                </button>
+                <button onclick="submitRevisionRequest()" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-[#ff704d] text-xs font-bold text-white shadow-lg transition-colors">
+                    Dispatch Request
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    // REGISTER/EDIT PRODUCT MODAL PANEL
+    // ========================================== -->
+    <div id="productModal" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden hidden">
+        <div class="absolute inset-0 bg-[#0A0A0C]/80 backdrop-blur-sm" onclick="closeProductModal()"></div>
+        
+        <div class="glass max-w-lg w-full rounded-2xl p-6 relative z-10 shadow-2xl animate-[scaleIn_0.2s_ease-out]">
+            <h3 class="text-base font-bold text-white mb-2" id="prodModalTitle">Register New Base Product</h3>
+            <p class="text-xs text-brand-muted mb-6">Enter catalog details for client customization options.</p>
+
+            <form id="productForm" class="space-y-4" onsubmit="saveProduct(event)">
+                <input type="hidden" id="prodId">
+                
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-brand-muted mb-2 tracking-wider">Garment/Item Name</label>
+                    <input 
+                        type="text" 
+                        id="prodName" 
+                        required 
+                        placeholder="e.g. Vintage Wash Corduroy Cap" 
+                        class="w-full bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50"
+                    >
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-brand-muted mb-2 tracking-wider">Unit Cost Price (INR)</label>
+                        <input 
+                            type="number" 
+                            id="prodPrice" 
+                            required 
+                            placeholder="e.g. 899" 
+                            class="w-full bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-brand-muted mb-2 tracking-wider">Raw stock Level</label>
+                        <input 
+                            type="number" 
+                            id="prodStock" 
+                            required 
+                            placeholder="e.g. 50" 
+                            class="w-full bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50"
+                        >
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-brand-muted mb-2 tracking-wider">Specs/Sizes</label>
+                        <input 
+                            type="text" 
+                            id="prodVariants" 
+                            required 
+                            placeholder="e.g. S, M, L, XL" 
+                            class="w-full bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-brand-muted mb-2 tracking-wider">Registry Status</label>
+                        <select 
+                            id="prodStatus" 
+                            class="w-full bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50"
+                        >
+                            <option value="Active">Active</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 mt-6 pt-2">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 rounded-xl border border-brand-border text-xs font-bold text-brand-muted hover:text-white transition-colors">
+                        Discard
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-[#ff704d] text-xs font-bold text-white shadow-lg transition-colors">
+                        Save Registry
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    // JAVASCRIPT CRM CONTROLLER & API SYNCS
+    // ========================================== -->
+    <script>
+        const API_URL = 'http://localhost:4000/api';
+        let adminToken = '';
+        
+        // CRM Application Data Stores
+        let ordersData = [];
+        let designsData = [];
+        let analyticsData = {};
+        let returnsData = [];
+        let productsData = [];
+
+        // Currently selected revision target
+        let revisionTarget = null;
+        let revenueChartObj = null;
+        let placementsPieChartObj = null;
+
+        // Verify Session Security
+        function checkSession() {
+            const token = localStorage.getItem('adminToken');
+            const user = localStorage.getItem('adminUser');
+            
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+            adminToken = token;
+            if (user) {
+                document.getElementById('opName').innerText = user;
+            }
+        }
+
+        // Sign Out Router
+        function signout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Initialize state
+        window.addEventListener('DOMContentLoaded', () => {
+            checkSession();
+            
+            // Format current date
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const d = new Date();
+            const dateStr = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+            document.getElementById('currentDateStr').innerText = dateStr;
+
+            // Fetch state data from API
+            fetchStateData();
+        });
+
+        // Dynamic Amber Toast Alert
+        function triggerToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            toastText.innerText = message.toUpperCase();
+            
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Tab routing dispatcher
+        function switchTab(tabId) {
+            const sections = document.querySelectorAll('main > div > section');
+            sections.forEach(s => s.classList.add('hidden'));
+            
+            const targetSection = document.getElementById(`tab-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
+            
+            // Update title
+            const tabTitles = {
+                overview: 'Overview Dashboard',
+                orders: 'Orders Ledger System',
+                designs: 'Garment Customizer Approvals',
+                payments: 'Outstanding Payments Ledger',
+                invoices: 'Invoice Desk & Records',
+                analytics: 'Insights & Charts',
+                customers: 'Customer CRM Database',
+                returns: 'Returns & refund Claims Board',
+                products: 'Registry Base Materials Catalog'
+            };
+            document.getElementById('currentTabTitle').innerText = tabTitles[tabId] || 'CRM Admin Console';
+
+            // Sidebar items styling
+            const navButtons = document.querySelectorAll('#navItemsList button');
+            navButtons.forEach(btn => {
+                const btnId = btn.id;
+                const isTarget = btnId === `btn-${tabId}`;
+                const indicator = btn.querySelector('.absolute');
+                const icon = btn.querySelector('i');
+                
+                if (isTarget) {
+                    btn.className = "w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-white bg-white/[0.04] border border-white/5 shadow-md";
+                    if (indicator) indicator.classList.remove('hidden');
+                    if (icon) {
+                        icon.classList.remove('text-zinc-500');
+                        icon.classList.add('text-brand-orange');
+                    }
+                } else {
+                    btn.className = "w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-left transition-all duration-200 group relative text-zinc-400 hover:text-white hover:bg-white/[0.01]";
+                    if (indicator) indicator.classList.add('hidden');
+                    if (icon) {
+                        icon.classList.remove('text-brand-orange');
+                        icon.classList.add('text-zinc-500');
+                    }
+                }
+            });
+
+            // Re-render chart if rendering analytics
+            if (tabId === 'overview' && analyticsData.revenueHistory) {
+                renderOverviewCharts();
+            } else if (tabId === 'analytics' && analyticsData.customizations) {
+                renderAnalyticsCharts();
+            }
+        }
+
+        // Main Synchronous API Fetch routine
+        async function fetchStateData() {
+            try {
+                // Trigger screen loader if initial loading
+                const loader = document.getElementById('screenLoader');
+                
+                const headers = { 'Authorization': `Bearer ${adminToken}` };
+                
+                // 1. Fetch Orders
+                const ordersRes = await fetch(`${API_URL}/orders`, { headers });
+                const ordersPayload = await ordersRes.json();
+                ordersData = ordersPayload.orders || [];
+
+                // 2. Fetch Designs Queue
+                const designsRes = await fetch(`${API_URL}/designs/pending`, { headers });
+                const designsPayload = await designsRes.json();
+                designsData = designsPayload.pending || [];
+
+                // 3. Fetch Analytics
+                const analyticsRes = await fetch(`${API_URL}/analytics/summary`, { headers });
+                analyticsData = await analyticsRes.json();
+
+                // 4. Fetch Returns
+                const returnsRes = await fetch(`${API_URL}/returns`, { headers });
+                const returnsPayload = await returnsRes.json();
+                returnsData = returnsPayload.returns || [];
+
+                // 5. Fetch Products
+                const productsRes = await fetch(`${API_URL}/products`, { headers });
+                const productsPayload = await productsRes.json();
+                productsData = productsPayload.products || [];
+
+                // Update counts on Sidebar Badges
+                updateBadgeIndicators();
+
+                // Populate all Dashboard grids and tables
+                populateOverviewDashboard();
+                populateOrdersTable(ordersData);
+                populateDesignsQueue();
+                populatePaymentsLedger();
+                populateInvoicesDesk();
+                populateCustomerCRM();
+                populateReturnsClaims();
+                populateProductsCatalog();
+
+                // Hide loader
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.classList.add('hidden'), 300);
+                }, 400);
+
+                lucide.createIcons();
+                
+            } catch (err) {
+                console.error("Ledger fetch failure:", err);
+                triggerToast("Sync ledger connection error. Check server.");
+            }
+        }
+
+        // Dynamic Badge Indicators UI Updater
+        function updateBadgeIndicators() {
+            // Orders Badge
+            const bOrders = document.getElementById('badge-orders');
+            if (ordersData.length > 0) {
+                bOrders.innerText = ordersData.length;
+                bOrders.classList.remove('hidden');
+            } else bOrders.classList.add('hidden');
+
+            // Designs Badge
+            const bDesigns = document.getElementById('badge-designs');
+            if (designsData.length > 0) {
+                bDesigns.innerText = designsData.length;
+                bDesigns.classList.remove('hidden');
+            } else bDesigns.classList.add('hidden');
+
+            // Returns Badge
+            const bReturns = document.getElementById('badge-returns');
+            const pendingReturns = returnsData.filter(r => r.status === 'pending').length;
+            if (pendingReturns > 0) {
+                bReturns.innerText = pendingReturns;
+                bReturns.classList.remove('hidden');
+            } else bReturns.classList.add('hidden');
+        }
+
+        // ==========================================
+        // 1. POPULATE OVERVIEW TAB
+        // ==========================================
+        function populateOverviewDashboard() {
+            if (!analyticsData.summary) return;
+            const sum = analyticsData.summary;
+
+            // Formats currency nicely
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            document.getElementById('metric-revenue').innerText = formatINR(sum.totalRevenue);
+            document.getElementById('metric-orders').innerText = sum.totalOrders;
+            document.getElementById('metric-pending-designs').innerText = sum.pendingDesignApprovals;
+            document.getElementById('metric-returns').innerText = sum.returnRequests;
+
+            if (sum.returnRequests > 0) {
+                document.getElementById('metric-returns-alert').classList.add('text-brand-orange');
+            } else {
+                document.getElementById('metric-returns-alert').classList.remove('text-brand-orange');
+            }
+
+            // Render embellishment placements progress bar
+            const placementsList = document.getElementById('placementsProgressList');
+            placementsList.innerHTML = '';
+            const placements = analyticsData.customizations.placements || [];
+            const maxPlacementCount = Math.max(...placements.map(p => p.count), 1);
+            
+            placements.forEach(p => {
+                const pct = Math.round((p.count / maxPlacementCount) * 100);
+                placementsList.innerHTML += `
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                            <span class="text-zinc-300 font-bold">${p.name}</span>
+                            <span class="text-brand-muted">${p.count} selections</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-[#181822] rounded-full overflow-hidden">
+                            <div class="h-full bg-brand-orange rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Fabric Color Matrix Progress Bar
+            const colorsList = document.getElementById('colorsProgressList');
+            colorsList.innerHTML = '';
+            const colors = analyticsData.customizations.colors || [];
+            const maxColorCount = Math.max(...colors.map(c => c.count), 1);
+
+            colors.forEach(c => {
+                const pct = Math.round((c.count / maxColorCount) * 100);
+                colorsList.innerHTML += `
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-semibold mb-1">
+                            <span class="text-zinc-300 font-bold">${c.name}</span>
+                            <span class="text-brand-muted">${c.count} items</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-[#181822] rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-brand-orange to-[#ff8060] rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Bestsellers list
+            const bestTable = document.getElementById('bestsellersTableBody');
+            bestTable.innerHTML = '';
+            const best = analyticsData.bestsellers || [];
+            best.forEach(b => {
+                bestTable.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] transition-colors">
+                        <td class="py-4 font-bold text-zinc-100 flex items-center gap-2">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-orange"></i>
+                            <span>${b.product}</span>
+                        </td>
+                        <td class="py-4 font-semibold text-zinc-400">${b.orders} orders</td>
+                        <td class="py-4 font-semibold text-zinc-400">${b.quantity} pcs</td>
+                        <td class="py-4 font-bold text-white text-right">${formatINR(b.revenue)}</td>
+                    </tr>
+                `;
+            });
+
+            // Coupons code utilization list
+            const couponList = document.getElementById('couponsProgressList');
+            couponList.innerHTML = '';
+            const coupons = analyticsData.customizations.coupons || [];
+            coupons.forEach(cp => {
+                couponList.innerHTML += `
+                    <div class="bg-[#181822] border border-brand-border rounded-xl p-3 flex items-center justify-between hover:border-brand-orange/30 transition-all duration-300">
+                        <div>
+                            <span class="text-[10px] font-black uppercase bg-brand-orange/15 text-brand-orange border border-brand-orange/20 px-2 py-0.5 rounded font-mono">${cp.code}</span>
+                            <p class="text-[10px] text-zinc-500 font-bold mt-1">PROMO DISCOUNT APPLIED</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-black text-white">${cp.count} conversions</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            renderOverviewCharts();
+        }
+
+        // Chart.js configuration for Weekly Revenue growth
+        function renderOverviewCharts() {
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) return;
+
+            if (revenueChartObj) revenueChartObj.destroy();
+
+            const hist = analyticsData.revenueHistory || [];
+            const labels = hist.map(h => h.date);
+            const values = hist.map(h => h.amount);
+
+            revenueChartObj = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Gross collections (INR)',
+                        data: values,
+                        borderColor: '#FF5E36',
+                        backgroundColor: 'rgba(255, 94, 54, 0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#FF5E36',
+                        pointBorderColor: '#0A0A0C',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        tension: 0.35,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(35, 35, 47, 0.3)' },
+                            ticks: { color: '#A1A1AA', font: { size: 10, family: 'Inter' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#A1A1AA', font: { size: 10, family: 'Inter' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart.js visual placements pie graph
+        function renderAnalyticsCharts() {
+            const ctx = document.getElementById('placementsPieChart');
+            if (!ctx) return;
+
+            if (placementsPieChartObj) placementsPieChartObj.destroy();
+
+            const pl = analyticsData.customizations.placements || [];
+            const labels = pl.map(p => p.name);
+            const values = pl.map(p => p.count);
+
+            placementsPieChartObj = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 94, 54, 0.85)',
+                            'rgba(255, 120, 90, 0.85)',
+                            'rgba(255, 160, 130, 0.85)',
+                            'rgba(23, 23, 31, 0.85)'
+                        ],
+                        borderColor: '#23232F',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#A1A1AA',
+                                font: { size: 11, family: 'Inter', weight: 600 }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // ==========================================
+        // 2. POPULATE ORDERS LEDGER TAB
+        // ==========================================
+        function populateOrdersTable(ordersList) {
+            const table = document.getElementById('ordersTableBody');
+            table.innerHTML = '';
+
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            ordersList.forEach(o => {
+                const itemsCount = o.items.reduce((sum, item) => sum + item.quantity, 0);
+                
+                // Status badge
+                let statusClass = "bg-zinc-800 text-zinc-400";
+                if (o.status === 'designing') statusClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                else if (o.status === 'processing') statusClass = "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+                else if (o.status === 'ready_to_ship') statusClass = "bg-purple-500/10 text-purple-400 border border-purple-500/20";
+                else if (o.status === 'dispatched') statusClass = "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20";
+                else if (o.status === 'delivered') statusClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (o.status === 'returned') statusClass = "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+
+                // Payment badge
+                let payClass = "bg-zinc-800 text-zinc-400";
+                if (o.payment.status === 'paid') payClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (o.payment.status === 'partial') payClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                else if (o.payment.status === 'pending') payClass = "bg-red-500/10 text-red-400 border border-red-500/20";
+                else if (o.payment.status === 'cod') payClass = "bg-zinc-500/10 text-zinc-300 border border-zinc-500/20";
+
+                // Date Formatting
+                const d = new Date(o.date);
+                const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">${o.id}</td>
+                        <td class="py-4 px-6 text-zinc-500 font-semibold">${dStr}</td>
+                        <td class="py-4 px-6">
+                            <p class="text-xs font-bold text-white">${o.customerSnapshot.name}</p>
+                            <p class="text-[10px] text-zinc-500 font-medium">${o.customerSnapshot.email}</p>
+                        </td>
+                        <td class="py-4 px-6 font-bold text-zinc-100">${formatINR(o.pricing.totalAmount)}</td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${payClass}">${o.payment.status}</span>
+                        </td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${statusClass}">${o.status.replace(/_/g, ' ')}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <button onclick="openOrderDrawer('${o.id}')" class="bg-[#181822] hover:bg-brand-orange hover:text-white border border-brand-border hover:border-brand-orange/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1">
+                                <span>Inspect</span>
+                                <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        // Live list filter dispatcher
+        function filterOrdersList() {
+            const query = document.getElementById('orderSearchInput').value.toLowerCase();
+            const status = document.getElementById('orderStatusFilter').value;
+            const payment = document.getElementById('orderPaymentFilter').value;
+
+            const filtered = ordersData.filter(o => {
+                const matchesSearch = o.id.toLowerCase().includes(query) ||
+                    o.customerSnapshot.name.toLowerCase().includes(query) ||
+                    o.customerSnapshot.email.toLowerCase().includes(query);
+
+                const matchesStatus = status === 'all' || o.status === status;
+                const matchesPayment = payment === 'all' || o.payment.status === payment;
+
+                return matchesSearch && matchesStatus && matchesPayment;
+            });
+
+            populateOrdersTable(filtered);
+        }
+
+        // ==========================================
+        // 3. POPULATE DESIGN APPROVALS TAB
+        // ==========================================
+        function populateDesignsQueue() {
+            const grid = document.getElementById('designApprovalsGrid');
+            const empty = document.getElementById('designsEmptyState');
+            
+            grid.innerHTML = '';
+
+            if (designsData.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            designsData.forEach(d => {
+                const mockImage = d.customization.uploadedImageUrl || '/uploads/designs/design-tee-front.jpg';
+                grid.innerHTML += `
+                    <div class="glass rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between hover:border-brand-orange/30 transition-all duration-300">
+                        <div class="absolute top-0 left-0 w-full h-[3px] bg-amber-500/50"></div>
+                        
+                        <div class="flex flex-col md:flex-row gap-6 mb-6">
+                            <!-- Left: Layout Preview -->
+                            <div class="w-full md:w-36 h-36 bg-[#181822] border border-brand-border rounded-xl overflow-hidden shrink-0 flex items-center justify-center relative group">
+                                <img src="${mockImage}" alt="Custom design layout preview" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-115" onerror="this.src='https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=300'">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-[9px] font-black uppercase text-white bg-black/60 px-2 py-1 rounded">View Canvas</span>
+                                </div>
+                            </div>
+
+                            <!-- Right: Garment Specifications -->
+                            <div class="flex-1 space-y-3">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-[10px] font-mono font-black text-brand-orange uppercase">${d.orderId}</span>
+                                        <div class="h-2 w-2 rounded-full bg-amber-500"></div>
+                                        <span class="text-[10px] text-zinc-500 font-bold uppercase">Pending alignment audit</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white">${d.productName}</h4>
+                                    <p class="text-[10px] text-brand-muted font-semibold mt-0.5">Purchased by: ${d.customerName}</p>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 text-[10px] bg-[#181822] p-2.5 rounded-lg border border-brand-border">
+                                    <div>
+                                        <span class="text-zinc-500 block">PLACEMENT:</span>
+                                        <span class="text-white font-bold">${d.customization.placement}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-zinc-500 block">TEXT COLOR:</span>
+                                        <span class="text-white font-bold" style="color: ${d.customization.textColor || '#FFF'}">${d.customization.textColor || 'Standard'}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-zinc-500 block">FONT STYLE:</span>
+                                        <span class="text-white font-bold font-serif">${d.customization.fontStyle}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-zinc-500 block">QUANTITY:</span>
+                                        <span class="text-white font-bold">${d.quantity} pcs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes & Decisions Panel -->
+                        <div class="space-y-4 pt-4 border-t border-brand-border/40">
+                            <div>
+                                <span class="text-[9px] font-black uppercase text-zinc-500 block mb-1">Customization Instruction notes:</span>
+                                <p class="text-xs text-zinc-400 bg-[#0A0A0C]/50 p-3 rounded-lg border border-brand-border italic">
+                                    "${d.customization.additionalNotes || 'No special requirements logged.'}"
+                                </p>
+                            </div>
+
+                            <div class="flex gap-3 justify-end">
+                                <button onclick="rejectDesign('${d.orderId}', '${d.itemId}')" class="px-4 py-2.5 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all duration-300 flex items-center gap-1.5">
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                    <span>Request Revision</span>
+                                </button>
+                                <button onclick="approveDesign('${d.orderId}', '${d.itemId}')" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-[#ff704d] text-xs font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-1.5">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                    <span>Approve design</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // Design Approvals action routines
+        async function approveDesign(orderId, itemId) {
+            try {
+                const response = await fetch(`${API_URL}/designs/${orderId}/${itemId}/approve`, {
+                    method: 'PATCH',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) throw new Error("Approval processing error.");
+                
+                triggerToast("Garment customized design marked as approved!");
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Design approval transaction failure.");
+            }
+        }
+
+        function rejectDesign(orderId, itemId) {
+            revisionTarget = { orderId, itemId };
+            document.getElementById('revisionReasonText').value = '';
+            document.getElementById('revisionModal').classList.remove('hidden');
+        }
+
+        function closeRevisionModal() {
+            document.getElementById('revisionModal').classList.add('hidden');
+            revisionTarget = null;
+        }
+
+        async function submitRevisionRequest() {
+            const reason = document.getElementById('revisionReasonText').value.trim();
+            if (!reason) {
+                triggerToast("Please enter a revision reason description.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/designs/${revisionTarget.orderId}/${revisionTarget.itemId}/reject`, {
+                    method: 'PATCH',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ reason })
+                });
+
+                if (!response.ok) throw new Error("Rejection processing error.");
+
+                triggerToast("Revision layout parameters dispatched to client.");
+                closeRevisionModal();
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Revision transaction failure.");
+            }
+        }
+
+        // ==========================================
+        // 4. POPULATE PAYMENTS LEDGER TAB
+        // ==========================================
+        function populatePaymentsLedger() {
+            const table = document.getElementById('paymentsTableBody');
+            table.innerHTML = '';
+
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            ordersData.forEach(o => {
+                const outstanding = o.payment.status === 'paid' ? 0 : (o.pricing.totalAmount - o.payment.amountPaid);
+                
+                let payClass = "bg-zinc-800 text-zinc-400";
+                if (o.payment.status === 'paid') payClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (o.payment.status === 'partial') payClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                else if (o.payment.status === 'pending') payClass = "bg-red-500/10 text-red-400 border border-red-500/20";
+                else if (o.payment.status === 'cod') payClass = "bg-zinc-500/10 text-zinc-300 border border-zinc-500/20";
+
+                const isPaid = o.payment.status === 'paid';
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">${o.id}</td>
+                        <td class="py-4 px-6">
+                            <p class="text-xs font-bold text-white">${o.customerSnapshot.name}</p>
+                            <p class="text-[10px] text-zinc-500 font-medium">${o.customerSnapshot.phone}</p>
+                        </td>
+                        <td class="py-4 px-6 font-bold text-zinc-100">${formatINR(o.pricing.totalAmount)}</td>
+                        <td class="py-4 px-6 font-bold text-zinc-400">${formatINR(o.payment.amountPaid)}</td>
+                        <td class="py-4 px-6 font-black text-white ${outstanding > 0 ? 'text-brand-orange' : 'text-zinc-500'}">${formatINR(outstanding)}</td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${payClass}">${o.payment.status}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            ${isPaid ? `
+                                <span class="text-[9px] font-black uppercase text-emerald-500 bg-emerald-500/5 border border-emerald-500/10 px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3 h-3"></i>
+                                    <span>Settled</span>
+                                </span>
+                            ` : `
+                                <button onclick="recordSettlement('${o.id}')" class="bg-brand-orange hover:bg-[#ff704d] text-white border border-brand-orange/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1">
+                                    <i data-lucide="credit-card" class="w-3 h-3"></i>
+                                    <span>Record Settlement</span>
+                                </button>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        async function recordSettlement(orderId) {
+            try {
+                const response = await fetch(`${API_URL}/orders/${orderId}/payments`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) throw new Error("Payment reconciliation error.");
+
+                triggerToast("Order outstanding manual balance marked as fully paid!");
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Ledger manual billing clearance failed.");
+            }
+        }
+
+        // ==========================================
+        // 5. POPULATE INVOICE DESK TAB
+        // ==========================================
+        function populateInvoicesDesk() {
+            const table = document.getElementById('invoicesTableBody');
+            table.innerHTML = '';
+
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            ordersData.forEach(o => {
+                const d = new Date(o.date);
+                const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d.getFullYear()}`;
+
+                const hasInvoice = !!o.invoiceUrl;
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">${o.id}</td>
+                        <td class="py-4 px-6 font-bold text-white">${o.customerSnapshot.name}</td>
+                        <td class="py-4 px-6 text-zinc-500 font-semibold">${dStr}</td>
+                        <td class="py-4 px-6 font-bold text-zinc-100">${formatINR(o.pricing.totalAmount)}</td>
+                        <td class="py-4 px-6">
+                            ${hasInvoice ? `
+                                <span class="text-[9px] font-black uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded tracking-wider">Compiled</span>
+                            ` : `
+                                <span class="text-[9px] font-black uppercase text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded tracking-wider">Awaiting Compilation</span>
+                            `}
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            ${hasInvoice ? `
+                                <a href="${API_URL}/invoices/${o.id}" target="_blank" class="bg-[#181822] hover:bg-white/[0.04] border border-brand-border text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 hover:text-white mr-2">
+                                    <i data-lucide="file-down" class="w-3 h-3 text-brand-orange"></i>
+                                    <span>Download PDF</span>
+                                </a>
+                            ` : ''}
+                            <button onclick="simulateInvoiceUpload('${o.id}')" class="bg-brand-orange hover:bg-[#ff704d] text-white border border-brand-orange/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1">
+                                <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                                <span>${hasInvoice ? 'Re-compile' : 'Compile PDF'}</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        async function simulateInvoiceUpload(orderId) {
+            try {
+                const response = await fetch(`${API_URL}/invoices/${orderId}`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) throw new Error("Invoice generation error.");
+
+                triggerToast("Simulated invoice compiled and uploaded to server storage!");
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Invoice compilation failure.");
+            }
+        }
+
+        // ==========================================
+        // 6. POPULATE CUSTOMER CRM TAB
+        // ==========================================
+        function populateCustomerCRM() {
+            const table = document.getElementById('customersTableBody');
+            table.innerHTML = '';
+
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            // Group transactions by customer email to represent CRM details
+            const customerMap = {};
+            ordersData.forEach(o => {
+                const email = o.customerSnapshot.email;
+                if (!customerMap[email]) {
+                    customerMap[email] = {
+                        name: o.customerSnapshot.name,
+                        phone: o.customerSnapshot.phone,
+                        ordersCount: 0,
+                        totalSpend: 0
+                    };
+                }
+                customerMap[email].ordersCount++;
+                customerMap[email].totalSpend += o.pricing.totalAmount;
+            });
+
+            // Add standard mock metrics baseline
+            const mockCustomers = [
+                { name: "Priya Sharma", email: "priya.sharma@gmail.com", phone: "+91 98765 43210", ordersCount: 4, totalSpend: 8490 },
+                { name: "Rahul Malhotra", email: "rahul.malhotra@techcorp.com", phone: "+91 99123 45678", ordersCount: 3, totalSpend: 11200 },
+                { name: "Anjali Deshmukh", email: "anjali.d@designstudio.in", phone: "+91 98222 33344", ordersCount: 5, totalSpend: 16900 },
+                { name: "Vikram Singh", email: "vikram.s1@outlook.com", phone: "+91 90000 11122", ordersCount: 2, totalSpend: 3100 },
+                { name: "Meera Krishnan", email: "meera.krish@yahoo.co.in", phone: "+91 97444 88899", ordersCount: 1, totalSpend: 875.4 }
+            ];
+
+            // Re-map with existing
+            mockCustomers.forEach(mc => {
+                if (customerMap[mc.email]) {
+                    customerMap[mc.email].ordersCount += mc.ordersCount - 1; // merge baseline
+                    customerMap[mc.email].totalSpend += mc.totalSpend - (mc.totalSpend / mc.ordersCount); // merge baseline
+                } else {
+                    customerMap[mc.email] = mc;
+                }
+            });
+
+            Object.keys(customerMap).forEach(email => {
+                const c = customerMap[email];
+                
+                // Segments
+                let seg = "VIP Client";
+                let segClass = "bg-purple-500/10 text-purple-400 border border-purple-500/20";
+                
+                if (c.totalSpend < 2000) {
+                    seg = "Standard Client";
+                    segClass = "bg-zinc-800 text-zinc-400 border border-zinc-700";
+                } else if (c.totalSpend < 8000) {
+                    seg = "High Potential";
+                    segClass = "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+                }
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold text-white flex items-center gap-2">
+                            <div class="h-7 w-7 rounded-full bg-brand-orange/10 text-brand-orange font-bold text-xs flex items-center justify-center font-serif border border-brand-orange/20">
+                                ${c.name.charAt(0)}
+                            </div>
+                            <span>${c.name}</span>
+                        </td>
+                        <td class="py-4 px-6">
+                            <p class="text-xs text-zinc-300 font-semibold">${email}</p>
+                            <p class="text-[10px] text-zinc-500 font-semibold">${c.phone}</p>
+                        </td>
+                        <td class="py-4 px-6 font-bold text-zinc-400">${c.ordersCount} customized orders</td>
+                        <td class="py-4 px-6 font-black text-white">${formatINR(c.totalSpend)}</td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${segClass}">${seg}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <span class="text-[10px] font-bold text-brand-orange uppercase">Active Segment</span>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // 7. POPULATE RETURNS BOARD TAB
+        // ==========================================
+        function populateReturnsClaims() {
+            const table = document.getElementById('returnsTableBody');
+            table.innerHTML = '';
+
+            returnsData.forEach(r => {
+                let statusClass = "bg-zinc-800 text-zinc-400";
+                if (r.status === 'resolved') statusClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (r.status === 'rejected') statusClass = "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+                else if (r.status === 'pending') statusClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-pulse";
+
+                const isPending = r.status === 'pending';
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">${r.id}</td>
+                        <td class="py-4 px-6 font-bold text-zinc-400 font-mono">${r.orderId}</td>
+                        <td class="py-4 px-6 font-bold text-white">${r.customer}</td>
+                        <td class="py-4 px-6 font-semibold text-zinc-300">${r.product}</td>
+                        <td class="py-4 px-6 text-zinc-400 italic">"${r.reason}"</td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${statusClass}">${r.status}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            ${isPending ? `
+                                <div class="flex gap-2 justify-end">
+                                    <button onclick="resolveReturn('${r.id}', 'rejected')" class="bg-zinc-800 hover:bg-red-500/10 text-red-400 border border-zinc-700 hover:border-red-500/20 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300">
+                                        Reject
+                                    </button>
+                                    <button onclick="resolveReturn('${r.id}', 'approved')" class="bg-brand-orange hover:bg-[#ff704d] text-white border border-brand-orange/30 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300">
+                                        Approve Refund
+                                    </button>
+                                </div>
+                            ` : `
+                                <span class="text-[10px] font-bold text-zinc-500 uppercase">Case Closed</span>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        async function resolveReturn(returnId, status) {
+            try {
+                const response = await fetch(`${API_URL}/returns/${returnId}`, {
+                    method: 'PATCH',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ status, note: "Reconciled by operations admin Mohit." })
+                });
+
+                if (!response.ok) throw new Error("Return claim processing error.");
+
+                triggerToast(`Return claim claim successfully marked as ${status.toUpperCase()}!`);
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Return claim ledger update failed.");
+            }
+        }
+
+        // ==========================================
+        // 8. POPULATE PRODUCTS REGISTRY TAB
+        // ==========================================
+        function populateProductsCatalog() {
+            const table = document.getElementById('productsTableBody');
+            table.innerHTML = '';
+
+            const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+            productsData.forEach(p => {
+                let statusClass = "bg-zinc-800 text-zinc-400";
+                if (p.status === 'Active') statusClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                else if (p.status === 'Draft') statusClass = "bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                else if (p.status === 'Archived') statusClass = "bg-zinc-500/10 text-zinc-300 border border-zinc-500/20";
+
+                table.innerHTML += `
+                    <tr class="hover:bg-white/[0.01] border-b border-brand-border/30 transition-colors">
+                        <td class="py-4 px-6 font-bold font-mono text-zinc-300 text-xs">${p.id}</td>
+                        <td class="py-4 px-6 font-bold text-white flex items-center gap-2">
+                            <i data-lucide="package" class="w-3.5 h-3.5 text-brand-orange"></i>
+                            <span>${p.name}</span>
+                        </td>
+                        <td class="py-4 px-6 font-black text-zinc-100">${formatINR(p.price)}</td>
+                        <td class="py-4 px-6 font-bold ${p.stock < 15 ? 'text-red-400 font-black animate-pulse' : 'text-zinc-400'}">${p.stock} units raw</td>
+                        <td class="py-4 px-6 font-semibold text-zinc-500">${p.variants}</td>
+                        <td class="py-4 px-6">
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider ${statusClass}">${p.status}</span>
+                        </td>
+                        <td class="py-4 px-6 text-right">
+                            <button onclick="openProductModal('${p.id}')" class="bg-[#181822] hover:bg-white/[0.04] border border-brand-border text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1 text-zinc-300 hover:text-white mr-2">
+                                <i data-lucide="sliders" class="w-3 h-3 text-brand-orange"></i>
+                                <span>Adjust</span>
+                            </button>
+                            <button onclick="deleteProduct('${p.id}')" class="bg-zinc-800/50 hover:bg-red-500/10 hover:text-red-400 border border-zinc-700 hover:border-red-500/20 text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all duration-300 inline-flex items-center gap-1">
+                                <i data-lucide="x" class="w-3 h-3"></i>
+                                <span>Remove</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // Product CRUD action controllers
+        function openProductModal(prodId = '') {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('prodModalTitle');
+            const form = document.getElementById('productForm');
+
+            form.reset();
+            document.getElementById('prodId').value = prodId;
+
+            if (prodId) {
+                title.innerText = 'Adjust registered Product';
+                const p = productsData.find(prod => prod.id === prodId);
+                if (p) {
+                    document.getElementById('prodName').value = p.name;
+                    document.getElementById('prodPrice').value = p.price;
+                    document.getElementById('prodStock').value = p.stock;
+                    document.getElementById('prodVariants').value = p.variants;
+                    document.getElementById('prodStatus').value = p.status;
+                }
+            } else {
+                title.innerText = 'Register New Base Product';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        async function saveProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('prodId').value;
+            const name = document.getElementById('prodName').value.trim();
+            const price = Number(document.getElementById('prodPrice').value);
+            const stock = Number(document.getElementById('prodStock').value);
+            const variants = document.getElementById('prodVariants').value.trim();
+            const status = document.getElementById('prodStatus').value;
+
+            const payload = { name, price, stock, variants, status };
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Product registry operation failed.");
+
+                triggerToast(id ? "Base product registry parameters updated successfully!" : "New base material added to customizer catalog!");
+                closeProductModal();
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Base product registry transaction failure.");
+            }
+        }
+
+        async function deleteProduct(prodId) {
+            if (!confirm(`Are you absolutely sure you want to remove product ${prodId} from the customizer registry catalog?`)) return;
+
+            try {
+                const response = await fetch(`${API_URL}/products/${prodId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+
+                if (!response.ok) throw new Error("Registry removal error.");
+
+                triggerToast("Material successfully deleted from system catalogue.");
+                fetchStateData();
+            } catch (err) {
+                console.error(err);
+                triggerToast("Base product registry delete failure.");
+            }
+        }
+
+        // ==========================================
+        // DRAWERS & INTERACTIVE DETAILS PANEL
+        // ==========================================
+        let currentOrderView = null;
+
+        async function openOrderDrawer(orderId) {
+            const drawer = document.getElementById('orderDrawer');
+            const content = document.getElementById('drawerContent');
+
+            document.getElementById('drawerTitle').innerText = `Order Inspect: #${orderId}`;
+
+            content.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 gap-2 text-zinc-500">
+                    <i data-lucide="refresh-cw" class="w-8 h-8 animate-spin text-brand-orange"></i>
+                    <p class="text-xs uppercase tracking-wider font-bold">Retrieving Order Ledger details...</p>
+                </div>
+            `;
+            drawer.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${API_URL}/orders/${orderId}`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                if (!response.ok) throw new Error("Order inspect details connection error.");
+
+                currentOrderView = await response.json();
+                
+                const formatINR = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+                // Status workflow logic
+                const statusWorkflow = ['designing', 'processing', 'ready_to_ship', 'dispatched', 'delivered'];
+                const curIdx = statusWorkflow.indexOf(currentOrderView.status);
+                const canAdvance = curIdx !== -1 && curIdx < statusWorkflow.length - 1;
+
+                // Status History Logs markup
+                let historyHtml = '';
+                currentOrderView.statusHistory.forEach(h => {
+                    const d = new Date(h.changedAt);
+                    const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+                    historyHtml += `
+                        <div class="relative pl-6 pb-4 last:pb-0 border-l border-brand-border/60">
+                            <div class="absolute -left-1.5 top-1 h-3 w-3 rounded-full bg-brand-orange/30 border border-brand-orange"></div>
+                            <p class="text-xs font-bold text-white capitalize leading-none">${h.status.replace(/_/g, ' ')}</p>
+                            <p class="text-[10px] text-zinc-500 font-semibold mt-1">${dStr} — Logged by: ${h.changedBy}</p>
+                            <p class="text-xs text-zinc-400 mt-1 italic">"${h.note || 'Status updated.'}"</p>
+                        </div>
+                    `;
+                });
+
+                // Notes Logs markup
+                let notesHtml = '';
+                currentOrderView.adminNotes.forEach(n => {
+                    const d = new Date(n.addedAt);
+                    const dStr = `${d.getDate()} ${monthsShort[d.getMonth()]} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+                    notesHtml += `
+                        <div class="bg-[#181822] border border-brand-border rounded-xl p-3 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-black uppercase text-brand-orange tracking-wider">${n.addedBy}</span>
+                                <span class="text-[9px] text-zinc-500 font-semibold">${dStr}</span>
+                            </div>
+                            <p class="text-xs text-zinc-300 font-medium italic">"${n.note}"</p>
+                        </div>
+                    `;
+                });
+
+                // Items list markup
+                let itemsHtml = '';
+                currentOrderView.items.forEach(item => {
+                    const mockImage = item.customization.uploadedImageUrl || '/uploads/designs/design-tee-front.jpg';
+                    itemsHtml += `
+                        <div class="bg-[#121217] border border-brand-border rounded-xl p-4 flex gap-4">
+                            <div class="w-20 h-20 bg-[#181822] border border-brand-border rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
+                                <img src="${mockImage}" alt="Garment thumbnail" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=200'">
+                            </div>
+                            <div class="flex-1 space-y-1">
+                                <h4 class="text-xs font-bold text-white">${item.productName}</h4>
+                                <p class="text-[10px] text-zinc-400 font-semibold uppercase">Qty: ${item.quantity} × ${formatINR(item.unitPrice)} • size: ${item.variant.size} • color: ${item.variant.color}</p>
+                                <div class="text-[10px] bg-[#0A0A0C]/50 p-2 rounded border border-brand-border text-zinc-400 mt-2 space-y-1 font-medium">
+                                    <p><span class="text-zinc-500 font-semibold">CUSTOM text:</span> "${item.customization.text || 'N/A'}"</p>
+                                    <p><span class="text-zinc-500 font-semibold">PLACEMENT:</span> ${item.customization.placement}</p>
+                                    <p><span class="text-zinc-500 font-semibold">STYLE:</span> ${item.customization.fontStyle}</p>
+                                    <p><span class="text-zinc-500 font-semibold">DESIGN:</span> <span class="text-brand-orange uppercase font-bold">${item.designStatus.replace(/_/g, ' ')}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                content.innerHTML = `
+                    <!-- Quick action bar -->
+                    <div class="flex gap-3 bg-[#181822]/60 p-4 border border-brand-border rounded-2xl">
+                        ${canAdvance ? `
+                            <button onclick="advanceOrderStatus('${currentOrderView.id}', '${currentOrderView.status}')" class="flex-1 bg-brand-orange hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5">
+                                <i data-lucide="truck" class="w-4 h-4"></i>
+                                <span>Advance: ${statusWorkflow[curIdx+1].toUpperCase().replace(/_/g, ' ')}</span>
+                            </button>
+                        ` : `
+                            <div class="flex-1 bg-zinc-800/40 border border-zinc-700/30 text-zinc-500 font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl flex items-center justify-center gap-1.5 select-none">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                                <span>Fulfillment Completed</span>
+                            </div>
+                        `}
+                        
+                        ${currentOrderView.payment.status !== 'paid' ? `
+                            <button onclick="recordSettlement('${currentOrderView.id}'); closeOrderDrawer();" class="flex-1 bg-[#121217] hover:bg-white/[0.04] border border-brand-border hover:border-brand-orange/30 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5">
+                                <i data-lucide="credit-card" class="w-4 h-4 text-brand-orange"></i>
+                                <span>Reconcile balance</span>
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <!-- Client and shipping summary -->
+                    <div class="grid grid-cols-2 gap-6 bg-[#181822]/20 border border-brand-border/60 p-5 rounded-2xl">
+                        <div>
+                            <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block mb-2">Customer Profile</span>
+                            <p class="text-sm font-bold text-white">${currentOrderView.customerSnapshot.name}</p>
+                            <p class="text-xs text-zinc-300 font-semibold mt-1">${currentOrderView.customerSnapshot.email}</p>
+                            <p class="text-xs text-zinc-300 font-semibold mt-0.5">${currentOrderView.customerSnapshot.phone}</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block mb-2">Shipping Destination</span>
+                            <p class="text-xs font-bold text-white">${currentOrderView.shippingAddress.name}</p>
+                            <p class="text-xs text-zinc-400 leading-normal mt-1">
+                                ${currentOrderView.shippingAddress.line1}<br>
+                                ${currentOrderView.shippingAddress.line2 ? currentOrderView.shippingAddress.line2 + '<br>' : ''}
+                                ${currentOrderView.shippingAddress.city}, ${currentOrderView.shippingAddress.state} — ${currentOrderView.shippingAddress.pincode}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Customized Garments Queue -->
+                    <div class="space-y-3">
+                        <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">Customized cart items</span>
+                        ${itemsHtml}
+                    </div>
+
+                    <!-- Reconcile details calculations -->
+                    <div class="glass p-5 rounded-2xl space-y-3.5">
+                        <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">Ledger statement pricing details</span>
+                        
+                        <div class="space-y-2 text-xs font-semibold text-zinc-400">
+                            <div class="flex items-center justify-between">
+                                <span>Subtotal</span>
+                                <span class="text-white">${formatINR(currentOrderView.pricing.subtotal)}</span>
+                            </div>
+                            ${currentOrderView.pricing.discountAmount > 0 ? `
+                                <div class="flex items-center justify-between text-[#FF5E36]">
+                                    <span>Discount (applied ${currentOrderView.pricing.discountCode})</span>
+                                    <span>-${formatINR(currentOrderView.pricing.discountAmount)}</span>
+                                </div>
+                            ` : ''}
+                            <div class="flex items-center justify-between">
+                                <span>GST (applied 18% tax yield)</span>
+                                <span class="text-white">${formatINR(currentOrderView.pricing.gst)}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Shipping raw charges</span>
+                                <span class="text-white">${formatINR(currentOrderView.pricing.shippingCharge)}</span>
+                            </div>
+                            <div class="h-px bg-brand-border/60 my-2"></div>
+                            <div class="flex items-center justify-between text-white font-bold text-sm">
+                                <span>Grand Invoice Total</span>
+                                <span class="text-brand-orange">${formatINR(currentOrderView.pricing.totalAmount)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status History Timeline Logs -->
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">Ledger tracking Status timeline logs</span>
+                        <div class="bg-[#121217]/50 border border-brand-border/60 rounded-2xl p-5 space-y-4">
+                            ${historyHtml}
+                        </div>
+                    </div>
+
+                    <!-- Internal Operator Note Center -->
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-black uppercase text-zinc-500 tracking-wider block">CRM internal Operator notes</span>
+                        <div class="space-y-3">
+                            <div class="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    id="newOrderNoteText" 
+                                    placeholder="Log internal operator details..." 
+                                    class="flex-1 bg-[#181822] border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-brand-orange/50 placeholder-zinc-600"
+                                >
+                                <button onclick="saveOrderNote('${currentOrderView.id}')" class="bg-brand-orange hover:bg-[#ff704d] text-white font-bold text-xs uppercase tracking-widest px-4 rounded-xl transition-all duration-300">
+                                    Log
+                                </button>
+                            </div>
+                            <div class="space-y-2.5 max-h-48 overflow-y-auto">
+                                ${notesHtml || '<p class="text-xs text-zinc-600 italic p-3 text-center">No operator details logged yet.</p>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                lucide.createIcons();
+
+            } catch (err) {
+                console.error(err);
+                content.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-12 gap-2 text-red-500">
+                        <i data-lucide="alert-circle" class="w-8 h-8"></i>
+                        <p class="text-xs uppercase tracking-wider font-bold">Failed to retrieve details.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        function closeOrderDrawer() {
+            document.getElementById('orderDrawer').classList.add('hidden');
+            currentOrderView = null;
+        }
+
+        async function advanceOrderStatus(orderId, currentStatus) {
+            try {
+                const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ status: currentStatus }) // server handler advances status automatically
+                });
+
+                if (!response.ok) throw new Error("Fulfillment status advanced failed.");
+
+                triggerToast(`Order status updated successfully!`);
+                openOrderDrawer(orderId); // refresh drawer details
+                fetchStateData(); // refresh overview state
+            } catch (err) {
+                console.error(err);
+                triggerToast("Order fulfillment status transition failure.");
+            }
+        }
+
+        async function saveOrderNote(orderId) {
+            const noteText = document.getElementById('newOrderNoteText').value.trim();
+            if (!noteText) return;
+
+            try {
+                const response = await fetch(`${API_URL}/orders/${orderId}/notes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ note: noteText })
+                });
+
+                if (!response.ok) throw new Error("Note logging failure.");
+
+                triggerToast("Operator internal details note logged!");
+                openOrderDrawer(orderId); // refresh drawer details
+                fetchStateData(); // refresh overview state
+            } catch (err) {
+                console.error(err);
+                triggerToast("Note database transaction failed.");
+            }
+        }
+    </script>
+</body>
+</html>

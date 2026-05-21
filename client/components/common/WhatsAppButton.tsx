@@ -1,0 +1,32 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
+
+export default function WhatsAppButton() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
+
+  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529";
+
+  return (
+    <motion.a
+      href={`https://wa.me/${number}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat with us on WhatsApp"
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl group"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1, type: "spring", stiffness: 300 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <MessageCircle size={22} />
+      <span className="text-sm font-medium max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">
+        Chat with us
+      </span>
+    </motion.a>
+  );
+}

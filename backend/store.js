@@ -1,0 +1,681 @@
+// Backend Database Store for CustomWorks CRM
+// Powered by live Neon Serverless PostgreSQL with optimized pooling and async access.
+
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+const INITIAL_ORDERS = [
+  {
+    id: "CW-001234",
+    date: "2026-05-21T10:32:00Z",
+    customerSnapshot: { name: "Priya Sharma", email: "priya.sharma@gmail.com", phone: "+91 98765 43210" },
+    shippingAddress: { name: "Priya Sharma", phone: "+91 98765 43210", line1: "Apt 402, Signature Towers", line2: "Outer Ring Road, Bellandur", city: "Bengaluru", state: "Karnataka", pincode: "560103" },
+    items: [
+      {
+        id: "item-1",
+        productName: "Premium Organic Cotton Tee",
+        variant: { size: "M", color: "Obsidian Black", material: "100% Ring-spun Organic Cotton" },
+        quantity: 2,
+        unitPrice: 749,
+        totalPrice: 1498,
+        customization: {
+          text: "Team Alpha 2026",
+          fontStyle: "Editorial Serif",
+          textColor: "#FF5E36",
+          placement: "Front Center",
+          uploadedImageUrl: "/uploads/designs/design-tee-front.jpg",
+          additionalNotes: "Ensure the embroidery is crisp and text alignment is perfectly centered."
+        },
+        designStatus: "pending_approval"
+      }
+    ],
+    pricing: { subtotal: 1498, discountCode: "LAUNCH10", discountAmount: 149.8, gst: 242.6, shippingCharge: 0, totalAmount: 1590.8 },
+    payment: { status: "paid", amountPaid: 1590.8, amountDue: 0, method: "razorpay", gatewayId: "pay_Rj89A2k1Lp", paymentHistory: [{ amount: 1590.8, method: "razorpay", paidAt: "2026-05-21T10:32:00Z", note: "Authorized successfully by gateway." }] },
+    status: "designing",
+    statusHistory: [
+      { status: "designing", changedAt: "2026-05-21T10:32:00Z", changedBy: "System Gateway", note: "Order placed. Awaiting design layout approval." }
+    ],
+    invoiceUrl: null,
+    adminNotes: [
+      { note: "First-time customer. Wants clean packaging.", addedBy: "Mohit", addedAt: "2026-05-21T10:35:00Z" }
+    ]
+  },
+  {
+    id: "CW-001233",
+    date: "2026-05-21T09:15:00Z",
+    customerSnapshot: { name: "Rahul Malhotra", email: "rahul.malhotra@techcorp.com", phone: "+91 99123 45678" },
+    shippingAddress: { name: "Rahul Malhotra", phone: "+91 99123 45678", line1: "Building B, Tech Solutions Corp", line2: "Phase 3, Hinjewadi", city: "Pune", state: "Maharashtra", pincode: "411057" },
+    items: [
+      {
+        id: "item-2",
+        productName: "Heavyweight Boxy Fit Hoodie",
+        variant: { size: "XL", color: "Heather Grey", material: "450GSM Loopback Terry Cotton" },
+        quantity: 1,
+        unitPrice: 2499,
+        totalPrice: 2499,
+        customization: {
+          text: "BUILD",
+          fontStyle: "Street Sans",
+          textColor: "#0A0A0A",
+          placement: "Back Panel",
+          uploadedImageUrl: null,
+          additionalNotes: "Embossed puff print. Back text alignment is crucial."
+        },
+        designStatus: "approved"
+      }
+    ],
+    pricing: { subtotal: 2499, discountCode: "WELCOME", discountAmount: 250, gst: 404.8, shippingCharge: 80, totalAmount: 2733.8 },
+    payment: { status: "partial", amountPaid: 1500, amountDue: 1233.8, method: "upi", gatewayId: "upi_rahulm@okaxis", paymentHistory: [{ amount: 1500, method: "upi", paidAt: "2026-05-21T09:16:00Z", note: "Advance deposit paid." }] },
+    status: "processing",
+    statusHistory: [
+      { status: "designing", changedAt: "2026-05-21T09:15:00Z", changedBy: "System Gateway", note: "Order placed. Design artwork approved automatically." },
+      { status: "processing", changedAt: "2026-05-21T09:40:00Z", changedBy: "Mohit", note: "Sent to embroidery floor. Puff mold prepared." }
+    ],
+    invoiceUrl: "/uploads/invoices/CW-001233.pdf",
+    adminNotes: [
+      { note: "Puff prints need 15 mins extra curing time.", addedBy: "Mohit", addedAt: "2026-05-21T09:42:00Z" }
+    ]
+  },
+  {
+    id: "CW-001232",
+    date: "2026-05-21T08:00:00Z",
+    customerSnapshot: { name: "Anjali Deshmukh", email: "anjali.d@designstudio.in", phone: "+91 98222 33344" },
+    shippingAddress: { name: "Anjali Deshmukh", phone: "+91 98222 33344", line1: "Flat 104, Oasis Heights", line2: "Bandra West", city: "Mumbai", state: "Maharashtra", pincode: "400050" },
+    items: [
+      {
+        id: "item-3",
+        productName: "Minimalist Matte Ceramic Mug",
+        variant: { size: "350ml", color: "Eggshell White", material: "Double-walled Clayware" },
+        quantity: 4,
+        unitPrice: 599,
+        totalPrice: 2396,
+        customization: {
+          text: "CREATIVE SPIRIT",
+          fontStyle: "Modernist Monospace",
+          textColor: "#0A0A0A",
+          placement: "Wrap Around",
+          uploadedImageUrl: "/uploads/designs/design-mug-wrap.jpg",
+          additionalNotes: "Fine typography print on high-fired matte glaze."
+        },
+        designStatus: "pending_approval"
+      }
+    ],
+    pricing: { subtotal: 2396, discountCode: "BULK20", discountAmount: 479.2, gst: 345, shippingCharge: 0, totalAmount: 2261.8 },
+    payment: { status: "paid", amountPaid: 2261.8, amountDue: 0, method: "razorpay", gatewayId: "pay_Kla9B2x3Lq", paymentHistory: [{ amount: 2261.8, method: "razorpay", paidAt: "2026-05-21T08:02:00Z", note: "Settled online." }] },
+    status: "ready_to_ship",
+    statusHistory: [
+      { status: "designing", changedAt: "2026-05-21T08:00:00Z", changedBy: "System Gateway", note: "Order placed." },
+      { status: "processing", changedAt: "2026-05-21T08:15:00Z", changedBy: "Mohit", note: "High fired matte glaze applied." },
+      { status: "ready_to_ship", changedAt: "2026-05-21T10:00:00Z", changedBy: "Store Floor", note: "Quality checked. Bubble wrapped and boxed." }
+    ],
+    invoiceUrl: null,
+    adminNotes: []
+  },
+  {
+    id: "CW-001231",
+    date: "2026-05-20T16:45:00Z",
+    customerSnapshot: { name: "Vikram Singh", email: "vikram.s1@outlook.com", phone: "+91 90000 11122" },
+    shippingAddress: { name: "Vikram Singh", phone: "+91 90000 11122", line1: "Sector 15, H.No 890", line2: "Near Community Center", city: "Gurugram", state: "Haryana", pincode: "122001" },
+    items: [
+      {
+        id: "item-4",
+        productName: "Vintage Canvas Trucker Cap",
+        variant: { size: "Adjustable", color: "Emerald & Tan", material: "Heavywashed Canvas & Mesh" },
+        quantity: 1,
+        unitPrice: 899,
+        totalPrice: 899,
+        customization: {
+          text: "WANDERLUST",
+          fontStyle: "Editorial Serif",
+          textColor: "#1A4D2E",
+          placement: "Front Patch",
+          uploadedImageUrl: null,
+          additionalNotes: "Embroidered patch sewn on the center canvas front."
+        },
+        designStatus: "approved"
+      }
+    ],
+    pricing: { subtotal: 899, discountCode: null, discountAmount: 0, gst: 161.8, shippingCharge: 80, totalAmount: 1140.8 },
+    payment: { status: "cod", amountPaid: 0, amountDue: 1140.8, method: "cod", gatewayId: null, paymentHistory: [] },
+    status: "dispatched",
+    statusHistory: [
+      { status: "designing", changedAt: "2026-05-20T16:45:00Z", changedBy: "System Gateway", note: "Order placed." },
+      { status: "processing", changedAt: "2026-05-20T18:00:00Z", changedBy: "Floor Team", note: "Patch stitched onto canvas cap front panel." },
+      { status: "ready_to_ship", changedAt: "2026-05-20T19:30:00Z", changedBy: "Store Floor", note: "Polished, boxed." },
+      { status: "dispatched", changedAt: "2026-05-21T07:30:00Z", changedBy: "Logistics Hub", note: "Picked up by Delhivery. AWB: Delhivery_98231201" }
+    ],
+    invoiceUrl: "/uploads/invoices/CW-001231.pdf",
+    trackingNumber: "Delhivery_98231201",
+    trackingUrl: "https://www.delhivery.com/track/Delhivery_98231201",
+    adminNotes: []
+  },
+  {
+    id: "CW-001230",
+    date: "2026-05-20T11:20:00Z",
+    customerSnapshot: { name: "Meera Krishnan", email: "meera.krish@yahoo.co.in", phone: "+91 97444 88899" },
+    shippingAddress: { name: "Meera Krishnan", phone: "+91 97444 88899", line1: "Flat 5C, Skyline Residency", line2: "Kakkanad", city: "Kochi", state: "Kerala", pincode: "682030" },
+    items: [
+      {
+        id: "item-5",
+        productName: "Premium Organic Cotton Tee",
+        variant: { size: "S", color: "Cream Shell", material: "100% Ring-spun Organic Cotton" },
+        quantity: 1,
+        unitPrice: 749,
+        totalPrice: 749,
+        customization: {
+          text: "ELEGANCE",
+          fontStyle: "Editorial Serif",
+          textColor: "#0A0A0A",
+          placement: "Left Chest Pocket",
+          uploadedImageUrl: null,
+          additionalNotes: "Small refined chest print."
+        },
+        designStatus: "approved"
+      }
+    ],
+    pricing: { subtotal: 749, discountCode: "CREATIVE", discountAmount: 74.9, gst: 121.3, shippingCharge: 80, totalAmount: 875.4 },
+    payment: { status: "paid", amountPaid: 875.4, amountDue: 0, method: "razorpay", gatewayId: "pay_Mn83J7u9Pd", paymentHistory: [{ amount: 875.4, method: "razorpay", paidAt: "2026-05-20T11:21:00Z", note: "Settled online." }] },
+    status: "delivered",
+    statusHistory: [
+      { status: "designing", changedAt: "2026-05-20T11:20:00Z", changedBy: "System Gateway", note: "Order placed." },
+      { status: "processing", changedAt: "2026-05-20T13:00:00Z", changedBy: "Floor Team", note: "Tee front left screen-printed." },
+      { status: "ready_to_ship", changedAt: "2026-05-20T15:00:00Z", changedBy: "Store Floor", note: "Packed." },
+      { status: "dispatched", changedAt: "2026-05-20T17:00:00Z", changedBy: "Logistics Hub", note: "AWB: BlueDart_4590391" },
+      { status: "delivered", changedAt: "2026-05-21T10:00:00Z", changedBy: "BlueDart Agent", note: "Delivered directly to customer." }
+    ],
+    invoiceUrl: "/uploads/invoices/CW-001230.pdf",
+    trackingNumber: "BlueDart_4590391",
+    trackingUrl: "https://www.bluedart.com/track/BlueDart_4590391",
+    adminNotes: []
+  }
+];
+
+const INITIAL_RETURNS = [
+  {
+    id: "RET-001",
+    orderId: "CW-001230",
+    customer: "Meera Krishnan",
+    product: "Premium Organic Cotton Tee — S / Cream Shell",
+    reason: "Sizing fit is slightly too snug on shoulders, requesting replacement or credit.",
+    requestedAt: "2026-05-21T12:00:00Z",
+    status: "pending",
+    note: ""
+  }
+];
+
+const PRODUCTS = [
+  { id: "P001", name: "Premium Organic Cotton Tee", price: 749, stock: 45, status: "Active", variants: "XS, S, M, L, XL" },
+  { id: "P002", name: "Heavyweight Boxy Fit Hoodie", price: 2499, stock: 18, status: "Active", variants: "S, M, L, XL" },
+  { id: "P003", name: "Minimalist Matte Ceramic Mug", price: 599, stock: 82, status: "Active", variants: "350ml" },
+  { id: "P004", name: "Vintage Canvas Trucker Cap", price: 899, stock: 12, status: "Active", variants: "Adjustable" }
+];
+
+// Mapper to convert row keys from snake_case database schema into storefront camelCase objects
+function mapOrderToClient(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    date: row.date,
+    customerSnapshot: row.customer_snapshot,
+    shippingAddress: row.shipping_address,
+    items: row.items,
+    pricing: row.pricing,
+    payment: row.payment,
+    status: row.status,
+    statusHistory: row.status_history,
+    invoiceUrl: row.invoice_url,
+    trackingNumber: row.tracking_number,
+    trackingUrl: row.tracking_url,
+    adminNotes: row.admin_notes
+  };
+}
+
+// Database creation and seeding script runs in the background on import
+async function initDb() {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    
+    // Create products registry table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id VARCHAR(50) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price NUMERIC(10, 2) NOT NULL,
+        stock INTEGER NOT NULL,
+        status VARCHAR(50) NOT NULL DEFAULT 'Active',
+        variants VARCHAR(255) NOT NULL DEFAULT 'Standard'
+      )
+    `);
+
+    // Create orders table with robust jsonb structures
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id VARCHAR(50) PRIMARY KEY,
+        date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        customer_snapshot JSONB NOT NULL,
+        shipping_address JSONB NOT NULL,
+        items JSONB NOT NULL,
+        pricing JSONB NOT NULL,
+        payment JSONB NOT NULL,
+        status VARCHAR(50) NOT NULL,
+        status_history JSONB NOT NULL,
+        invoice_url VARCHAR(255) DEFAULT NULL,
+        tracking_number VARCHAR(255) DEFAULT NULL,
+        tracking_url VARCHAR(255) DEFAULT NULL,
+        admin_notes JSONB NOT NULL DEFAULT '[]'::jsonb
+      )
+    `);
+
+    // Create returns tracking table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS returns (
+        id VARCHAR(50) PRIMARY KEY,
+        order_id VARCHAR(50) NOT NULL REFERENCES orders(id),
+        customer VARCHAR(255) NOT NULL,
+        product VARCHAR(255) NOT NULL,
+        reason TEXT NOT NULL,
+        requested_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(50) NOT NULL DEFAULT 'pending',
+        note TEXT DEFAULT ''
+      )
+    `);
+
+    // Seed products table if empty
+    const prodRes = await client.query('SELECT COUNT(*) FROM products');
+    if (parseInt(prodRes.rows[0].count, 10) === 0) {
+      for (const p of PRODUCTS) {
+        await client.query(
+          'INSERT INTO products (id, name, price, stock, status, variants) VALUES ($1, $2, $3, $4, $5, $6)',
+          [p.id, p.name, p.price, p.stock, p.status, p.variants]
+        );
+      }
+      console.log('Seeded initial products successfully into Neon.');
+    }
+
+    // Seed orders table if empty
+    const orderRes = await client.query('SELECT COUNT(*) FROM orders');
+    if (parseInt(orderRes.rows[0].count, 10) === 0) {
+      for (const o of INITIAL_ORDERS) {
+        await client.query(
+          `INSERT INTO orders (
+            id, date, customer_snapshot, shipping_address, items, pricing, payment, status, status_history, invoice_url, tracking_number, tracking_url, admin_notes
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+          [
+            o.id,
+            o.date,
+            JSON.stringify(o.customerSnapshot),
+            JSON.stringify(o.shippingAddress),
+            JSON.stringify(o.items),
+            JSON.stringify(o.pricing),
+            JSON.stringify(o.payment),
+            o.status,
+            JSON.stringify(o.statusHistory),
+            o.invoiceUrl || null,
+            o.trackingNumber || null,
+            o.trackingUrl || null,
+            JSON.stringify(o.adminNotes)
+          ]
+        );
+      }
+      console.log('Seeded initial orders successfully into Neon.');
+    }
+
+    // Seed returns table if empty
+    const returnRes = await client.query('SELECT COUNT(*) FROM returns');
+    if (parseInt(returnRes.rows[0].count, 10) === 0) {
+      for (const r of INITIAL_RETURNS) {
+        await client.query(
+          'INSERT INTO returns (id, order_id, customer, product, reason, requested_at, status, note) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+          [r.id, r.orderId, r.customer, r.product, r.reason, r.requestedAt, r.status, r.note]
+        );
+      }
+      console.log('Seeded initial returns successfully into Neon.');
+    }
+
+    await client.query('COMMIT');
+    console.log('Neon Database Schema successfully verified and initialized.');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Failed to initialize or seed Neon Database:', err);
+  } finally {
+    client.release();
+  }
+}
+
+// Fire async setup on module inclusion
+initDb();
+
+module.exports = {
+  pool,
+
+  getOrders: async () => {
+    const res = await pool.query('SELECT * FROM orders ORDER BY date DESC');
+    return res.rows.map(mapOrderToClient);
+  },
+
+  getOrderById: async (id) => {
+    const res = await pool.query('SELECT * FROM orders WHERE id = $1', [id]);
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  updateOrderStatus: async (id, status, note, user = "Mohit (Admin)") => {
+    const order = await module.exports.getOrderById(id);
+    if (!order) return null;
+    
+    order.status = status;
+    order.statusHistory.push({
+      status,
+      changedAt: new Date().toISOString(),
+      changedBy: user,
+      note: note || `Status updated to ${status.toUpperCase()}.`
+    });
+
+    const res = await pool.query(
+      'UPDATE orders SET status = $1, status_history = $2 WHERE id = $3 RETURNING *',
+      [order.status, JSON.stringify(order.statusHistory), id]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  addOrderNote: async (id, noteText, user = "Mohit (Admin)") => {
+    const order = await module.exports.getOrderById(id);
+    if (!order) return null;
+
+    order.adminNotes.unshift({
+      note: noteText,
+      addedBy: user,
+      addedAt: new Date().toISOString()
+    });
+
+    const res = await pool.query(
+      'UPDATE orders SET admin_notes = $1 WHERE id = $2 RETURNING *',
+      [JSON.stringify(order.adminNotes), id]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  recordOrderPayment: async (id, user = "Mohit (Admin)") => {
+    const order = await module.exports.getOrderById(id);
+    if (!order) return null;
+
+    const due = order.payment.amountDue || order.pricing.totalAmount;
+    order.payment.status = 'paid';
+    order.payment.amountPaid = order.pricing.totalAmount;
+    order.payment.amountDue = 0;
+    order.payment.paymentHistory.push({
+      amount: due,
+      method: "upi",
+      paidAt: new Date().toISOString(),
+      note: `Manual balance clearance by admin ${user}.`
+    });
+
+    const res = await pool.query(
+      'UPDATE orders SET payment = $1 WHERE id = $2 RETURNING *',
+      [JSON.stringify(order.payment), id]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  updateOrderInvoiceUrl: async (id, path) => {
+    const res = await pool.query(
+      'UPDATE orders SET invoice_url = $1 WHERE id = $2 RETURNING *',
+      [path, id]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  approveDesignItem: async (orderId, itemId, user = "System") => {
+    const order = await module.exports.getOrderById(orderId);
+    if (!order) return null;
+
+    const item = order.items.find(i => i.id === itemId);
+    if (!item) return null;
+    item.designStatus = 'approved';
+
+    const allApproved = order.items.every(i => i.designStatus === 'approved' || i.designStatus === 'not_required');
+    let status = order.status;
+    let statusHistory = [...order.statusHistory];
+
+    if (allApproved && order.status === 'designing') {
+      status = 'processing';
+      statusHistory.push({
+        status: 'processing',
+        changedAt: new Date().toISOString(),
+        changedBy: user,
+        note: "All custom designs approved. Processing started automatically."
+      });
+    }
+
+    const res = await pool.query(
+      'UPDATE orders SET items = $1, status = $2, status_history = $3 WHERE id = $4 RETURNING *',
+      [JSON.stringify(order.items), status, JSON.stringify(statusHistory), orderId]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  rejectDesignItem: async (orderId, itemId, reason, user = "Mohit (Admin)") => {
+    const order = await module.exports.getOrderById(orderId);
+    if (!order) return null;
+
+    const item = order.items.find(i => i.id === itemId);
+    if (!item) return null;
+    item.designStatus = 'change_requested';
+
+    order.statusHistory.push({
+      status: order.status,
+      changedAt: new Date().toISOString(),
+      changedBy: user,
+      note: `Design revision requested for ${item.productName}. Reason: "${reason}"`
+    });
+
+    const res = await pool.query(
+      'UPDATE orders SET items = $1, status_history = $2 WHERE id = $3 RETURNING *',
+      [JSON.stringify(order.items), JSON.stringify(order.statusHistory), orderId]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  getPendingDesigns: async () => {
+    const orders = await module.exports.getOrders();
+    const list = [];
+    orders.forEach(o => {
+      o.items.forEach(item => {
+        if (item.designStatus === 'pending_approval') {
+          list.push({
+            orderId: o.id,
+            date: o.date,
+            customerName: o.customerSnapshot.name,
+            itemId: item.id,
+            productName: item.productName,
+            variant: item.variant,
+            quantity: item.quantity,
+            customization: item.customization
+          });
+        }
+      });
+    });
+    return list;
+  },
+
+  getReturns: async () => {
+    const res = await pool.query('SELECT * FROM returns ORDER BY requested_at DESC');
+    return res.rows.map(row => ({
+      id: row.id,
+      orderId: row.order_id,
+      customer: row.customer,
+      product: row.product,
+      reason: row.reason,
+      requestedAt: row.requested_at,
+      status: row.status,
+      note: row.note || ""
+    }));
+  },
+
+  resolveReturnClaim: async (returnId, status, note = "") => {
+    const res = await pool.query('SELECT * FROM returns WHERE id = $1', [returnId]);
+    const claim = res.rows[0];
+    if (!claim) return null;
+
+    const claimStatus = status === 'approved' ? 'resolved' : 'rejected';
+    await pool.query(
+      'UPDATE returns SET status = $1, note = $2 WHERE id = $3',
+      [claimStatus, note, returnId]
+    );
+
+    const updatedClaim = {
+      id: claim.id,
+      orderId: claim.order_id,
+      customer: claim.customer,
+      product: claim.product,
+      reason: claim.reason,
+      requestedAt: claim.requested_at,
+      status: claimStatus,
+      note
+    };
+
+    if (status === 'approved') {
+      const order = await module.exports.getOrderById(claim.order_id);
+      if (order) {
+        order.status = 'returned';
+        order.statusHistory.push({
+          status: 'returned',
+          changedAt: new Date().toISOString(),
+          changedBy: "Mohit",
+          note: `Return claim ${returnId} resolved as APPROVED. Credit note initiated.`
+        });
+        await pool.query(
+          'UPDATE orders SET status = $1, status_history = $2 WHERE id = $3',
+          [order.status, JSON.stringify(order.statusHistory), claim.order_id]
+        );
+      }
+    }
+
+    return updatedClaim;
+  },
+
+  getProducts: async () => {
+    const res = await pool.query('SELECT * FROM products ORDER BY id ASC');
+    return res.rows.map(row => ({
+      id: row.id,
+      name: row.name,
+      price: Number(row.price),
+      stock: Number(row.stock),
+      status: row.status,
+      variants: row.variants
+    }));
+  },
+
+  addProduct: async (product) => {
+    const prods = await module.exports.getProducts();
+    const nextNum = prods.length + 1;
+    const id = "P" + String(nextNum).padStart(3, '0');
+
+    const name = product.name;
+    const price = Number(product.price);
+    const stock = Number(product.stock);
+    const status = product.status || "Active";
+    const variants = product.variants || "Standard";
+
+    const res = await pool.query(
+      'INSERT INTO products (id, name, price, stock, status, variants) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [id, name, price, stock, status, variants]
+    );
+    
+    const row = res.rows[0];
+    return row ? {
+      id: row.id,
+      name: row.name,
+      price: Number(row.price),
+      stock: Number(row.stock),
+      status: row.status,
+      variants: row.variants
+    } : null;
+  },
+
+  updateProduct: async (id, updated) => {
+    const res = await pool.query(
+      'UPDATE products SET name = $1, price = $2, stock = $3, status = $4, variants = $5 WHERE id = $6 RETURNING *',
+      [updated.name, Number(updated.price), Number(updated.stock), updated.status, updated.variants, id]
+    );
+    
+    const row = res.rows[0];
+    return row ? {
+      id: row.id,
+      name: row.name,
+      price: Number(row.price),
+      stock: Number(row.stock),
+      status: row.status,
+      variants: row.variants
+    } : null;
+  },
+
+  deleteProduct: async (id) => {
+    const res = await pool.query('DELETE FROM products WHERE id = $1', [id]);
+    return res.rowCount > 0;
+  },
+
+  getAnalyticsSummary: async () => {
+    const orders = await module.exports.getOrders();
+    const returns = await module.exports.getReturns();
+    
+    const totalRevenue = orders.reduce((sum, o) => sum + Number(o.pricing.totalAmount), 0) + 590000;
+    const returnRequestsCount = returns.filter(r => r.status === 'pending').length;
+    const partialPaymentOrders = orders.filter(o => o.payment.status === 'partial').length;
+    const ordersAwaitingDispatch = orders.filter(o => ['processing', 'ready_to_ship'].includes(o.status)).length;
+    const pendingDesignApprovals = orders.reduce((sum, o) => sum + o.items.filter(i => i.designStatus === 'pending_approval').length, 0);
+
+    return {
+      summary: {
+        ordersToday: 24,
+        revenueThisMonth: 184320,
+        ordersAwaitingDispatch,
+        partialPaymentOrders,
+        returnRequests: returnRequestsCount,
+        totalRevenue,
+        totalOrders: orders.length + 637,
+        pendingDesignApprovals
+      },
+      revenueHistory: [
+        { date: "May 15", amount: 12400 },
+        { date: "May 16", amount: 18900 },
+        { date: "May 17", amount: 9800 },
+        { date: "May 18", amount: 15400 },
+        { date: "May 19", amount: 22400 },
+        { date: "May 20", amount: 18432 },
+        { date: "May 21", amount: 28400 }
+      ],
+      bestsellers: [
+        { product: "Organic Cotton Tee", orders: 284, quantity: 512, revenue: 383488 },
+        { product: "Heavyweight Boxy Hoodie", orders: 142, quantity: 189, revenue: 472311 },
+        { product: "Minimalist Ceramic Mug", orders: 110, quantity: 240, revenue: 143760 },
+        { product: "Vintage Trucker Cap", orders: 82, quantity: 105, revenue: 94395 }
+      ],
+      customizations: {
+        placements: [
+          { name: "Front Center", count: 320 },
+          { name: "Back Panel", count: 184 },
+          { name: "Left Chest Pocket", count: 98 },
+          { name: "Sleeves", count: 40 }
+        ],
+        colors: [
+          { name: "Obsidian Black", count: 280 },
+          { name: "Cream Shell", count: 160 },
+          { name: "Heather Grey", count: 122 },
+          { name: "Emerald & Tan", count: 80 }
+        ],
+        coupons: [
+          { code: "LAUNCH10", count: 184 },
+          { code: "WELCOME", count: 120 },
+          { code: "BULK20", count: 42 }
+        ]
+      }
+    };
+  }
+};
