@@ -93,6 +93,8 @@ const footerLinks = {
   Legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Refund Policy", href: "/refund-policy" },
+    { label: "Shipping Policy", href: "/shipping-policy" },
+    { label: "Payment Policy", href: "/payment-policy" },
     { label: "Terms of Service", href: "/terms" },
   ],
 };
