@@ -37,13 +37,12 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [accountOpen, setAccountOpen] = useState(false);
-  const accountRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
   const itemCount = useCartStore((s) => s.itemCount());
   const searchRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
+
+  if (pathname?.startsWith("/admin")) return null;
 
   const handleAccountClick = () => {
     if (user) {
@@ -51,6 +50,11 @@ export default function Header() {
     } else {
       window.location.href = "/login";
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+    window.location.href = "/";
   };
 
   useEffect(() => {
