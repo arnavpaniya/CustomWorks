@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -11,10 +12,12 @@ import {
   Filter,
   ShoppingBag,
   X,
+  Loader2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { useAuth } from "@/lib/useAuth";
 
 const MOCK_ORDERS = [
   { id: "CW-20260501", date: "1 May 2026", total: 3590, status: "DELIVERED", items: 3, products: "Custom Business Cards, Letterheads" },
@@ -47,8 +50,16 @@ const STATUS_OPTIONS = [
 ];
 
 export default function OrdersPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [user, loading, router]);
 
   const filtered = useMemo(() => {
     return MOCK_ORDERS.filter((o) => {
@@ -59,6 +70,16 @@ export default function OrdersPage() {
       return matchesSearch && matchesStatus;
     });
   }, [search, statusFilter]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader2 size={28} className="animate-spin text-brand-muted" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

@@ -12,11 +12,17 @@ import {
   Menu,
   X,
   ChevronRight,
+  LogOut,
+  LayoutDashboard,
+  Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart.store";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/common/Logo";
+import { useAuth } from "@/lib/useAuth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -31,10 +37,21 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   if (pathname?.startsWith("/admin")) return null;
   const itemCount = useCartStore((s) => s.itemCount());
   const searchRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
+
+  const handleAccountClick = () => {
+    if (user) {
+      window.location.href = "/account/dashboard";
+    } else {
+      window.location.href = "/login";
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -117,13 +134,17 @@ export default function Header() {
               </button>
  
               {/* Account */}
-              <Link
-                href="/account/dashboard"
+              <button
+                onClick={handleAccountClick}
                 className="h-10 w-10 hidden sm:flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="My account"
               >
-                <User size={18} />
-              </Link>
+                {user?.photoURL ? (
+                  <img src={user.photoURL} alt="avatar" className="h-7 w-7 rounded-full object-cover" />
+                ) : (
+                  <User size={18} />
+                )}
+              </button>
  
               {/* Wishlist */}
               <Link
@@ -261,18 +282,49 @@ export default function Header() {
                 ))}
  
                 <div className="border-t border-brand-border mt-2 pt-2">
-                  <Link
-                    href="/account/dashboard"
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  >
-                    <User size={16} /> My Account
-                  </Link>
-                  <Link
-                    href="/account/wishlist"
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  >
-                    <Heart size={16} /> Wishlist
-                  </Link>
+                  {user ? (
+                    <>
+                      <Link
+                        href="/account/dashboard"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                      >
+                        <LayoutDashboard size={16} /> My Account
+                      </Link>
+                      <Link
+                        href="/account/orders"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                      >
+                        <Package size={16} /> My Orders
+                      </Link>
+                      <Link
+                        href="/account/wishlist"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                      >
+                        <Heart size={16} /> Wishlist
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut size={16} /> Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                      >
+                        <User size={16} /> Sign In
+                      </Link>
+                      <Link
+                        href="/register"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                      >
+                        <ChevronRight size={16} /> Create Account
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
  

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bookmark, Layers, Trash2, Pencil, Plus } from "lucide-react";
+import { Bookmark, Layers, Trash2, Pencil, Plus, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/lib/useAuth";
 
 interface SavedDesign {
   id: string;
@@ -66,8 +68,16 @@ const INITIAL_DESIGNS: SavedDesign[] = [
 ];
 
 export default function SavedDesignsPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [designs, setDesigns] = useState(INITIAL_DESIGNS);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [user, loading, router]);
 
   const handleDelete = (id: string) => {
     setDeletingId(id);
@@ -76,6 +86,16 @@ export default function SavedDesignsPage() {
       setDeletingId(null);
     }, 300);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader2 size={28} className="animate-spin text-brand-muted" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
