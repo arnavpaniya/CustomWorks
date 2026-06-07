@@ -62,21 +62,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F0EB] flex items-center justify-center p-4 sm:p-6">
+    <main className="min-h-screen w-full flex flex-col lg:flex-row bg-white overflow-hidden">
+      {/* ── LEFT: Form Area ── */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-[960px] bg-white rounded-[2rem] shadow-2xl shadow-black/10 overflow-hidden flex flex-col lg:flex-row min-h-[620px]"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full lg:w-[45%] xl:w-[40%] flex flex-col min-h-screen relative z-10 shadow-[10px_0_40px_rgba(0,0,0,0.05)]"
       >
+        <div className="flex-1 flex flex-col p-8 sm:p-12 lg:p-16 xl:p-20 overflow-y-auto">
 
-        {/* ── LEFT: Form ── */}
-        <div className="w-full lg:w-[52%] flex flex-col p-8 sm:p-10 lg:p-12">
-
-          {/* Logo */}
-          <Link href="/" className="inline-block mb-8 w-fit">
-            <Image src="/images/logo.png" alt="CustomWorks" width={130} height={38} className="object-contain brightness-0" priority />
-          </Link>
 
           <div className="flex-1 flex flex-col justify-center">
             <div className="mb-7">
@@ -214,60 +209,68 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
+      </motion.div>
 
-        {/* ── RIGHT: Brand panel ── */}
-        <div className="hidden lg:flex lg:w-[48%] bg-[#0A0A0A] relative overflow-hidden flex-col">
-
-          {/* Dot grid texture */}
-          <div
-            className="absolute inset-0 opacity-[0.06]"
-            style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }}
+      {/* ── RIGHT: Visual Area ── */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="hidden lg:flex flex-1 bg-brand-black relative overflow-hidden flex-col items-center justify-center p-12 xl:p-20"
+      >
+        {/* Background Image / Gradient */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/placeholder-product.jpg" // Using placeholder or cinematic mockup
+            alt="CustomWorks printing"
+            fill
+            className="object-cover opacity-30 mix-blend-luminosity"
+            priority
           />
-
-          {/* Radial glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(255,255,255,0.06)_0%,transparent_65%)] pointer-events-none" />
-
-          {/* Top: tagline */}
-          <div className="relative z-10 p-10 pb-0 pt-16">
-            <h2 className="text-[1.6rem] font-black text-white leading-tight tracking-tight">
-              Design anything.<br />
-              <span className="text-white/50">Print everything.</span>
-            </h2>
-            <p className="text-sm text-white/40 mt-3 leading-relaxed max-w-[260px]">
-              Premium custom designed & printed products, crafted to order and delivered across India.
-            </p>
-          </div>
-
-          {/* Product mockup */}
-          <div className="relative z-10 flex-1 flex items-end justify-center px-8 pb-0 mt-6">
-            <div className="relative w-full max-w-[280px]">
-              {/* Glow under image */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-16 bg-white/10 blur-2xl rounded-full" />
-              <Image
-                src="/cinematic_tshirt_mockup.png"
-                alt="CustomWorks product"
-                width={280}
-                height={280}
-                className="object-contain w-full drop-shadow-2xl opacity-40 mix-blend-screen"
-              />
-            </div>
-          </div>
-
-          {/* Feature pills */}
-          <div className="relative z-10 p-8 pt-6 flex flex-col gap-2.5">
-            {features.map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-3 bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5">
-                <Icon size={14} className="text-white/50 shrink-0" />
-                <span className="text-xs text-white/60 font-medium">{text}</span>
-              </div>
-            ))}
-            <p className="text-[10px] text-white/20 font-medium text-center mt-2">
-              Trusted by 1,000+ customers across India
-            </p>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-black to-transparent opacity-80" />
         </div>
 
+        {/* Radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08)_0%,transparent_60%)] pointer-events-none z-0" />
+
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-xl text-left">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-4xl xl:text-6xl font-black text-white leading-[1.1] tracking-tight"
+          >
+            Design anything.<br />
+            <span className="text-white/40">Print everything.</span>
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-base xl:text-lg text-white/50 mt-6 leading-relaxed max-w-md font-medium"
+          >
+            Premium custom designed & printed products, crafted to order and delivered across India.
+          </motion.p>
+
+          {/* Feature Glass Pills */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-wrap gap-3 mt-12"
+          >
+            {features.map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 backdrop-blur-md rounded-full px-5 py-3 shadow-xl">
+                <Icon size={16} className="text-white/70 shrink-0" />
+                <span className="text-sm text-white font-medium">{text}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </motion.div>
-    </div>
+    </main>
   );
 }

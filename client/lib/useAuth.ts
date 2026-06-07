@@ -9,11 +9,23 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+    try {
+      const unsubscribe = onAuthStateChanged(
+        auth,
+        (firebaseUser) => {
+          setUser(firebaseUser);
+          setLoading(false);
+        },
+        (error) => {
+          console.error("Firebase Auth Error (check API key):", error);
+          setLoading(false);
+        }
+      );
+      return () => unsubscribe();
+    } catch (error) {
+      console.error("Firebase init error:", error);
       setLoading(false);
-    });
-    return () => unsubscribe();
+    }
   }, []);
 
   return { user, loading };
