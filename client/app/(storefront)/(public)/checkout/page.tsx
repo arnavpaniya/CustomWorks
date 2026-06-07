@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart.store";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { load } from "@cashfreepayments/cashfree-js";
+import { toast } from "sonner";
 
 const STEPS = [
   { id: 1, label: "Address", icon: MapPin },
@@ -26,6 +28,47 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState({
     name: "", phone: "", line1: "", line2: "", city: "", state: "", pincode: "",
   });
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleCheckout = async () => {
+    try {
+      setIsProcessing(true);
+
+      const payload = {
+        items,
+        address,
+        subtotal: sub,
+        gst,
+        shipping,
+        total: finalTotal
+      };
+
+      const res = await fetch("http://localhost:5001/api/orders/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to initiate checkout");
+
+      // Initialize Cashfree
+      const cashfree = await load({
+        mode: "production" // Cashfree keys provided were prod keys
+      });
+
+      cashfree.checkout({
+        paymentSessionId: data.paymentSessionId,
+        returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
+      });
+
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "An error occurred during checkout");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -141,8 +184,14 @@ export default function CheckoutPage() {
                       {address.city}, {address.state} – {address.pincode}
                     </p>
                   </div>
-                  <Button variant="accent" size="lg" className="w-full">
-                    Place Order · {formatPrice(finalTotal)}
+                  <Button 
+                    variant="accent" 
+                    size="lg" 
+                    className="w-full"
+                    onClick={handleCheckout}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? "Processing..." : `Place Order · ${formatPrice(finalTotal)}`}
                   </Button>
                 </div>
               </motion.div>

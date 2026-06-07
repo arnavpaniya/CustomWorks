@@ -1,9 +1,9 @@
 const { Cashfree } = require("cashfree-pg");
 
 // Configure Cashfree SDK
-Cashfree.XClientId = process.env.CASHFREE_CLIENT_ID;
-Cashfree.XClientSecret = process.env.CASHFREE_CLIENT_SECRET;
-Cashfree.XEnvironment = process.env.CASHFREE_ENVIRONMENT === "production" 
+Cashfree.XClientId = process.env.CASHFREE_APP_ID;
+Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
+Cashfree.XEnvironment = process.env.CASHFREE_ENVIRONMENT === "PRODUCTION" 
   ? Cashfree.Environment.PRODUCTION 
   : Cashfree.Environment.SANDBOX;
 
@@ -14,8 +14,8 @@ Cashfree.XEnvironment = process.env.CASHFREE_ENVIRONMENT === "production"
  */
 const createPaymentSession = async (order) => {
   try {
-    if (!process.env.CASHFREE_CLIENT_ID || !process.env.CASHFREE_CLIENT_SECRET) {
-      console.warn("Cashfree credentials not found. Ensure CASHFREE_CLIENT_ID and CASHFREE_CLIENT_SECRET are set in .env");
+    if (!process.env.CASHFREE_APP_ID || !process.env.CASHFREE_SECRET_KEY) {
+      console.warn("Cashfree credentials not found. Ensure CASHFREE_APP_ID and CASHFREE_SECRET_KEY are set in .env");
       throw new Error("Cashfree credentials missing");
     }
 

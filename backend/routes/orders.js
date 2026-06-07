@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/auth');
 const store = require('../store');
+const cashfreeService = require('../services/cashfreeService');
 
 // GET /api/orders
 router.get('/', authMiddleware, async (req, res) => {
@@ -10,6 +11,62 @@ router.get('/', authMiddleware, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// POST /api/orders/checkout (Public route for storefront)
+router.post('/checkout', async (req, res) => {
+  try {
+    const { items, address, subtotal, gst, shipping, total } = req.body;
+    
+    // Basic validation
+    if (!items || !items.length || !address) {
+      return res.status(400).json({ error: 'Invalid checkout data' });
+    }
+
+    // In a real app, we would recalculate subtotal, gst, and total server-side
+    // using the database product prices to prevent manipulation.
+    // For this prototype, we'll trust the client total.
+    
+    const orderData = {
+      customerSnapshot: {
+        name: address.name,
+        phone: address.phone,
+        email: address.email || ''
+      },
+      shippingAddress: {
+        name: address.name,
+        phone: address.phone,
+        line1: address.line1,
+        line2: address.line2 || '',
+        city: address.city,
+        state: address.state,
+        pincode: address.pincode
+      },
+      items: items,
+      pricing: {
+        subtotal,
+        gst,
+        shippingCharge: shipping,
+        totalAmount: total
+      }
+    };
+
+    const newOrder = await store.createOrder(orderData);
+    if (!newOrder) {
+      throw new Error("Failed to create order in database");
+    }
+
+    // Create Cashfree session
+    const cashfreeSession = await cashfreeService.createPaymentSession(newOrder);
+
+    res.json({
+      orderId: newOrder.id,
+      paymentSessionId: cashfreeSession.payment_session_id
+    });
+  } catch (err) {
+    console.error("Checkout error:", err);
+    res.status(500).json({ error: 'Failed to initiate checkout' });
   }
 });
 

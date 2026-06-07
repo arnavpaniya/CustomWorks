@@ -319,6 +319,58 @@ module.exports = {
     return res.rows.map(mapOrderToClient);
   },
 
+  createOrder: async (orderData) => {
+    const nextNum = Math.floor(100000 + Math.random() * 900000);
+    const id = `CW-${nextNum}`;
+    
+    const dbOrder = {
+      id,
+      date: new Date().toISOString(),
+      customerSnapshot: orderData.customerSnapshot || {},
+      shippingAddress: orderData.shippingAddress || {},
+      items: orderData.items || [],
+      pricing: orderData.pricing || {},
+      payment: {
+        status: "pending",
+        amountPaid: 0,
+        amountDue: orderData.pricing?.totalAmount || 0,
+        method: "cashfree",
+        gatewayId: null,
+        paymentHistory: []
+      },
+      status: "pending_payment",
+      statusHistory: [
+        {
+          status: "pending_payment",
+          changedAt: new Date().toISOString(),
+          changedBy: "System Gateway",
+          note: "Order created. Awaiting payment."
+        }
+      ],
+      invoiceUrl: null,
+      adminNotes: []
+    };
+
+    const res = await pool.query(
+      `INSERT INTO orders (id, date, customer_snapshot, shipping_address, items, pricing, payment, status, status_history, invoice_url, admin_notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+      [
+        dbOrder.id,
+        dbOrder.date,
+        JSON.stringify(dbOrder.customerSnapshot),
+        JSON.stringify(dbOrder.shippingAddress),
+        JSON.stringify(dbOrder.items),
+        JSON.stringify(dbOrder.pricing),
+        JSON.stringify(dbOrder.payment),
+        dbOrder.status,
+        JSON.stringify(dbOrder.statusHistory),
+        dbOrder.invoiceUrl,
+        JSON.stringify(dbOrder.adminNotes)
+      ]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
   getOrderById: async (id) => {
     const res = await pool.query('SELECT * FROM orders WHERE id = $1', [id]);
     return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
