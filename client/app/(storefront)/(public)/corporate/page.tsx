@@ -39,6 +39,8 @@ const processSteps = [
   "Delivered safely to your office or multiple addresses."
 ];
 
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
+
 export default function CorporatePage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -56,7 +58,7 @@ export default function CorporatePage() {
           Anything for your brand that can be custom-made, crafted by us with premium quality and delivered straight to you.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="mailto:orders.customworks@gmail.com">
+          <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Bulk / corporate order quote request")}`}>
             <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
               Request a Quote
             </Button>
@@ -102,10 +104,10 @@ export default function CorporatePage() {
           </div>
           <div className="mt-10 pt-10 border-t border-white/10">
             <h3 className="font-bold text-xl mb-4">Ready to start?</h3>
-            <p className="text-zinc-400 mb-6">Contact our corporate team directly on WhatsApp for immediate assistance.</p>
-            <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529"}`} target="_blank" rel="noopener noreferrer">
-              <Button variant="primary" size="lg" className="bg-[#25D366] text-white hover:bg-[#20bd5a] border-none shadow-lg">
-                Chat on WhatsApp
+            <p className="text-zinc-400 mb-6">Contact our corporate team directly by email for assistance.</p>
+            <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Bulk / corporate order quote request")}`}>
+              <Button variant="primary" size="lg" className="bg-white text-brand-black hover:bg-zinc-100 border-none shadow-lg">
+                Email Corporate Team
               </Button>
             </a>
           </div>

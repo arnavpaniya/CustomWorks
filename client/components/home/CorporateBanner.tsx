@@ -31,13 +31,13 @@ export default function CorporateBanner() {
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529"}?text=Hi, I'm interested in bulk/corporate orders`} target="_blank" rel="noopener noreferrer">
+            <Link href={`mailto:orders.customworks@gmail.com?subject=${encodeURIComponent("Bulk / corporate order quote request")}`}>
               <Button
                 variant="outline"
                 size="lg"
                 className="border-brand-border text-brand-black hover:bg-brand-surface min-w-44"
               >
-                Chat on WhatsApp
+                Email Us
               </Button>
             </Link>
           </div>

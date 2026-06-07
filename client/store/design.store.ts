@@ -153,7 +153,7 @@ export const useDesignStore = create<DesignState>((set, get) => ({
       return {
         unitPrice: 0,
         totalPrice: 0,
-        isWhatsAppEnquiry: false
+        isEmailEnquiry: false
       };
     }
     return calculatePricing(product, s.variantId, s.quantity, s.options);
@@ -169,4 +169,3 @@ export const useDesignStore = create<DesignState>((set, get) => ({
 
   reset: () => set(defaultState),
 }));
-

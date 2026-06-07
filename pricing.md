@@ -399,10 +399,10 @@ Flat rate: **₹95/sqft**
 ## 7. Custom Apparel & Embroidery
 
 T-shirts, hoodies, jackets, jerseys. Sublimation / screen / heat transfer / digital print.
-**Pricing: Enquiry via WhatsApp.**
+**Pricing: Enquiry via email at orders.customworks@gmail.com.**
 
 Embroidery (logos, names, badges on apparel/caps/bags).
-**Pricing: Enquiry via WhatsApp.**
+**Pricing: Enquiry via email at orders.customworks@gmail.com.**
 
 ---
 

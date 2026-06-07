@@ -26,12 +26,12 @@ const MOCK_ORDER = {
   address: "Arnav Paniya, 123 MG Road, Andheri West, Mumbai, Maharashtra – 400053",
   customerPhone: "919999999999",
 };
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const order = { ...MOCK_ORDER, id };
   const currentStatusIndex = ORDER_STATUSES.findIndex((s) => s.key === order.status);
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529";
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -54,9 +54,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             <Download size={14} /> Invoice
           </Button>
           <Link
-            href={`https://wa.me/${whatsapp}?text=Hi, I need to modify Order %23${order.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Modify request for Order #${order.id}`)}&body=${encodeURIComponent(`Hi CustomWorks,\n\nI need to modify Order #${order.id}.`)}`}
           >
             <Button variant="primary" size="sm" className="gap-1.5">
               <MessageSquare size={14} /> Modify Request
@@ -126,10 +124,10 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
           </div>
           <div className="bg-white rounded-2xl border border-brand-border p-6">
             <h2 className="font-bold text-brand-black mb-3">Need Help?</h2>
-            <Link href={`https://wa.me/${whatsapp}?text=Hi, I need help with Order %23${order.id}`} target="_blank" rel="noopener noreferrer">
+            <Link href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Help with Order #${order.id}`)}&body=${encodeURIComponent(`Hi CustomWorks,\n\nI need help with Order #${order.id}.`)}`}>
               <Button variant="outline" size="md" className="w-full gap-2">
-                <MessageSquare size={14} className="text-[#25D366]" />
-                Chat on WhatsApp
+                <MessageSquare size={14} className="text-brand-orange" />
+                Email Support
               </Button>
             </Link>
           </div>

@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageSquareShare } from "lucide-react";
+import { Mail } from "lucide-react";
 
-interface ContactFormProps {
-  whatsappNumber: string;
-}
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
-export default function ContactForm({ whatsappNumber }: ContactFormProps) {
+export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -19,22 +17,20 @@ export default function ContactForm({ whatsappNumber }: ContactFormProps) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formattedMessage = `Hello CustomWorks! 👋
-
-I have filled out the contact form on your website. Here are my inquiry details:
-
-👤 Name: ${name}
-✉️ Email: ${email}
-📌 Subject: ${subject || "General Inquiry"}
-💬 Message: ${message}
-
-Looking forward to hearing from you!`;
-
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(formattedMessage)}`;
+    const emailSubject = subject || "General Inquiry";
+    const emailBody = [
+      "I have filled out the contact form on your website. Here are my inquiry details:",
+      "",
+      `Name: ${name}`,
+      `Email: ${email}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n");
     
     // Smooth micro-interaction fallback and redirect
     setTimeout(() => {
-      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
       setIsSubmitting(false);
       // Reset form fields
       setName("");
@@ -49,7 +45,7 @@ Looking forward to hearing from you!`;
       {isSubmitting && (
         <div className="absolute inset-0 bg-white/90 backdrop-blur-xs z-10 flex flex-col items-center justify-center gap-3 transition-opacity">
           <div className="w-8 h-8 rounded-full border-2 border-brand-black border-t-transparent animate-spin" />
-          <p className="text-xs font-black uppercase tracking-wider text-brand-black">Opening WhatsApp...</p>
+          <p className="text-xs font-black uppercase tracking-wider text-brand-black">Opening Email...</p>
         </div>
       )}
       
@@ -108,8 +104,8 @@ Looking forward to hearing from you!`;
       </div>
       
       <Button variant="accent" size="lg" type="submit" className="w-full flex items-center justify-center gap-2">
-        <MessageSquareShare size={16} />
-        Send via WhatsApp
+        <Mail size={16} />
+        Send via Email
       </Button>
     </form>
   );

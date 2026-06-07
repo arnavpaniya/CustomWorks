@@ -150,12 +150,6 @@ const sections = [
               orders.customworks@gmail.com
             </a>
           </li>
-          <li>
-            <strong>Phone:</strong>{" "}
-            <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
-              +91 96320 22529
-            </a>
-          </li>
           <li><strong>Hours:</strong> Monday – Saturday, 5:00 PM – 8:00 PM IST</li>
           <li>
             <strong>Contact Page:</strong>{" "}

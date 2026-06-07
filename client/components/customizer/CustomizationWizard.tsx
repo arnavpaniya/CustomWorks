@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Type, ImagePlus, Palette, ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { X, Type, ImagePlus, Palette, ChevronLeft, ChevronRight, Check, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDesignStore } from "@/store/design.store";
@@ -25,6 +25,7 @@ const STEPS = [
 const PLACEMENTS = ["Front", "Back", "Left Sleeve", "Right Sleeve"];
 const BASE_COLORS = ["#FFFFFF", "#0A0A0A", "#1A237E", "#E53935", "#2E7D32", "#F57C00"];
 const FONTS = ["Inter", "Georgia", "Courier New", "Arial Black", "Trebuchet MS"];
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default function CustomizationWizard({ productId, productName, onClose }: Props) {
   const design = useDesignStore();
@@ -92,8 +93,8 @@ export default function CustomizationWizard({ productId, productName, onClose }:
       .join(", ");
   };
 
-  // WhatsApp Enquiry Link Prefilled Generator
-  const getWhatsAppUrl = () => {
+  // Email enquiry draft generator
+  const getEnquiryEmailUrl = () => {
     const optionsStr = Object.entries(design.options)
       .map(([key, val]) => {
         if (key === "bannerDimensions") return `- Dimensions: ${val.width}ft x ${val.height}ft`;
@@ -112,14 +113,14 @@ export default function CustomizationWizard({ productId, productName, onClose }:
       optionsStr
     ].filter(Boolean).join("\n");
 
-    const message = `Hello CustomWorks! I would like to enquire about:\n\n*Product*: ${productName}\n*Quantity*: ${design.quantity} units\n\n*Specifications*:\n${specs}\n\nCan you please share a custom quotation?`;
+    const message = `Hello CustomWorks,\n\nI would like to enquire about:\n\nProduct: ${productName}\nQuantity: ${design.quantity} units\n\nSpecifications:\n${specs}\n\nCan you please share a custom quotation?`;
     
-    return `https://wa.me/919999999999?text=${encodeURIComponent(message)}`;
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Quote request for ${productName}`)}&body=${encodeURIComponent(message)}`;
   };
 
   const handleAddToCart = () => {
-    if (priceResult.isWhatsAppEnquiry) {
-      window.open(getWhatsAppUrl(), "_blank");
+    if (priceResult.isEmailEnquiry) {
+      window.open(getEnquiryEmailUrl(), "_self");
       return;
     }
 
@@ -743,7 +744,7 @@ export default function CustomizationWizard({ productId, productName, onClose }:
                             );
                           })}
                           <div className="p-3 rounded-xl border border-dashed border-emerald-500 bg-emerald-50/20 text-xs text-emerald-700 font-semibold">
-                            ⚠️ Quantities over 500 units will redirect for a custom WhatsApp commercial quotation.
+                            Quantities over 500 units will open an email draft for a custom commercial quotation.
                           </div>
                         </>
                       ) : (
@@ -753,7 +754,7 @@ export default function CustomizationWizard({ productId, productName, onClose }:
                           if (tiers.length === 0) {
                             return (
                               <div className="p-4 rounded-xl border border-dashed border-brand-border text-center text-xs font-semibold text-brand-muted">
-                                Pricing is fully custom. Submit details to get a bespoke quote on WhatsApp.
+                                Pricing is fully custom. Submit details to get a bespoke quote by email.
                               </div>
                             );
                           }
@@ -825,10 +826,10 @@ export default function CustomizationWizard({ productId, productName, onClose }:
 
                     {/* Dynamic Pricing totals card */}
                     <div className="bg-white border-2 border-brand-black rounded-xl p-5 text-brand-black shadow-lg relative overflow-hidden">
-                      {priceResult.isWhatsAppEnquiry ? (
+                      {priceResult.isEmailEnquiry ? (
                         <div className="space-y-2">
                           <span className="text-[10px] font-black uppercase bg-[#22C55E]/10 text-[#16A34A] border border-[#22C55E]/30 px-2 py-0.5 rounded">
-                            WhatsApp Exclusive
+                            Email Quote Required
                           </span>
                           <h4 className="font-serif font-black text-xl text-brand-black pt-1">Bespoke Enterprise Order</h4>
                           <p className="text-xs text-brand-muted font-medium">
@@ -836,7 +837,7 @@ export default function CustomizationWizard({ productId, productName, onClose }:
                           </p>
                           <div className="pt-2 border-t border-brand-border mt-3 flex justify-between items-center">
                             <span className="text-xs font-bold text-brand-muted">Commercial Pricing</span>
-                            <span className="text-md font-serif font-black text-[#16A34A] animate-pulse">Request on WhatsApp</span>
+                            <span className="text-md font-serif font-black text-[#16A34A] animate-pulse">Request by Email</span>
                           </div>
                         </div>
                       ) : (
@@ -905,22 +906,20 @@ export default function CustomizationWizard({ productId, productName, onClose }:
             </Button>
           ) : (
             <Button
-              variant={priceResult.isWhatsAppEnquiry ? "accent" : "accent"}
+              variant={priceResult.isEmailEnquiry ? "accent" : "accent"}
               size="md"
               onClick={handleAddToCart}
               className={cn(
                 "cursor-pointer text-white font-black shadow-lg hover:scale-[1.02] active:scale-95 transition-all",
-                priceResult.isWhatsAppEnquiry
+                priceResult.isEmailEnquiry
                   ? "bg-[#22C55E] hover:bg-[#16A34A] border-none flex items-center gap-2"
                   : "bg-brand-black hover:bg-brand-black/90"
               )}
             >
-              {priceResult.isWhatsAppEnquiry ? (
+              {priceResult.isEmailEnquiry ? (
                 <>
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-.002 0-.003 0-.005 0-2.002-.001-3.978-.507-5.742-1.467L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.863-9.858.002-2.634-1.021-5.11-2.881-6.974-1.86-1.865-4.343-2.889-6.986-2.89-5.441 0-9.865 4.421-9.868 9.86-.001 1.761.479 3.479 1.392 4.978l-.995 3.633 3.738-.981zm12.39-6.2c-.263-.131-1.56-.77-1.802-.857-.243-.087-.419-.131-.596.131-.176.262-.68.857-.833 1.032-.154.175-.308.197-.571.066-.263-.13-1.11-.409-2.115-1.302-.782-.697-1.31-1.558-1.464-1.82-.154-.262-.016-.404.116-.535.118-.118.263-.306.394-.459.131-.153.176-.262.263-.437.087-.175.044-.328-.022-.459-.066-.131-.596-1.436-.816-1.968-.215-.518-.432-.447-.596-.456-.153-.008-.33-.009-.507-.009-.176 0-.462.066-.704.306-.243.24-1.1.1.077-1.1 2.404s-.857 4.717-1.077 5.023c-.22.306-4.31 3.588-4.31 3.588.243-.275.462-.416.704-.634.243-.218.462-.218.726-.087.263.13 1.67.83 2.066 1.002.396.172.66.254.946.066.286-.188 1.1-.95 1.342-1.1.243-.15.485-.125.77-.025.286.1.182.06.634.28.452.22 1.35.65 1.57.77.22.12.33.18.55.066.22-.115 1.1-.95 1.254-1.25.154-.3.077-.57-.066-.7l-.001-.001z"/>
-                  </svg>
-                  Enquire on WhatsApp
+                  <Mail size={16} />
+                  Enquire by Email
                 </>
               ) : (
                 <>

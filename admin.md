@@ -90,15 +90,12 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,https://customworks.
 # Email (for order status notifications to customer)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=orders@customworks.in
+SMTP_USER=orders.customworks@gmail.com
 SMTP_PASS=your_app_password
 
 # SMS (Fast2SMS)
 SMS_API_KEY=your_key
 SMS_SENDER_ID=CSTMWK
-
-# WhatsApp Business number (used for deep-link generation)
-WHATSAPP_NUMBER=919XXXXXXXXX
 
 # Razorpay
 RAZORPAY_KEY_ID=your_key_id
@@ -327,9 +324,9 @@ POST /api/orders/:id/notes
      Body: { note }
      Appends to adminNotes array
 
-GET  /api/orders/:id/whatsapp
-     Returns pre-built WhatsApp deep-link URL with order number pre-filled
-     Format: https://wa.me/{WHATSAPP_NUMBER}?text=Regarding+Order+%23{orderNumber}
+GET  /api/orders/:id/email
+     Returns pre-built email link with order number pre-filled
+     Format: mailto:orders.customworks@gmail.com?subject=Regarding+Order+%23{orderNumber}
 ```
 
 ---
@@ -349,7 +346,7 @@ PATCH /api/designs/:orderId/:itemId/approve
 PATCH /api/designs/:orderId/:itemId/reject
      Body: { reason }
      Sets designStatus = 'change_requested', saves reason
-     Sends WhatsApp + email to customer with reason
+     Sends email to customer with reason
 ```
 
 ---
@@ -444,7 +441,7 @@ Filters row above table:
 - Search by order number or customer name
 
 Each row: click → opens order detail slide-over panel showing:
-- Customer info + WhatsApp button (pre-filled link)
+- Customer info + email button (pre-filled link)
 - All order items with customization details + design preview thumbnail
 - Payment history timeline
 - Status stepper (click to advance status)
@@ -476,7 +473,7 @@ Table of all orders filtered by payment status. Columns:
 Order #  |  Customer  |  Total  |  Paid  |  Due  |  Method  |  Status  |  Actions
 ```
 
-Actions: "Mark Partial Paid", "Mark Paid", "Process Refund", "Send WhatsApp reminder".
+Actions: "Mark Partial Paid", "Mark Paid", "Process Refund", "Send email reminder".
 
 ### Section 5 — Invoices
 
@@ -495,7 +492,7 @@ Three panels:
 ### Section 7 — Customers
 
 Table: Name | Email | Phone | Total Orders | Total Spent | Last Order | Actions.  
-Action: "View Orders" (filters order table to this customer) + "WhatsApp" button.
+Action: "View Orders" (filters order table to this customer) + "Email" button.
 
 ### Section 8 — Returns
 
@@ -526,16 +523,16 @@ When admin changes order status → customer's My Account page reflects it insta
 
 ## 16. Notifications (triggered by backend on status change)
 
-| Trigger | Email | SMS | WhatsApp |
-|---|---|---|---|
-| Order placed | ✅ order confirmation | ✅ | — |
-| Design approved | ✅ | ✅ | — |
-| Design change requested | ✅ | — | ✅ (with reason) |
-| Processing started | ✅ | ✅ | — |
-| Dispatched | ✅ with tracking link | ✅ | — |
-| Delivered | ✅ | ✅ | — |
-| Partial payment reminder | — | — | ✅ |
-| Return approved | ✅ | ✅ | — |
+| Trigger | Email | SMS |
+|---|---|---|
+| Order placed | ✅ order confirmation | ✅ |
+| Design approved | ✅ | ✅ |
+| Design change requested | ✅ with reason | — |
+| Processing started | ✅ | ✅ |
+| Dispatched | ✅ with tracking link | ✅ |
+| Delivered | ✅ | ✅ |
+| Partial payment reminder | ✅ | — |
+| Return approved | ✅ | ✅ |
 
 Implement in backend as a `notify(orderId, event)` helper called inside each status-change route.
 

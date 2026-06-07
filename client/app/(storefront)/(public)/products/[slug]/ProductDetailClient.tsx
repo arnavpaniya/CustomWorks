@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Star, Share2, ChevronRight, Info, PhoneCall } from "lucide-react";
+import { Heart, Star, Share2, ChevronRight, Info, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
@@ -16,6 +16,8 @@ import { useDesignStore } from "@/store/design.store";
 interface ProductDetailClientProps {
   slug: string;
 }
+
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default function ProductDetailClient({ slug }: ProductDetailClientProps) {
   const [activeImage, setActiveImage] = useState(0);
@@ -56,7 +58,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
   const priceResult = getPricingResult();
   const unitPrice = priceResult.unitPrice;
-  const isWhatsApp = priceResult.isWhatsAppEnquiry;
+  const isEmailEnquiry = priceResult.isEmailEnquiry;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -144,7 +146,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
           {/* Price display */}
           <div className="mb-6 p-4 rounded-xl bg-brand-surface border border-brand-border">
             <p className="text-sm text-brand-muted mb-1">Wholesale Pricing Starting From</p>
-            {isWhatsApp ? (
+            {isEmailEnquiry ? (
               <p className="text-2xl font-black text-brand-orange">Quote on Request</p>
             ) : (
               <div className="flex items-baseline gap-2">
@@ -248,22 +250,20 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 mb-8">
-            {isWhatsApp ? (
+            {isEmailEnquiry ? (
               <a
-                href={`https://wa.me/919999999999?text=${encodeURIComponent(
-                  `Hi CustomWorks, I want to enquire about "${product.name}" (${activeSubproduct?.name || "Standard"}), Quantity: ${quantity}. Please share a quote!`
+                href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Quote request for ${product.name}`)}&body=${encodeURIComponent(
+                  `Hi CustomWorks,\n\nI want to enquire about "${product.name}" (${activeSubproduct?.name || "Standard"}), Quantity: ${quantity}.\n\nPlease share a quote.`
                 )}`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex-1"
               >
                 <Button
                   variant="primary"
                   size="lg"
-                  className="w-full flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white border-none"
+                  className="w-full flex items-center justify-center gap-2"
                 >
-                  <PhoneCall size={16} />
-                  Enquire via WhatsApp
+                  <Mail size={16} />
+                  Enquire by Email
                 </Button>
               </a>
             ) : (

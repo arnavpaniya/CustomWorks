@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageSquareShare } from "lucide-react";
+import { Mail } from "lucide-react";
 
-interface CorporateFormProps {
-  whatsappNumber: string;
-}
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
-export default function CorporateForm({ whatsappNumber }: CorporateFormProps) {
+export default function CorporateForm() {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
@@ -21,23 +19,19 @@ export default function CorporateForm({ whatsappNumber }: CorporateFormProps) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formattedMessage = `Hello CustomWorks! 👋 👔
-
-I'd like to get a quote for a bulk / corporate order. Here are my inquiry details:
-
-👤 Name: ${name}
-🏢 Company: ${company}
-✉️ Email: ${email}
-📞 Phone: ${phone}
-📦 Quantity: ${quantity} pieces
-📝 Requirements: ${requirements || "No specific requirements mentioned."}
-
-Looking forward to hearing from you!`;
-
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(formattedMessage)}`;
+    const emailBody = [
+      "I'd like to get a quote for a bulk / corporate order. Here are my inquiry details:",
+      "",
+      `Name: ${name}`,
+      `Company: ${company}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      `Quantity: ${quantity} pieces`,
+      `Requirements: ${requirements || "No specific requirements mentioned."}`,
+    ].join("\n");
 
     setTimeout(() => {
-      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Bulk / corporate order quote request")}&body=${encodeURIComponent(emailBody)}`;
       setIsSubmitting(false);
       // Reset form
       setName("");
@@ -54,7 +48,7 @@ Looking forward to hearing from you!`;
       {isSubmitting && (
         <div className="absolute inset-0 bg-white/90 backdrop-blur-xs z-10 flex flex-col items-center justify-center gap-3 transition-opacity">
           <div className="w-8 h-8 rounded-full border-2 border-brand-black border-t-transparent animate-spin" />
-          <p className="text-xs font-black uppercase tracking-wider text-brand-black">Opening WhatsApp...</p>
+          <p className="text-xs font-black uppercase tracking-wider text-brand-black">Opening Email...</p>
         </div>
       )}
 
@@ -139,8 +133,8 @@ Looking forward to hearing from you!`;
       </div>
 
       <Button variant="accent" size="lg" className="w-full flex items-center justify-center gap-2" type="submit">
-        <MessageSquareShare size={16} />
-        Submit Quote Request via WhatsApp
+        <Mail size={16} />
+        Submit Quote Request via Email
       </Button>
     </form>
   );

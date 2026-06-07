@@ -61,6 +61,7 @@ const STAMPS = [
     ) 
   }
 ];
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default function DesignSandbox() {
   const design = useDesignStore();
@@ -76,10 +77,10 @@ export default function DesignSandbox() {
   const handleOrder = () => {
     setOrdered(true);
     setTimeout(() => {
-      // Create message for WhatsApp custom inquiry
+      // Create message for email custom inquiry
       const message = `Hi! I created a customized design on the CustomWorks landing page playground:\n- Product: ${selectedProduct.name}\n- Color: ${selectedColor.name}\n- Initials: ${customText}\n- Font: ${fontStyle === "serif" ? "Elegant Serif" : "Modern Sans"}\n- Stamp: ${selectedStamp.name}`;
-      const url = `https://wa.me/919632022529?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
+      const url = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Custom design inquiry")}&body=${encodeURIComponent(message)}`;
+      window.location.href = url;
       setOrdered(false);
     }, 1200);
   };

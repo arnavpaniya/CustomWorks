@@ -3,7 +3,7 @@ import { ProductCatalogItem, PriceTier } from "./products-catalog";
 export interface PricingResult {
   unitPrice: number;
   totalPrice: number;
-  isWhatsAppEnquiry: boolean;
+  isEmailEnquiry: boolean;
   message?: string;
   breakdown?: {
     baseRate: number;
@@ -40,7 +40,7 @@ export function calculatePricing(
   const result: PricingResult = {
     unitPrice: 0,
     totalPrice: 0,
-    isWhatsAppEnquiry: false,
+    isEmailEnquiry: false,
     breakdown: {
       baseRate: 0,
       adjustments: [],
@@ -48,24 +48,24 @@ export function calculatePricing(
     }
   };
 
-  // 1. WhatsApp Only Categories (Custom Apparel & Embroidery)
-  if (product.customizerType === "whatsapp-only" || product.id === "custom-apparel") {
-    result.isWhatsAppEnquiry = true;
+  // 1. Email-quote Categories (Custom Apparel & Embroidery)
+  if (product.customizerType === "email-quote-only" || product.id === "custom-apparel") {
+    result.isEmailEnquiry = true;
     result.unitPrice = 0;
     result.totalPrice = 0;
-    result.message = "Enquiry via WhatsApp";
+    result.message = "Enquiry via Email";
     return result;
   }
 
   // Find subproduct if applicable
   const subproduct = product.subproducts?.find(sp => sp.id === subproductId);
 
-  // 2. Specific Subproduct WhatsApp Enquiry triggers
+  // 2. Specific Subproduct Email Enquiry triggers
   if (subproductId === "bulk-flyers") {
-    result.isWhatsAppEnquiry = true;
+    result.isEmailEnquiry = true;
     result.unitPrice = 0;
     result.totalPrice = 0;
-    result.message = "Bulk offset flyer pricing is strictly by WhatsApp quotation.";
+    result.message = "Bulk offset flyer pricing is strictly by email quotation.";
     return result;
   }
 
@@ -143,12 +143,12 @@ export function calculatePricing(
 
   // 5. Lanyards Special Multi-Column Matrix Calculation
   if (product.customizerType === "lanyards" && subproductId === "polyester-lanyard-20mm") {
-    // Over 500 lanyards requires WhatsApp Enquiry
+    // Over 500 lanyards requires Email Enquiry
     if (quantity > 500) {
-      result.isWhatsAppEnquiry = true;
+      result.isEmailEnquiry = true;
       result.unitPrice = 0;
       result.totalPrice = 0;
-      result.message = "Order quantities above 500 units require a custom WhatsApp quotation.";
+      result.message = "Order quantities above 500 units require a custom email quotation.";
       return result;
     }
 
@@ -199,10 +199,10 @@ export function calculatePricing(
   // 6. Generic Keychain Lanyards or other Enquiry items with > 500 check
   if (product.customizerType === "lanyards" && subproductId === "keychain-lanyard") {
     if (quantity > 500) {
-      result.isWhatsAppEnquiry = true;
+      result.isEmailEnquiry = true;
       result.unitPrice = 0;
       result.totalPrice = 0;
-      result.message = "Order quantities above 500 units require a custom WhatsApp quotation.";
+      result.message = "Order quantities above 500 units require a custom email quotation.";
       return result;
     }
   }

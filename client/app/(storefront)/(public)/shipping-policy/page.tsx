@@ -114,8 +114,8 @@ const sections = [
       <>
         <p>
           Currently, we do not offer international shipping. If you have specific needs or require exceptions, please reach out to our customer service team at{" "}
-          <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
-            +91 96320 22529
+          <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+            orders.customworks@gmail.com
           </a>
           . We will review your request and explore possible solutions to accommodate your shipping requirements.
         </p>
@@ -130,15 +130,9 @@ const sections = [
         <p>For any shipping-related questions or concerns, please reach out to our customer service team:</p>
         <ul className="list-disc list-inside space-y-1 mt-3">
           <li>
-            <strong>Phone / WhatsApp:</strong>{" "}
-            <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
-              +91 96320 22529
-            </a>
-          </li>
-          <li>
             <strong>Email:</strong>{" "}
-            <a href="mailto:orders@customworks.in" className="text-brand-orange hover:underline font-medium">
-              orders@customworks.in
+            <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+              orders.customworks@gmail.com
             </a>
           </li>
           <li><strong>Hours:</strong> Monday – Saturday, 10:00 AM – 7:00 PM IST</li>

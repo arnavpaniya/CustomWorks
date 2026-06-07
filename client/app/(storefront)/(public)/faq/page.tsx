@@ -49,7 +49,7 @@ const faqs = [
       },
       {
         q: "What if my item arrives damaged?",
-        a: "If your item arrives damaged, please take clear photos of the damage and the packaging, and contact our support team via WhatsApp or email within 48 hours of delivery. We will initiate a replacement immediately."
+        a: "If your item arrives damaged, please take clear photos of the damage and the packaging, and contact our support team by email within 48 hours of delivery. We will initiate a replacement immediately."
       }
     ]
   }
@@ -128,12 +128,12 @@ export default function FAQPage() {
         </div>
         <h3 className="text-2xl font-black text-brand-black mb-3">Still have questions?</h3>
         <p className="text-brand-muted mb-8 max-w-md mx-auto">
-          Can't find the answer you're looking for? Our friendly support team is here to help.
+          Can&apos;t find the answer you&apos;re looking for? Our friendly support team is here to help.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529"}`} target="_blank" rel="noopener noreferrer">
-             <Button variant="accent" size="lg" className="w-full sm:w-auto px-8 bg-[#25D366] hover:bg-[#20bd5a] text-white">
-               Chat on WhatsApp
+          <a href="mailto:orders.customworks@gmail.com">
+             <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
+               Email Support
              </Button>
           </a>
           <a href="/contact">

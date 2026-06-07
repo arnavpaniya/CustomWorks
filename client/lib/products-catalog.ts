@@ -19,7 +19,7 @@ export interface ProductCatalogItem {
   isNew?: boolean;
   
   // Custom metadata for our pricing engine & UI options
-  customizerType: "apparel" | "business-cards" | "envelopes" | "banners" | "lanyards" | "standard-tiers" | "area-tiers" | "whatsapp-only";
+  customizerType: "apparel" | "business-cards" | "envelopes" | "banners" | "lanyards" | "standard-tiers" | "area-tiers" | "email-quote-only";
   subproducts?: {
     id: string;
     name: string;
@@ -599,7 +599,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     rating: 4.9,
     reviewCount: 382,
     badge: "Premium Quality",
-    customizerType: "whatsapp-only"
+    customizerType: "email-quote-only"
   },
 
   // 8. Brochures

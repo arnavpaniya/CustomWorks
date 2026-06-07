@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Mail, MessageCircle, MapPin, Clock, Send, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const CONTACT_EMAIL = "orders.customworks@gmail.com";
+
 export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
@@ -18,12 +20,20 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Mock API call
+    const subject = form.subject.trim() || "CustomWorks inquiry";
+    const body = [
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      "",
+      form.message,
+    ].join("\n");
+
     setTimeout(() => {
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setLoading(false);
       setSubmitted(true);
       setForm({ name: "", email: "", subject: "", message: "" });
-    }, 1500);
+    }, 500);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -40,7 +50,7 @@ export default function ContactPage() {
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-brand-black mb-6">
-          We're Here to Help
+          We&apos;re Here to Help
         </h1>
         <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto">
           Have a question about an order, need help with a custom design, or want to discuss a bulk purchase? Our team is ready to assist you.
@@ -58,10 +68,10 @@ export default function ContactPage() {
                   <MessageCircle size={20} className="text-brand-orange" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-brand-black">WhatsApp Support</h3>
-                  <p className="text-sm text-brand-muted mt-1 mb-2">Fastest way to get help with your orders.</p>
-                  <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529"}`} target="_blank" rel="noopener noreferrer" className="text-brand-orange font-semibold hover:underline text-sm flex items-center gap-1">
-                    +91 96320 22529 <ArrowRight size={14} />
+                  <h3 className="font-bold text-brand-black">Order Support</h3>
+                  <p className="text-sm text-brand-muted mt-1 mb-2">Use email for order help, quote requests, and detailed inquiries.</p>
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-orange font-semibold hover:underline text-sm flex items-center gap-1">
+                    {CONTACT_EMAIL} <ArrowRight size={14} />
                   </a>
                 </div>
               </div>
@@ -73,8 +83,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-brand-black">Email Us</h3>
                   <p className="text-sm text-brand-muted mt-1 mb-2">For detailed inquiries and support.</p>
-                  <a href="mailto:orders.customworks@gmail.com" className="text-brand-black font-semibold hover:underline text-sm">
-                    orders.customworks@gmail.com
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-black font-semibold hover:underline text-sm">
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
               </div>
@@ -123,9 +133,9 @@ export default function ContactPage() {
                 <div className="h-16 w-16 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
                   <Send size={24} />
                 </div>
-                <h3 className="text-xl font-bold text-brand-black mb-2">Message Sent!</h3>
+                <h3 className="text-xl font-bold text-brand-black mb-2">Email Draft Opened</h3>
                 <p className="text-brand-muted mb-6">
-                  Thank you for reaching out. Our team will get back to you within 24 hours.
+                  Send the draft to reach our team at {CONTACT_EMAIL}.
                 </p>
                 <Button variant="outline" onClick={() => setSubmitted(false)}>
                   Send Another Message
@@ -191,7 +201,7 @@ export default function ContactPage() {
                 </div>
 
                 <Button type="submit" variant="accent" size="lg" className="w-full" loading={loading}>
-                  Send Message
+                  Send Email
                 </Button>
               </form>
             )}

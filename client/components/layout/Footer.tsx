@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, Mail, ArrowRight } from "lucide-react";
+import { Mail } from "lucide-react";
 import Logo from "@/components/common/Logo";
 
 const InstagramIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
@@ -133,16 +133,14 @@ export default function Footer() {
               Design customized premium apparel and accessories. Crafted with rich premium elements, manufactured with high organic care, and delivered to your doorstep.
             </p>
 
-            {/* WhatsApp live chat link */}
+            {/* Email contact link */}
             <div className="pt-2">
               <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919632022529"}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:orders.customworks@gmail.com"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all shadow-sm group"
               >
-                <MessageCircle size={15} className="text-[#25D366] group-hover:scale-110 transition-transform" />
-                <span>Chat live on WhatsApp</span>
+                <Mail size={15} className="text-brand-orange group-hover:scale-110 transition-transform" />
+                <span>Email orders.customworks@gmail.com</span>
               </a>
             </div>
           </div>

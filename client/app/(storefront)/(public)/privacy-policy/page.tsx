@@ -33,10 +33,6 @@ const sections = [
           If you have any questions or concerns regarding this policy, please contact us at{" "}
           <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
             orders.customworks@gmail.com
-          </a>{" "}
-          or call{" "}
-          <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
-            +91 96320 22529
           </a>
           .
         </p>
@@ -236,12 +232,6 @@ const sections = [
             <strong>Email:</strong>{" "}
             <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
               orders.customworks@gmail.com
-            </a>
-          </li>
-          <li>
-            <strong>Phone:</strong>{" "}
-            <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
-              +91 96320 22529
             </a>
           </li>
           <li>

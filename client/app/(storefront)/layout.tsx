@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "../globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/common/WhatsAppButton";
+import ContactButton from "@/components/common/ContactButton";
 
 export const metadata: Metadata = {
   title: {
@@ -49,7 +49,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
         {children}
       </main>
       <Footer />
-      <WhatsAppButton />
+      <ContactButton />
     </>
   );
 }

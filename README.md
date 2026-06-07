@@ -115,7 +115,7 @@ customworks/
 │   │   │   ├── customizer/         # Canvas, wizard steps, preview
 │   │   │   ├── cart/
 │   │   │   ├── checkout/
-│   │   │   └── common/             # WhatsApp button, breadcrumbs, etc.
+│   │   │   └── common/             # Contact button, breadcrumbs, etc.
 │   │   ├── lib/
 │   │   │   ├── api.ts              # API client
 │   │   │   ├── auth.ts
@@ -171,11 +171,8 @@ PAYMENT_API_KEY=
 PAYMENT_SECRET=
 PAYMENT_WEBHOOK_SECRET=
 
-# WhatsApp
-WHATSAPP_BUSINESS_NUMBER=   # e.g. 919876543210 (no + prefix)
-
 # Email
-EMAIL_FROM=noreply@customworks.in
+EMAIL_FROM=orders.customworks@gmail.com
 RESEND_API_KEY=             # or SENDGRID_API_KEY
 
 # SMS
@@ -183,7 +180,7 @@ MSG91_API_KEY=
 MSG91_SENDER_ID=
 
 # Admin
-ADMIN_EMAIL=admin@customworks.in
+ADMIN_EMAIL=orders.customworks@gmail.com
 ```
 
 ---
@@ -241,7 +238,7 @@ ADMIN_EMAIL=admin@customworks.in
 8. **Footer**
    - Links: About | Contact | FAQ | Privacy Policy | Refund Policy | Corporate Orders
    - Social media icons: Instagram, Facebook, Twitter/X, YouTube (links from admin config).
-   - WhatsApp contact link.
+   - Email contact link: orders.customworks@gmail.com.
    - Copyright text.
 
 ---
@@ -313,7 +310,7 @@ Sections:
 - Current status + visual status tracker (step bar):
   `Designing → Processing → Ready to Ship → Dispatched → Delivered`
 - Invoice download button (PDF uploaded by admin).
-- **Modification Request** – Button → opens WhatsApp chat with company number (deep link `https://wa.me/WHATSAPP_BUSINESS_NUMBER?text=Order+%23ID+modification+request`).
+- **Modification Request** – Button → opens a prefilled email draft to `orders.customworks@gmail.com`.
 - Return/Exchange request button (as per policy, policy-gated logic).
 
 ---
@@ -323,7 +320,7 @@ Sections:
 - Hero section: "Bulk & Corporate Orders – Made for Your Business"
 - What's offered: bulk pricing, branded merchandise, custom packaging, dedicated account manager.
 - Product categories available for corporate orders.
-- CTA: "Contact us on WhatsApp for pricing & quotes" → WhatsApp deep link.
+- CTA: "Email us for pricing & quotes" → prefilled email draft to `orders.customworks@gmail.com`.
 - Optional: inquiry form (name, company, requirement, quantity estimate, email, phone).
 
 ---
@@ -333,18 +330,18 @@ Sections:
 | Route | Content |
 |---|---|
 | `/about` | Brand story, team, mission, values |
-| `/contact` | Contact form + WhatsApp link + email + address |
+| `/contact` | Contact form + email link + address |
 | `/faq` | Accordion – customization FAQs + delivery FAQs |
 | `/privacy-policy` | Legal text (provided by client or standard) |
 | `/refund-policy` | Refund, Return & Custom Order Policy (provided by client) |
 
 ---
 
-### 5.11 Floating WhatsApp Button
+### 5.11 Floating Email Button
 
 - Fixed position, bottom-right corner, all pages.
-- WhatsApp icon. On click → `https://wa.me/WHATSAPP_BUSINESS_NUMBER`.
-- Subtle tooltip on hover: "Chat with us".
+- Email icon. On click → `mailto:orders.customworks@gmail.com`.
+- Subtle tooltip on hover: "Email us".
 - Visible on both mobile and desktop.
 
 ---
@@ -620,7 +617,7 @@ Access: `/admin/*` routes. Role = ADMIN only. Redirect non-admins to home.
 - Filter by status, date range, search by order ID or customer name.
 - Click order → order detail page.
 - On detail: edit order fields, change status (dropdown), add admin note, upload invoice PDF (drag-drop), one-click print invoice.
-- WhatsApp shortcut button per order → opens WhatsApp chat with customer number + pre-filled order ID text.
+- Email shortcut button per order → opens a prefilled email draft with the order ID.
 
 ### Design Approval Queue (`/admin/designs`)
 - List of submitted designs with status = PENDING.
@@ -659,11 +656,11 @@ Access: `/admin/*` routes. Role = ADMIN only. Redirect non-admins to home.
 - Details provided by CustomWorks. Build generic payment service wrapper.
 - Webhook endpoint `/api/webhooks/payment` → verify signature → create Order in DB → trigger email/SMS notification.
 
-### WhatsApp Integration
-- No WhatsApp API needed for MVP. Use deep links only.
-- Customer support button: `https://wa.me/{WHATSAPP_BUSINESS_NUMBER}`
-- Order modification: `https://wa.me/{WHATSAPP_BUSINESS_NUMBER}?text=Hi, I need to modify Order %23{orderId}`
-- Admin → customer: `https://wa.me/{customerPhone}?text=Hi, regarding your CustomWorks Order %23{orderId}`
+### Email Contact Integration
+- Use prefilled `mailto:` links for customer support and quote requests.
+- Customer support button: `mailto:orders.customworks@gmail.com`
+- Order modification: `mailto:orders.customworks@gmail.com?subject=Modify request for Order #{orderId}`
+- Admin support contact: `orders.customworks@gmail.com`
 
 ### S3 / R2 File Storage
 - Product images → `customworks/products/{productId}/`
@@ -719,7 +716,7 @@ Side paths:
 | Status → Delivered | ✅ | ✅ |
 | Return approved | ✅ | optional |
 
-Email templates: branded, include order summary, CustomWorks logo, WhatsApp contact link.
+Email templates: branded, include order summary, CustomWorks logo, and support email link.
 
 ---
 
@@ -811,7 +808,7 @@ These are **not** in MVP. Note in codebase with `// TODO: FUTURE` comments and s
 | Order tracking with status flow | MUST |
 | Admin order management + status control | MUST |
 | Design approval system | MUST |
-| WhatsApp CTA buttons | MUST |
+| Email CTA buttons | MUST |
 | Google login | MUST |
 | Email + SMS notifications | MUST |
 | Mobile-first responsive design | MUST |
@@ -882,6 +879,6 @@ cd apps/api && npm run dev
 
 ---
 
-> All gateway credentials, WhatsApp number, domain, invoice template, and brand assets to be provided by **CustomWorks** before development begins.  
+> All gateway credentials, support email, domain, invoice template, and brand assets to be provided by **CustomWorks** before development begins.  
 > Confirm final color palette and logo with client before building design system.
 # CustomWorks

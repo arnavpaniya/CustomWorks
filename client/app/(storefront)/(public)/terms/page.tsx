@@ -159,8 +159,7 @@ const sections = [
       <>
         <p>For questions about these Terms of Service, contact us:</p>
         <ul className="list-disc list-inside space-y-1 mt-3">
-          <li><strong>Email:</strong> orders@customworks.in</li>
-          <li><strong>WhatsApp:</strong> +91 96320 22529</li>
+          <li><strong>Email:</strong> orders.customworks@gmail.com</li>
           <li><strong>Contact Page:</strong> <a href="/contact" className="text-brand-orange hover:underline font-medium">customworks.in/contact</a></li>
         </ul>
       </>
