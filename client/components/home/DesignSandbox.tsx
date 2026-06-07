@@ -386,29 +386,27 @@ export default function DesignSandbox() {
                   <Shirt size={14} className="text-brand-orange" />
                   2. Dynamic Colorway
                 </label>
-                <div className="grid grid-cols-4 gap-3">
-                  {COLORS.map((color) => {
-                    const isSelected = selectedColor.name === color.name;
-                    return (
-                      <button
-                        key={color.name}
-                        onClick={() => setSelectedColor(color)}
-                        aria-label={`Select product color: ${color.name}`}
-                        className={`h-11 rounded-2xl relative transition-all duration-300 border flex items-center justify-center cursor-pointer shadow-2xs hover:scale-103 ${
-                          isSelected 
-                            ? "border-brand-orange ring-2 ring-brand-orange/20 scale-102" 
-                            : "border-brand-border/80 hover:border-zinc-400"
-                        }`}
-                        style={{ backgroundColor: color.hex }}
-                      >
-                        {isSelected && (
-                          <div className={`w-5 h-5 rounded-full ${color.isDark ? "bg-white text-zinc-950" : "bg-zinc-950 text-white"} flex items-center justify-center shadow-sm scale-90`}>
-                            <Check size={11} className="stroke-3" />
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
+                <div className="relative">
+                  <select
+                    value={selectedColor.name}
+                    onChange={(e) => {
+                      const color = COLORS.find(c => c.name === e.target.value);
+                      if (color) setSelectedColor(color);
+                    }}
+                    className="w-full appearance-none px-4 py-3 pr-10 bg-zinc-50 border border-brand-border rounded-xl text-brand-black text-sm font-semibold focus:outline-hidden focus:border-brand-orange shadow-2xs cursor-pointer"
+                  >
+                    {COLORS.map((color) => (
+                      <option key={color.name} value={color.name}>
+                        {color.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                    <div 
+                      className="w-5 h-5 rounded-full border border-zinc-300 shadow-xs"
+                      style={{ backgroundColor: selectedColor.hex }}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -445,30 +443,29 @@ export default function DesignSandbox() {
                   <Paintbrush size={14} className="text-brand-orange" />
                   4. Design Thread / Laser Fill
                 </label>
-                <div className="flex gap-3">
-                  {[
-                    { name: "Luxury Gold", hex: "#C5A880" },
-                    { name: "Onyx Black", hex: "#18181B" },
-                    { name: "White Satin", hex: "#FFFFFF" },
-                    { name: "Crimson Red", hex: "#DC2626" },
-                  ].map((thread) => {
-                    const isSelected = textColor === thread.hex;
-                    return (
-                      <button
-                        key={thread.name}
-                        onClick={() => setTextColor(thread.hex)}
-                        aria-label={`Select design fill color: ${thread.name}`}
-                        className={`h-9 w-9 rounded-full border relative flex items-center justify-center shadow-3xs cursor-pointer transition-all duration-300 hover:scale-105 ${
-                          isSelected ? "border-zinc-950 scale-102 ring-2 ring-zinc-200" : "border-brand-border/80"
-                        }`}
-                        style={{ backgroundColor: thread.hex }}
-                      >
-                        {isSelected && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-linear-to-tr from-brand-orange to-amber-500" />
-                        )}
-                      </button>
-                    );
-                  })}
+                <div className="relative">
+                  <select
+                    value={textColor}
+                    onChange={(e) => setTextColor(e.target.value)}
+                    className="w-full appearance-none px-4 py-3 pr-10 bg-zinc-50 border border-brand-border rounded-xl text-brand-black text-sm font-semibold focus:outline-hidden focus:border-brand-orange shadow-2xs cursor-pointer"
+                  >
+                    {[
+                      { name: "Luxury Gold", hex: "#C5A880" },
+                      { name: "Onyx Black", hex: "#18181B" },
+                      { name: "White Satin", hex: "#FFFFFF" },
+                      { name: "Crimson Red", hex: "#DC2626" },
+                    ].map((thread) => (
+                      <option key={thread.hex} value={thread.hex}>
+                        {thread.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                    <div 
+                      className="w-5 h-5 rounded-full border border-zinc-300 shadow-xs"
+                      style={{ backgroundColor: textColor }}
+                    />
+                  </div>
                 </div>
               </div>
 

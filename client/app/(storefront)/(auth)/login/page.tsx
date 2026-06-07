@@ -39,7 +39,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password.trim());
-      window.location.href = "/account/dashboard";
+      window.location.href = "/dashboard";
     } catch (err: any) {
       if (["auth/user-not-found","auth/wrong-password","auth/invalid-credential"].includes(err.code)) {
         setError("Invalid email or password. Please try again.");
@@ -55,7 +55,7 @@ export default function LoginPage() {
     setError(""); setLoading(true);
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
-      window.location.href = "/account/dashboard";
+      window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.message || "Google sign-in failed.");
     } finally { setLoading(false); }

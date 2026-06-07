@@ -24,7 +24,7 @@ const STEPS = [
 
 const PLACEMENTS = ["Front", "Back", "Left Sleeve", "Right Sleeve"];
 const BASE_COLORS = ["#FFFFFF", "#0A0A0A", "#1A237E", "#E53935", "#2E7D32", "#F57C00"];
-const FONTS = ["Inter", "Georgia", "Courier New", "Arial Black", "Trebuchet MS"];
+const FONTS = ["Inter", "Georgia", "Courier New", "Arial Black", "Trebuchet MS", "Times New Roman", "Comic Sans MS", "Impact", "Verdana", "Tahoma", "Palatino", "Garamond"];
 const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default function CustomizationWizard({ productId, productName, onClose }: Props) {
@@ -523,14 +523,14 @@ export default function CustomizationWizard({ productId, productName, onClose }:
                           </select>
                         </div>
                         <div>
-                          <p className="text-[10px] font-black text-zinc-500 mb-1 uppercase">Font Size: {fontSize}px</p>
+                          <p className="text-[10px] font-black text-zinc-500 mb-1 uppercase">Font Size (px)</p>
                           <input
-                            type="range"
+                            type="number"
                             min={12}
-                            max={60}
+                            max={120}
                             value={fontSize}
                             onChange={(e) => setFontSize(Number(e.target.value))}
-                            className="w-full accent-black cursor-pointer"
+                            className="w-full h-8 px-2 rounded-lg border border-brand-border text-xs focus:outline-none focus:ring-1 focus:ring-brand-black bg-white font-bold"
                           />
                         </div>
                       </div>

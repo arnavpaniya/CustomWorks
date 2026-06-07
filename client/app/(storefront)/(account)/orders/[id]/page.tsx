@@ -37,9 +37,9 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1 text-sm text-brand-muted mb-6" aria-label="Breadcrumb">
-        <Link href="/account/dashboard" className="hover:text-brand-black">Account</Link>
+        <Link href="/dashboard" className="hover:text-brand-black">Account</Link>
         <ChevronRight size={12} />
-        <Link href="/account/orders" className="hover:text-brand-black">Orders</Link>
+        <Link href="/orders" className="hover:text-brand-black">Orders</Link>
         <ChevronRight size={12} />
         <span className="text-brand-black font-medium">#{order.id}</span>
       </nav>

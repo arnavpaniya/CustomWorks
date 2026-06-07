@@ -78,7 +78,7 @@ const sections = [
           Once your order has shipped, you will receive a confirmation email with a tracking number. You can track your order using the link provided in the email. The order can also be tracked on our website.
         </p>
         <p className="mt-3">
-          <a href="/account/orders" className="text-brand-orange hover:underline font-medium">
+          <a href="/orders" className="text-brand-orange hover:underline font-medium">
             Track your orders here →
           </a>
         </p>

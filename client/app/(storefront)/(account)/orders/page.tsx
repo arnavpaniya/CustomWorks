@@ -161,7 +161,7 @@ export default function OrdersPage() {
                   transition={{ delay: i * 0.04, duration: 0.3 }}
                 >
                   <Link
-                    href={`/account/orders/${order.id}`}
+                    href={`/orders/${order.id}`}
                     className="flex items-center justify-between p-4 sm:p-5 bg-white rounded-2xl border border-brand-border hover:shadow-lg hover:border-brand-black/10 transition-all duration-200 group"
                   >
                     <div className="flex items-center gap-4 min-w-0 flex-1">

@@ -54,7 +54,7 @@ export default function RegisterPage() {
     try {
       const cred = await createUserWithEmailAndPassword(auth, form.email.trim(), form.password.trim());
       if (cred.user) await updateProfile(cred.user, { displayName: form.name.trim() });
-      window.location.href = "/account/dashboard";
+      window.location.href = "/dashboard";
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") setErrors({ email: "This email is already in use." });
       else if (err.code === "auth/invalid-email")   setErrors({ email: "Invalid email address format." });
@@ -67,7 +67,7 @@ export default function RegisterPage() {
     setErrors({}); setLoading(true);
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
-      window.location.href = "/account/dashboard";
+      window.location.href = "/dashboard";
     } catch (err: any) {
       setErrors({ submit: err.message || "Google sign-up failed." });
     } finally { setLoading(false); }

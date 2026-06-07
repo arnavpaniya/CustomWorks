@@ -46,7 +46,7 @@ export default function Header() {
 
   const handleAccountClick = () => {
     if (user) {
-      window.location.href = "/account/dashboard";
+      window.location.href = "/dashboard";
     } else {
       window.location.href = "/login";
     }
@@ -94,7 +94,7 @@ export default function Header() {
       >
         {/* Desktop Header */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-8">
+          <div className="flex items-center justify-between h-16 gap-4 sm:gap-8">
             {/* Logo */}
             <Link href="/" className="shrink-0 flex items-center h-14 w-36 md:w-40" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" />
@@ -140,7 +140,7 @@ export default function Header() {
               {/* Account */}
               <button
                 onClick={handleAccountClick}
-                className="h-10 w-10 hidden sm:flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="My account"
               >
                 {user?.photoURL ? (
@@ -152,7 +152,7 @@ export default function Header() {
  
               {/* Wishlist */}
               <Link
-                href="/account/wishlist"
+                href="/wishlist"
                 className="h-10 w-10 hidden sm:flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="Wishlist"
               >
@@ -289,19 +289,19 @@ export default function Header() {
                   {user ? (
                     <>
                       <Link
-                        href="/account/dashboard"
+                        href="/dashboard"
                         className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                       >
                         <LayoutDashboard size={16} /> My Account
                       </Link>
                       <Link
-                        href="/account/orders"
+                        href="/orders"
                         className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                       >
                         <Package size={16} /> My Orders
                       </Link>
                       <Link
-                        href="/account/wishlist"
+                        href="/wishlist"
                         className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                       >
                         <Heart size={16} /> Wishlist

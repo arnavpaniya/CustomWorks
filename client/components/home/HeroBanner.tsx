@@ -143,19 +143,6 @@ export default function HeroBanner() {
 
             <div className="hidden md:block h-8 w-px bg-zinc-200/80" />
 
-            {/* Feature 3 */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-brand-black shrink-0">
-                <Box size={14} className="stroke-2" />
-              </div>
-              <div>
-                <h4 className="text-[10px] font-black uppercase tracking-wider text-brand-black">No Minimums</h4>
-                <p className="text-[9px] text-zinc-500 font-bold mt-0.5">Order what you need</p>
-              </div>
-            </div>
-
-            <div className="hidden lg:block h-8 w-px bg-zinc-200/80" />
-
             {/* Feature 4 */}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-brand-black shrink-0">

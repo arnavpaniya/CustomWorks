@@ -24,58 +24,6 @@ const InstagramIcon = ({ size = 18, ...props }: { size?: number } & React.SVGPro
   </svg>
 );
 
-const FacebookIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-);
-
-const XIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-  </svg>
-);
-
-const YouTubeIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.56 49.56 0 0 1-16.2 0A2 2 0 0 1 2.5 17z" />
-    <path d="M10 9l5 3-5 3z" />
-  </svg>
-);
 
 const footerLinks = {
   Products: [
@@ -106,9 +54,6 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/customworks.in?igsh=YXFoNDR2cXNnNDlz", hoverClass: "hover:bg-gradient-to-tr hover:from-amber-500 hover:via-red-500 hover:to-purple-600 hover:text-white" },
-  { icon: FacebookIcon, label: "Facebook", href: "#", hoverClass: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]" },
-  { icon: XIcon, label: "Twitter / X", href: "#", hoverClass: "hover:bg-black hover:text-white hover:border-black" },
-  { icon: YouTubeIcon, label: "YouTube", href: "#", hoverClass: "hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]" },
 ];
 
 export default function Footer() {

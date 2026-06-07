@@ -15,7 +15,7 @@ const faqs = [
       },
       {
         q: "Can I request a sample before placing a bulk order?",
-        a: "Yes! For corporate or bulk orders (50+ units), we can provide a physical sample for approval before proceeding with the full production run. Please contact our corporate sales team."
+        a: "Yes! For corporate or bulk orders, we can provide a physical sample for approval before proceeding with the full production run. Please contact our corporate sales team."
       },
       {
         q: "Do you review designs before printing?",
@@ -49,7 +49,7 @@ const faqs = [
       },
       {
         q: "What if my item arrives damaged?",
-        a: "If your item arrives damaged, please take clear photos of the damage and the packaging, and contact our support team by email within 48 hours of delivery. We will initiate a replacement immediately."
+        a: "If your item arrives damaged, please take clear photos of the damage and the packaging, and contact our support team by email within 48 hours of delivery. We will scrutinize the claim to verify it is an actual delivery-related issue before proceeding with a replacement."
       }
     ]
   }
@@ -122,7 +122,7 @@ export default function FAQPage() {
       </div>
 
       {/* Still need help CTA */}
-      <div className="mt-20 bg-brand-surface border border-brand-border rounded-3xl p-10 text-center">
+      <div className="mt-20 bg-white border border-brand-border rounded-3xl p-10 text-center shadow-lg">
         <div className="h-16 w-16 mx-auto bg-white rounded-2xl border border-brand-border shadow-sm flex items-center justify-center mb-6">
           <MessageCircle size={28} className="text-brand-orange" />
         </div>

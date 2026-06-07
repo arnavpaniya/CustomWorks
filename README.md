@@ -225,7 +225,7 @@ ADMIN_EMAIL=orders.customworks@gmail.com
    - Masonry grid or full-bleed layout.
 
 5. **Why CustomWorks?**
-   - Icon grid: Quality Guaranteed | Fast Turnaround | 100% Customizable | Secure Payment | Easy Returns
+   - Icon grid: Quality Guaranteed | Fast Turnaround | 100% Customizable | Secure Payment
 
 6. **Customer Testimonials & Reviews**
    - Carousel. Name, photo (optional), rating (stars), review text.
@@ -237,7 +237,7 @@ ADMIN_EMAIL=orders.customworks@gmail.com
 
 8. **Footer**
    - Links: About | Contact | FAQ | Privacy Policy | Refund Policy | Corporate Orders
-   - Social media icons: Instagram, Facebook, Twitter/X, YouTube (links from admin config).
+   - Social media icons: Instagram (links from admin config).
    - Email contact link: orders.customworks@gmail.com.
    - Copyright text.
 

@@ -163,11 +163,8 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
           {/* MOQs & Quantity */}
           <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
+            <div className="mb-2">
               <span className="text-sm font-semibold text-brand-black">Order Quantity</span>
-              <span className="text-xs text-brand-muted bg-white border px-2 py-0.5 rounded">
-                Min. Order Qty (MOQ): {product.moq}
-              </span>
             </div>
             <div className="flex items-center gap-3">
               <input

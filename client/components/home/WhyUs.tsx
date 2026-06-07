@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Zap, Paintbrush, CreditCard, RotateCcw } from "lucide-react";
+import { ShieldCheck, Zap, Paintbrush, CreditCard } from "lucide-react";
 
 const features = [
   {
@@ -28,12 +28,6 @@ const features = [
     description: "Encrypted checkouts. Multiple secure payment options, keeping your data protected.",
     gradient: "from-emerald-400 to-teal-600",
   },
-  {
-    icon: RotateCcw,
-    title: "Easy Returns",
-    description: "If we made a production error, we'll fix it instantly — no questions asked.",
-    gradient: "from-blue-500 to-indigo-600",
-  },
 ];
 
 export default function WhyUs() {
@@ -52,7 +46,7 @@ export default function WhyUs() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f, i) => (
             <motion.div
               key={f.title}

@@ -84,10 +84,10 @@ export default function AccountDashboard() {
             </div>
             <nav>
               {[
-                { href: "/account/dashboard",     icon: User,     label: "Profile" },
-                { href: "/account/orders",         icon: Package,  label: "My Orders" },
-                { href: "/account/saved-designs",  icon: Bookmark, label: "Saved Designs" },
-                { href: "/account/wishlist",        icon: Heart,    label: "Wishlist" },
+                { href: "/dashboard",     icon: User,     label: "Profile" },
+                { href: "/orders",         icon: Package,  label: "My Orders" },
+                { href: "/saved-designs",  icon: Bookmark, label: "Saved Designs" },
+                { href: "/wishlist",        icon: Heart,    label: "Wishlist" },
               ].map(({ href, icon: Icon, label }) => (
                 <Link
                   key={href}
@@ -134,7 +134,7 @@ export default function AccountDashboard() {
           <div className="bg-white rounded-2xl border border-brand-border p-6 shadow-md">
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-bold text-brand-black">Recent Orders</h2>
-              <Link href="/account/orders" className="text-sm text-black font-medium underline underline-offset-4 hover:opacity-85">
+              <Link href="/orders" className="text-sm text-black font-medium underline underline-offset-4 hover:opacity-85">
                 View all
               </Link>
             </div>
@@ -144,7 +144,7 @@ export default function AccountDashboard() {
                 return (
                   <Link
                     key={order.id}
-                    href={`/account/orders/${order.id}`}
+                    href={`/orders/${order.id}`}
                     className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-surface transition-colors border border-brand-border"
                   >
                     <div>
