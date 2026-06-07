@@ -103,7 +103,7 @@ export default function HeroBanner() {
               <Button
                 variant="outline"
                 size="lg"
-                className="px-8 py-6.5 rounded-full border border-zinc-300/80 bg-white/40 hover:bg-white text-brand-black hover:shadow-md transition-all duration-300 font-bold uppercase tracking-wider text-xs active:scale-98"
+                className="px-8 py-6.5 rounded-full border border-zinc-300/80 bg-white/40 hover:bg-white text-black hover:text-black hover:shadow-md transition-all duration-300 font-bold uppercase tracking-wider text-xs active:scale-98"
               >
                 Explore Products
               </Button>
