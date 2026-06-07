@@ -231,118 +231,119 @@ export default function Header() {
           </AnimatePresence>
         </div>
 
-        {/* Mobile Drawer Overlay */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
-              onClick={() => setMobileOpen(false)}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* Mobile Drawer */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.nav
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 left-0 h-full w-72 bg-white border-r border-brand-border z-50 md:hidden flex flex-col shadow-2xl"
-              aria-label="Mobile navigation"
-            >
-              <div className="flex items-center justify-between p-4 border-b border-brand-border">
-                <div className="h-12 w-32 flex items-center">
-                  <Logo className="h-full w-full" />
-                </div>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-brand-surface text-brand-black"
-                  aria-label="Close menu"
-                >
-                  <X size={18} />
-                </button>
-              </div>
- 
-              <div className="flex-1 overflow-y-auto py-2">
-                {NAV_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors",
-                      pathname === link.href
-                        ? "text-brand-black bg-brand-surface"
-                        : "text-brand-muted hover:text-brand-black hover:bg-brand-surface",
-                    )}
-                  >
-                    {link.label}
-                    <ChevronRight size={14} className="text-[#9A9A9A]" />
-                  </Link>
-                ))}
- 
-                <div className="border-t border-brand-border mt-2 pt-2">
-                  {user ? (
-                    <>
-                      <Link
-                        href="/dashboard"
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                      >
-                        <LayoutDashboard size={16} /> My Account
-                      </Link>
-                      <Link
-                        href="/orders"
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                      >
-                        <Package size={16} /> My Orders
-                      </Link>
-                      <Link
-                        href="/wishlist"
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                      >
-                        <Heart size={16} /> Wishlist
-                      </Link>
-                      <button
-                        onClick={handleSignOut}
-                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        <LogOut size={16} /> Sign Out
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href="/login"
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                      >
-                        <User size={16} /> Sign In
-                      </Link>
-                      <Link
-                        href="/register"
-                        className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                      >
-                        <ChevronRight size={16} /> Create Account
-                      </Link>
-                    </>
-                  )}
-                </div>
-              </div>
- 
-              <div className="p-4 border-t border-brand-border">
-                <Link href="/products">
-                  <Button variant="accent" className="w-full">
-                    Customize Now
-                  </Button>
-                </Link>
-              </div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
       </header>
+
+      {/* Mobile Drawer Overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed top-0 left-0 h-[100dvh] w-[85vw] max-w-sm bg-white border-r border-brand-border z-50 md:hidden flex flex-col shadow-2xl"
+            aria-label="Mobile navigation"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-brand-border">
+              <div className="h-12 w-32 flex items-center">
+                <Logo className="h-full w-full" />
+              </div>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-brand-surface text-brand-black"
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto py-2">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors",
+                    pathname === link.href
+                      ? "text-brand-black bg-brand-surface"
+                      : "text-brand-muted hover:text-brand-black hover:bg-brand-surface",
+                  )}
+                >
+                  {link.label}
+                  <ChevronRight size={14} className="text-[#9A9A9A]" />
+                </Link>
+              ))}
+
+              <div className="border-t border-brand-border mt-2 pt-2">
+                {user ? (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                    >
+                      <LayoutDashboard size={16} /> My Account
+                    </Link>
+                    <Link
+                      href="/orders"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                    >
+                      <Package size={16} /> My Orders
+                    </Link>
+                    <Link
+                      href="/wishlist"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                    >
+                      <Heart size={16} /> Wishlist
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut size={16} /> Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                    >
+                      <User size={16} /> Sign In
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                    >
+                      <ChevronRight size={16} /> Create Account
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-brand-border">
+              <Link href="/products">
+                <Button variant="accent" className="w-full">
+                  Customize Now
+                </Button>
+              </Link>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </>
   );
 }
