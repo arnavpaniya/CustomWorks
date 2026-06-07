@@ -230,6 +230,8 @@ function mapOrderToClient(row) {
     status: row.status,
     statusHistory: row.status_history,
     invoiceUrl: row.invoice_url,
+    swipeInvoiceId: row.swipe_invoice_id,
+    swipeInvoiceUrl: row.swipe_invoice_url,
     trackingNumber: row.tracking_number,
     trackingUrl: row.tracking_url,
     adminNotes: row.admin_notes
@@ -271,6 +273,8 @@ async function initDb() {
         status VARCHAR(50) NOT NULL,
         status_history JSONB NOT NULL,
         invoice_url VARCHAR(255) DEFAULT NULL,
+        swipe_invoice_id VARCHAR(100) DEFAULT NULL,
+        swipe_invoice_url TEXT DEFAULT NULL,
         tracking_number VARCHAR(255) DEFAULT NULL,
         tracking_url VARCHAR(255) DEFAULT NULL,
         admin_notes JSONB NOT NULL DEFAULT '[]'::jsonb
@@ -382,6 +386,14 @@ module.exports = {
     const res = await pool.query(
       'UPDATE orders SET invoice_url = $1 WHERE id = $2 RETURNING *',
       [path, id]
+    );
+    return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  updateSwipeInvoice: async (id, swipeInvoiceId, swipeInvoiceUrl) => {
+    const res = await pool.query(
+      'UPDATE orders SET swipe_invoice_id = $1, swipe_invoice_url = $2 WHERE id = $3 RETURNING *',
+      [swipeInvoiceId, swipeInvoiceUrl, id]
     );
     return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
   },
