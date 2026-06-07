@@ -131,9 +131,9 @@ export default function FAQPage() {
           Can&apos;t find the answer you&apos;re looking for? Our friendly support team is here to help.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <a href="mailto:orders.customworks@gmail.com">
+          <a href="https://wa.me/">
              <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
-               Email Support
+               Chat on WhatsApp
              </Button>
           </a>
           <a href="/contact">

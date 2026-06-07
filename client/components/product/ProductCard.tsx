@@ -38,13 +38,15 @@ export default function ProductCard({ product, className }: ProductCardProps) {
     >
       {/* Image */}
       <div className="relative aspect-square bg-brand-surface overflow-hidden">
-        <Image
-          src={product.images[0] ?? "/images/placeholder-product.jpg"}
-          alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        />
+        <Link href={`/products/${product.slug}`} className="absolute inset-0 z-0 block">
+          <Image
+            src={product.images[0] ?? "/images/placeholder-product.jpg"}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        </Link>
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
@@ -67,7 +69,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           {product.category}
         </p>
         <h3 className="text-sm font-semibold text-brand-black leading-tight mb-2 line-clamp-2">
-          <Link href={`/products/${product.slug}`} className="hover:text-black dark:hover:text-white hover:underline transition-all">
+          <Link href={`/products/${product.slug}`} className="hover:text-brand-orange hover:underline transition-all">
             {product.name}
           </Link>
         </h3>

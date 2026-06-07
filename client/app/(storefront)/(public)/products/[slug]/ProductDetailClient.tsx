@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Star, Share2, ChevronRight, Info, Mail } from "lucide-react";
+import { Heart, Star, Share2, ChevronRight, Info, Mail, Package, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
@@ -299,6 +299,67 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 </span>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Orders Section */}
+      <div className="mt-16 bg-white border border-brand-border rounded-3xl p-8 shadow-lg">
+        <div className="flex items-center gap-3 mb-6 border-b border-brand-border pb-4">
+          <Package className="text-brand-orange" size={24} />
+          <h2 className="text-2xl font-black text-brand-black">Recent Orders</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { name: "Rahul S.", qty: 50, time: "2 hours ago" },
+            { name: "Priya M.", qty: 120, time: "5 hours ago" },
+            { name: "Amit K.", qty: 250, time: "1 day ago" },
+          ].map((order, i) => (
+            <div key={i} className="bg-brand-surface p-5 rounded-2xl border border-brand-border flex flex-col gap-1 shadow-sm">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-brand-black">{order.name}</span>
+                <span className="text-xs text-brand-muted">{order.time}</span>
+              </div>
+              <p className="text-sm text-brand-muted">Ordered <span className="font-semibold text-brand-black">{order.qty} units</span></p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Reviews/Feedback Section */}
+      <div className="mt-8 bg-white border border-brand-border rounded-3xl p-8 shadow-lg">
+        <div className="flex items-center justify-between mb-6 border-b border-brand-border pb-4">
+          <div className="flex items-center gap-3">
+            <MessageCircle className="text-brand-orange" size={24} />
+            <h2 className="text-2xl font-black text-brand-black">Customer Reviews</h2>
+          </div>
+          <div className="flex items-center gap-1">
+            <Star className="fill-brand-orange text-brand-orange" size={20} />
+            <span className="font-bold text-brand-black text-lg">4.9</span>
+            <span className="text-brand-muted text-sm ml-1">(128 Reviews)</span>
+          </div>
+        </div>
+        
+        <div className="space-y-6">
+          {[
+            { name: "TechCorp India", rating: 5, date: "15 May 2026", text: "Excellent quality and fast delivery. The custom branding on these items was flawless. Highly recommended for corporate gifting." },
+            { name: "Suresh Gupta", rating: 5, date: "02 May 2026", text: "Very professional service. The sample was approved quickly and the bulk order matched the sample perfectly." },
+          ].map((review, i) => (
+            <div key={i} className="border-b border-brand-border last:border-0 pb-6 last:pb-0">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-bold text-brand-black">{review.name}</span>
+                <span className="text-xs text-brand-muted">{review.date}</span>
+              </div>
+              <div className="flex items-center gap-1 mb-2">
+                {[...Array(5)].map((_, idx) => (
+                  <Star key={idx} className={idx < review.rating ? "fill-brand-orange text-brand-orange" : "fill-brand-surface text-brand-border"} size={14} />
+                ))}
+              </div>
+              <p className="text-sm text-brand-muted leading-relaxed">{review.text}</p>
+            </div>
+          ))}
+          <div className="text-center pt-4">
+            <Button variant="outline" className="w-full sm:w-auto">Write a Review</Button>
           </div>
         </div>
       </div>
