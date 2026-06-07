@@ -78,19 +78,6 @@ export default function ContactPage() {
 
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 rounded-2xl bg-brand-surface border border-brand-border flex items-center justify-center shrink-0">
-                  <Mail size={20} className="text-brand-muted" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-black">Email Us</h3>
-                  <p className="text-sm text-brand-muted mt-1 mb-2">For detailed inquiries and support.</p>
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-black font-semibold hover:underline text-sm">
-                    {CONTACT_EMAIL}
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-brand-surface border border-brand-border flex items-center justify-center shrink-0">
                   <Phone size={20} className="text-brand-muted" />
                 </div>
                 <div>

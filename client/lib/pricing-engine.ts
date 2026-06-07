@@ -57,11 +57,8 @@ export function calculatePricing(
     return result;
   }
 
-  // Find subproduct if applicable
-  const subproduct = product.subproducts?.find(sp => sp.id === subproductId);
-
   // 2. Specific Subproduct Email Enquiry triggers
-  if (subproductId === "bulk-flyers") {
+  if (product.id === "bulk-flyers") {
     result.isEmailEnquiry = true;
     result.unitPrice = 0;
     result.totalPrice = 0;
@@ -71,10 +68,11 @@ export function calculatePricing(
 
   // 3. Business Cards Calculation
   if (product.customizerType === "business-cards") {
-    if (!subproduct) {
+    const tiersToUse = product.priceTiers || [];
+    if (tiersToUse.length === 0) {
       return result;
     }
-    const baseRateFromTiers = lookupTierPrice(subproduct.priceTiers, quantity);
+    const baseRateFromTiers = lookupTierPrice(tiersToUse, quantity);
     
     // Single side = Price ÷ 2
     const printSides = options.printSides || "double-sided";
@@ -110,7 +108,8 @@ export function calculatePricing(
 
   // 4. Banners Calculation
   if (product.customizerType === "banners") {
-    if (!subproduct) {
+    const tiersToUse = product.priceTiers || [];
+    if (tiersToUse.length === 0 && product.id !== "starflex-steel-frame") {
       return result;
     }
     const dimensions = options.bannerDimensions || { width: 6, height: 4 };
@@ -121,10 +120,10 @@ export function calculatePricing(
     let sqftPrice = 0;
 
     // Custom tier logic based on Banner Area, not quantity!
-    if (subproduct.id === "starflex-steel-frame") {
+    if (product.id === "starflex-steel-frame") {
       sqftPrice = 95; // Flat rate
     } else {
-      sqftPrice = lookupTierPrice(subproduct.priceTiers, area);
+      sqftPrice = lookupTierPrice(product.priceTiers || [], area);
     }
 
     result.unitPrice = sqftPrice; // Price per sqft
@@ -142,7 +141,7 @@ export function calculatePricing(
   }
 
   // 5. Lanyards Special Multi-Column Matrix Calculation
-  if (product.customizerType === "lanyards" && subproductId === "polyester-lanyard-20mm") {
+  if (product.customizerType === "lanyards" && product.id === "polyester-lanyard-20mm") {
     // Over 500 lanyards requires Email Enquiry
     if (quantity > 500) {
       result.isEmailEnquiry = true;
@@ -197,7 +196,7 @@ export function calculatePricing(
   }
 
   // 6. Generic Keychain Lanyards or other Enquiry items with > 500 check
-  if (product.customizerType === "lanyards" && subproductId === "keychain-lanyard") {
+  if (product.customizerType === "lanyards" && product.id === "keychain-lanyard") {
     if (quantity > 500) {
       result.isEmailEnquiry = true;
       result.unitPrice = 0;
@@ -208,12 +207,7 @@ export function calculatePricing(
   }
 
   // 7. Standard Tier Lookup (Envelopes, Calendars, Diaries, Brochures, Promotional Cards, etc.)
-  let tiersToUse: PriceTier[] = [];
-  if (subproduct) {
-    tiersToUse = subproduct.priceTiers;
-  } else if (product.priceTiers) {
-    tiersToUse = product.priceTiers;
-  }
+  let tiersToUse: PriceTier[] = product.priceTiers || [];
 
   const unitPrice = lookupTierPrice(tiersToUse, quantity);
   result.unitPrice = unitPrice;
