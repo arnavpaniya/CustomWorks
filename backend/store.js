@@ -243,14 +243,18 @@ async function initDb() {
     await client.query('BEGIN');
     
     // Create products registry table
+    await client.query('DROP TABLE IF EXISTS products;');
     await client.query(`
-      CREATE TABLE IF NOT EXISTS products (
+      CREATE TABLE products (
         id VARCHAR(50) PRIMARY KEY,
+        category VARCHAR(100) NOT NULL,
         name VARCHAR(255) NOT NULL,
-        price NUMERIC(10, 2) NOT NULL,
-        stock INTEGER NOT NULL,
-        status VARCHAR(50) NOT NULL DEFAULT 'Active',
-        variants VARCHAR(255) NOT NULL DEFAULT 'Standard'
+        description TEXT,
+        features JSONB DEFAULT '[]'::jsonb,
+        pricing_tiers JSONB DEFAULT '[]'::jsonb,
+        variations JSONB DEFAULT '[]'::jsonb,
+        moq INTEGER DEFAULT 1,
+        status VARCHAR(50) NOT NULL DEFAULT 'Active'
       )
     `);
 
@@ -512,14 +516,17 @@ module.exports = {
   },
 
   getProducts: async () => {
-    const res = await pool.query('SELECT * FROM products ORDER BY id ASC');
+    const res = await pool.query('SELECT * FROM products ORDER BY category, id ASC');
     return res.rows.map(row => ({
       id: row.id,
+      category: row.category,
       name: row.name,
-      price: Number(row.price),
-      stock: Number(row.stock),
-      status: row.status,
-      variants: row.variants
+      description: row.description,
+      features: row.features,
+      pricingTiers: row.pricing_tiers,
+      variations: row.variations,
+      moq: row.moq,
+      status: row.status
     }));
   },
 
@@ -528,25 +535,32 @@ module.exports = {
     const nextNum = prods.length + 1;
     const id = "P" + String(nextNum).padStart(3, '0');
 
-    const name = product.name;
-    const price = Number(product.price);
-    const stock = Number(product.stock);
-    const status = product.status || "Active";
-    const variants = product.variants || "Standard";
-
     const res = await pool.query(
-      'INSERT INTO products (id, name, price, stock, status, variants) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [id, name, price, stock, status, variants]
+      'INSERT INTO products (id, category, name, description, features, pricing_tiers, variations, moq, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [
+        id, 
+        product.category || 'General', 
+        product.name, 
+        product.description || '', 
+        JSON.stringify(product.features || []), 
+        JSON.stringify(product.pricingTiers || []), 
+        JSON.stringify(product.variations || []), 
+        product.moq || 1, 
+        product.status || 'Active'
+      ]
     );
     
     const row = res.rows[0];
     return row ? {
       id: row.id,
+      category: row.category,
       name: row.name,
-      price: Number(row.price),
-      stock: Number(row.stock),
-      status: row.status,
-      variants: row.variants
+      description: row.description,
+      features: row.features,
+      pricingTiers: row.pricing_tiers,
+      variations: row.variations,
+      moq: row.moq,
+      status: row.status
     } : null;
   },
 

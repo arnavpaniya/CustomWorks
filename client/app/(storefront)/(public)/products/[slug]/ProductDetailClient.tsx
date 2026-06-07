@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import CustomizationWizard from "@/components/customizer/CustomizationWizard";
 import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
 import { useDesignStore } from "@/store/design.store";
+import { toast } from "sonner";
 
 interface ProductDetailClientProps {
   slug: string;
@@ -22,6 +23,23 @@ const CONTACT_EMAIL = "orders.customworks@gmail.com";
 export default function ProductDetailClient({ slug }: ProductDetailClientProps) {
   const [activeImage, setActiveImage] = useState(0);
   const [showWizard, setShowWizard] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product?.name || 'CustomWorks Product',
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Product link copied to clipboard!");
+      }
+    } catch (err) {
+      console.error("Error sharing:", err);
+    }
+  };
 
   const product = PRODUCTS_CATALOG.find((p) => p.slug === slug || p.id === slug);
   
@@ -274,12 +292,22 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
               </Button>
             )}
             <button
-              className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-lg border border-[#E5E5E5] hover:border-[#0A0A0A] transition-colors"
+              onClick={() => {
+                setIsFavorite(!isFavorite);
+                if (!isFavorite) toast.success("Added to favorites!");
+              }}
+              className={cn(
+                "h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-lg border transition-colors",
+                isFavorite 
+                  ? "border-red-500 bg-red-50 hover:border-red-600" 
+                  : "border-[#E5E5E5] hover:border-[#0A0A0A]"
+              )}
               aria-label="Add to wishlist"
             >
-              <Heart size={18} className="text-[#6B6B6B]" />
+              <Heart size={18} className={isFavorite ? "fill-red-500 text-red-500" : "text-[#6B6B6B]"} />
             </button>
             <button
+              onClick={handleShare}
               className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-lg border border-[#E5E5E5] hover:border-[#0A0A0A] transition-colors"
               aria-label="Share product"
             >

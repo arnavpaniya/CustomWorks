@@ -98,7 +98,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
         <div className="flex items-center justify-between gap-2">
           <p className="text-base font-bold text-brand-black">
-            From {formatPrice(product.basePrice)}
+            {product.basePrice > 0 ? `From ${formatPrice(product.basePrice)}` : 'Price on Request'}
           </p>
           <Link href={`/products/${product.slug}`}>
             <Button variant="accent" size="sm">
