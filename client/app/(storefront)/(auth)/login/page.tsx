@@ -75,7 +75,7 @@ export default function LoginPage() {
 
           {/* Logo */}
           <Link href="/" className="inline-block mb-8 w-fit">
-            <Image src="/images/logo.png" alt="CustomWorks" width={130} height={38} className="object-contain" priority />
+            <Image src="/images/logo.png" alt="CustomWorks" width={130} height={38} className="object-contain brightness-0" priority />
           </Link>
 
           <div className="flex-1 flex flex-col justify-center">
@@ -227,15 +227,8 @@ export default function LoginPage() {
           {/* Radial glow */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(255,255,255,0.06)_0%,transparent_65%)] pointer-events-none" />
 
-          {/* Top: logo + tagline */}
-          <div className="relative z-10 p-10 pb-0">
-            <Image
-              src="/images/logo.png"
-              alt="CustomWorks"
-              width={120}
-              height={36}
-              className="object-contain brightness-0 invert opacity-90 mb-8"
-            />
+          {/* Top: tagline */}
+          <div className="relative z-10 p-10 pb-0 pt-16">
             <h2 className="text-[1.6rem] font-black text-white leading-tight tracking-tight">
               Design anything.<br />
               <span className="text-white/50">Wear everything.</span>
@@ -251,11 +244,11 @@ export default function LoginPage() {
               {/* Glow under image */}
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-16 bg-white/10 blur-2xl rounded-full" />
               <Image
-                src="/images/Customworks light theme logo copy.png"
+                src="/cinematic_tshirt_mockup.png"
                 alt="CustomWorks product"
                 width={280}
                 height={280}
-                className="object-contain w-full drop-shadow-2xl brightness-0 invert opacity-20"
+                className="object-contain w-full drop-shadow-2xl opacity-40 mix-blend-screen"
               />
             </div>
           </div>

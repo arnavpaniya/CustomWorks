@@ -82,11 +82,15 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
-      <div className="w-full max-w-[440px] z-10">
+    <div className="flex-1 flex items-center justify-center p-6 relative overflow-hidden bg-[#030712]">
+      {/* Premium background gradient blobs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15)_0%,rgba(0,0,0,0)_60%)] rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-1/4 left-1/3 w-[350px] h-[350px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,rgba(0,0,0,0)_60%)] rounded-full blur-[90px] pointer-events-none z-0"></div>
+
+      <div className="w-full max-w-[440px] z-10 animate-fade-in">
         {/* Brand Header */}
         <div className="text-center mb-8 select-none flex flex-col items-center">
-          <div className="relative w-56 h-14 mb-3">
+          <div className="relative w-56 h-14 mb-2">
             <Image
               src="/images/logo.png"
               alt="CustomWorks Logo"
@@ -95,26 +99,26 @@ export default function AdminLoginPage() {
               className="object-contain"
             />
           </div>
-          <p className="text-[10px] text-blue-450 uppercase tracking-widest font-black">
+          <p className="text-[10px] text-indigo-400 uppercase tracking-[0.25em] font-extrabold font-mono">
             Pro Operations Console
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-[#0d111d]/65 backdrop-blur-md border border-[#1e293b]/70 rounded-2xl p-8 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-[#3b82f6]/20">
-          {/* Blue top accent border */}
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-[#3b82f6] to-transparent"></div>
+        <div className="glass-panel rounded-3xl p-8 relative overflow-hidden transition-all duration-300 hover:border-indigo-500/30 group">
+          {/* Top accent glow line */}
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
 
-          <h2 className="text-xl font-bold tracking-tight text-white mb-2">
-            Admin Authentication
+          <h2 className="text-2xl font-bold tracking-tight text-white mb-1">
+            Sign In
           </h2>
-          <p className="text-xs text-zinc-400 mb-6">
-            Enter credentials to establish secure administrator session.
+          <p className="text-xs text-gray-400 mb-6">
+            Enter admin credentials to access the command ledger.
           </p>
 
           {/* Error Banner */}
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold rounded-xl p-4 mb-5 flex items-center gap-2.5">
+            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold rounded-xl p-4 mb-5 flex items-center gap-2.5">
               <AlertCircle size={16} className="shrink-0" />
               <span>{error}</span>
             </div>
@@ -125,7 +129,7 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="username"
-                className="block text-[11px] font-black uppercase tracking-wider text-zinc-400 mb-2"
+                className="block text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2"
               >
                 Username
               </label>
@@ -136,14 +140,14 @@ export default function AdminLoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="e.g. mohit"
-                className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-650 focus:outline-none focus:border-[#3b82f6]/50 transition-colors"
+                className="w-full glass-input rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-[11px] font-black uppercase tracking-wider text-zinc-400 mb-2"
+                className="block text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2"
               >
                 Password
               </label>
@@ -154,7 +158,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-[#070a13] border border-[#1e293b] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-650 focus:outline-none focus:border-[#3b82f6]/50 transition-colors"
+                className="w-full glass-input rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600"
               />
             </div>
 
@@ -162,9 +166,9 @@ export default function AdminLoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#3b82f6] hover:bg-[#60a5fa] disabled:bg-zinc-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 px-4 rounded-xl shadow-lg shadow-[#3b82f6]/10 hover:shadow-[#3b82f6]/20 transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full glow-button disabled:bg-gray-800 disabled:text-gray-500 disabled:shadow-none text-xs font-bold uppercase tracking-widest py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>{loading ? "Authenticating..." : "Initiate Session"}</span>
+                <span>{loading ? "Establishing Session..." : "Establish Session"}</span>
                 {!loading && <ArrowRight size={14} strokeWidth={2.5} />}
               </button>
             </div>
@@ -172,8 +176,8 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[10px] text-zinc-600 mt-6 font-semibold tracking-wider uppercase">
-          SECURE ACCESS ONLY &copy; 2026 CUSTOMWORKS CO.
+        <p className="text-center text-[9px] text-gray-650 mt-8 font-semibold tracking-[0.15em] uppercase font-mono">
+          SECURE OPERATIONS GATEWAY &copy; 2026 CUSTOMWORKS CO.
         </p>
       </div>
     </div>
