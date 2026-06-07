@@ -125,8 +125,8 @@ const sections = [
         <ul className="list-disc list-inside space-y-2">
           <li>
             <strong>Gift cards and coupon codes:</strong> If you encounter any issues with coupon codes or gift codes, please contact our customer care team at{" "}
-            <a href="mailto:orders@customworks.in" className="text-brand-orange hover:underline font-medium">
-              orders@customworks.in
+            <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+              orders.customworks@gmail.com
             </a>
             .
           </li>
@@ -146,8 +146,8 @@ const sections = [
         <ul className="list-disc list-inside space-y-1 mt-3">
           <li>
             <strong>Email:</strong>{" "}
-            <a href="mailto:orders@customworks.in" className="text-brand-orange hover:underline font-medium">
-              orders@customworks.in
+            <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+              orders.customworks@gmail.com
             </a>
           </li>
           <li>

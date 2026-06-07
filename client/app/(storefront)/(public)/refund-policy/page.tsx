@@ -59,7 +59,7 @@ const sections = [
       <>
         <p>To submit a remake request, please follow these steps within <strong>7 days of delivery</strong>:</p>
         <ol className="list-decimal list-inside space-y-2 mt-2">
-          <li>Contact us via <strong>WhatsApp (+91 96320 22529)</strong> or email <strong>orders@customworks.in</strong>.</li>
+          <li>Contact us via <strong>WhatsApp (+91 96320 22529)</strong> or email <strong>orders.customworks@gmail.com</strong>.</li>
           <li>State your <strong>Order Number</strong> (e.g., CW-20260501).</li>
           <li>Provide <strong>clear photos and/or videos</strong> showing the difference between the approved mockup and the received product.</li>
         </ol>
@@ -89,7 +89,7 @@ const sections = [
         <p>For any questions regarding your order or remake status, reach out directly:</p>
         <ul className="list-disc list-inside space-y-1 mt-3">
           <li><strong>WhatsApp:</strong> +91 96320 22529</li>
-          <li><strong>Email:</strong> orders@customworks.in</li>
+          <li><strong>Email:</strong> orders.customworks@gmail.com</li>
           <li><strong>Hours:</strong> Monday – Saturday, 10:00 AM – 7:00 PM IST</li>
           <li><strong>Contact Page:</strong> <a href="/contact" className="text-brand-orange hover:underline font-medium">customworks.in/contact</a></li>
         </ul>

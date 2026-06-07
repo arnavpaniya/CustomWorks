@@ -56,7 +56,7 @@ export default function CorporatePage() {
           Anything for your brand that can be custom-made, crafted by us with premium quality and delivered straight to you.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="mailto:corporate@customworks.in">
+          <a href="mailto:orders.customworks@gmail.com">
             <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
               Request a Quote
             </Button>

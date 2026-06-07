@@ -31,8 +31,8 @@ const sections = [
         </p>
         <p className="mt-3">
           If you have any questions or concerns regarding this policy, please contact us at{" "}
-          <a href="mailto:orders@customworks.in" className="text-brand-orange hover:underline font-medium">
-            orders@customworks.in
+          <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+            orders.customworks@gmail.com
           </a>{" "}
           or call{" "}
           <a href="tel:+919632022529" className="text-brand-orange hover:underline font-medium">
@@ -234,8 +234,8 @@ const sections = [
         <ul className="list-disc list-inside space-y-1 mt-3">
           <li>
             <strong>Email:</strong>{" "}
-            <a href="mailto:orders@customworks.in" className="text-brand-orange hover:underline font-medium">
-              orders@customworks.in
+            <a href="mailto:orders.customworks@gmail.com" className="text-brand-orange hover:underline font-medium">
+              orders.customworks@gmail.com
             </a>
           </li>
           <li>

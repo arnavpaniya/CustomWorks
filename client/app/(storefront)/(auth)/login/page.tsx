@@ -231,10 +231,10 @@ export default function LoginPage() {
           <div className="relative z-10 p-10 pb-0 pt-16">
             <h2 className="text-[1.6rem] font-black text-white leading-tight tracking-tight">
               Design anything.<br />
-              <span className="text-white/50">Wear everything.</span>
+              <span className="text-white/50">Print everything.</span>
             </h2>
             <p className="text-sm text-white/40 mt-3 leading-relaxed max-w-[260px]">
-              Premium custom apparel, crafted to order and delivered across India.
+              Premium custom designed & printed products, crafted to order and delivered across India.
             </p>
           </div>
 

@@ -73,8 +73,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-brand-black">Email Us</h3>
                   <p className="text-sm text-brand-muted mt-1 mb-2">For detailed inquiries and support.</p>
-                  <a href="mailto:orders@customworks.in" className="text-brand-black font-semibold hover:underline text-sm">
-                    orders@customworks.in
+                  <a href="mailto:orders.customworks@gmail.com" className="text-brand-black font-semibold hover:underline text-sm">
+                    orders.customworks@gmail.com
                   </a>
                 </div>
               </div>

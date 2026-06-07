@@ -304,7 +304,7 @@ export default function RegisterPage() {
               <span className="text-white/50">your way.</span>
             </h2>
             <p className="text-sm text-white/40 mt-3 leading-relaxed max-w-[260px]">
-              Custom apparel and accessories designed by you, made by us, delivered to your door.
+              Custom designed & printed products, made by us, delivered to your door.
             </p>
           </div>
 
