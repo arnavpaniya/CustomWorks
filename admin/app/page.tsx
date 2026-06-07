@@ -92,7 +92,7 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8 select-none flex flex-col items-center">
           <div className="relative w-56 h-14 mb-2">
             <Image
-              src="/images/logo.png"
+              src="/images/logo-v2.png"
               alt="CustomWorks Logo"
               fill
               priority

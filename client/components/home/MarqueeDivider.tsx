@@ -7,9 +7,7 @@ export default function MarqueeDivider() {
     "Crafted For You",
     "Bespoke Merchandise",
     "Estd 2026",
-    "100% Eco-Friendly Inks",
     "Premium Materials",
-    "Handmade Embroidery",
     "Zero Minimums",
     "Bespoke Craftsmanship",
   ];

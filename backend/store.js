@@ -287,57 +287,8 @@ async function initDb() {
       )
     `);
 
-    // Seed products table if empty
-    const prodRes = await client.query('SELECT COUNT(*) FROM products');
-    if (parseInt(prodRes.rows[0].count, 10) === 0) {
-      for (const p of PRODUCTS) {
-        await client.query(
-          'INSERT INTO products (id, name, price, stock, status, variants) VALUES ($1, $2, $3, $4, $5, $6)',
-          [p.id, p.name, p.price, p.stock, p.status, p.variants]
-        );
-      }
-      console.log('Seeded initial products successfully into Neon.');
-    }
-
-    // Seed orders table if empty
-    const orderRes = await client.query('SELECT COUNT(*) FROM orders');
-    if (parseInt(orderRes.rows[0].count, 10) === 0) {
-      for (const o of INITIAL_ORDERS) {
-        await client.query(
-          `INSERT INTO orders (
-            id, date, customer_snapshot, shipping_address, items, pricing, payment, status, status_history, invoice_url, tracking_number, tracking_url, admin_notes
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
-          [
-            o.id,
-            o.date,
-            JSON.stringify(o.customerSnapshot),
-            JSON.stringify(o.shippingAddress),
-            JSON.stringify(o.items),
-            JSON.stringify(o.pricing),
-            JSON.stringify(o.payment),
-            o.status,
-            JSON.stringify(o.statusHistory),
-            o.invoiceUrl || null,
-            o.trackingNumber || null,
-            o.trackingUrl || null,
-            JSON.stringify(o.adminNotes)
-          ]
-        );
-      }
-      console.log('Seeded initial orders successfully into Neon.');
-    }
-
-    // Seed returns table if empty
-    const returnRes = await client.query('SELECT COUNT(*) FROM returns');
-    if (parseInt(returnRes.rows[0].count, 10) === 0) {
-      for (const r of INITIAL_RETURNS) {
-        await client.query(
-          'INSERT INTO returns (id, order_id, customer, product, reason, requested_at, status, note) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-          [r.id, r.orderId, r.customer, r.product, r.reason, r.requestedAt, r.status, r.note]
-        );
-      }
-      console.log('Seeded initial returns successfully into Neon.');
-    }
+    // Database tables verified. Seeding is disabled.
+    console.log('Database tables verified.');
 
     await client.query('COMMIT');
     console.log('Neon Database Schema successfully verified and initialized.');

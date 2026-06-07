@@ -753,7 +753,7 @@ export default function AdminDashboard() {
           <div className="px-6 mb-6 flex items-center justify-between gap-3">
             <div className="relative w-36 h-10 select-none">
               <Image
-                src="/images/logo.png"
+                src="/images/logo-v2.png"
                 alt="CustomWorks Logo"
                 fill
                 priority

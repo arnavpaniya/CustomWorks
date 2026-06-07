@@ -8,11 +8,11 @@ interface LogoProps extends React.ComponentPropsWithoutRef<"div"> {
   light?: boolean;
 }
 
-export default function Logo({ className, ...props }: LogoProps) {
+export default function Logo({ className, light = false, ...props }: LogoProps) {
   return (
     <div className={cn("relative select-none flex items-center justify-center", className)} {...props}>
       <Image
-        src="/images/Customworks light theme logo.png"
+        src={light ? "/images/logo-white-v2.png" : "/images/Customworks light theme logo-v2.png"}
         alt="CustomWorks Logo"
         width={540}
         height={380}
