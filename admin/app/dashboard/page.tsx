@@ -493,8 +493,8 @@ export default function AdminDashboard() {
         },
       });
 
-      if (!response.ok) throw new Error("PDF compilation failed");
-      toast.success("Simulated invoice compiled and saved!");
+      if (!response.ok) throw new Error("Bill generation failed");
+      toast.success("Bill generated via Swipe and saved!");
       fetchData();
     } catch (err) {
       console.error(err);
@@ -1522,11 +1522,11 @@ export default function AdminDashboard() {
                               <td className="py-4 px-6">
                                 {hasInvoice ? (
                                   <span className="text-[9px] font-bold uppercase text-emerald-400 bg-emerald-500/5 border border-emerald-500/15 px-2.5 py-0.5 rounded-full tracking-wider font-mono">
-                                    Compiled
+                                    Generated
                                   </span>
                                 ) : (
                                   <span className="text-[9px] font-bold uppercase text-amber-500 bg-amber-500/5 border border-amber-500/15 px-2.5 py-0.5 rounded-full tracking-wider font-mono animate-pulse">
-                                    Awaiting Compilation
+                                    Awaiting Generation
                                   </span>
                                 )}
                               </td>
@@ -1539,7 +1539,7 @@ export default function AdminDashboard() {
                                     className="glow-button-secondary text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all inline-flex items-center gap-1 text-gray-300 hover:text-white mr-2 font-mono"
                                   >
                                     <FileDown className="w-3 h-3 text-[#6366f1]" />
-                                    <span>Download PDF</span>
+                                    <span>Download Bill</span>
                                   </a>
                                 )}
                                 <button
@@ -1547,7 +1547,7 @@ export default function AdminDashboard() {
                                   className="glow-button text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg inline-flex items-center gap-1.5 cursor-pointer font-mono"
                                 >
                                   <RefreshCw className="w-3 h-3" />
-                                  <span>{hasInvoice ? "Re-compile" : "Compile PDF"}</span>
+                                  <span>{hasInvoice ? "Re-generate" : "Generate Bill"}</span>
                                 </button>
                               </td>
                             </tr>

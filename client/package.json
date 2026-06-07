@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "1.4.1",
+    "@cashfreepayments/cashfree-js": "^1.0.7",
     "@hookform/resolvers": "5.2.2",
     "chart.js": "^4.5.1",
     "class-variance-authority": "0.7.1",
