@@ -58,12 +58,14 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.12, duration: 0.6 }}
-              className="relative flex flex-col items-center text-center bg-white rounded-3xl border border-brand-border/60 p-8 shadow-xs hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 group overflow-hidden z-10"
+              className="relative flex flex-col items-center text-center bg-white rounded-3xl border border-brand-border/60 p-8 shadow-xs hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 group z-10"
             >
-              {/* Massive Low-Opacity Step Digit Overlay for visual depth */}
-              <span className="absolute -bottom-6 right-2 text-9xl font-black text-brand-black/3 select-none pointer-events-none tracking-tighter">
-                {step.step}
-              </span>
+              {/* Background digit wrapper for clean boundary clipping */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none select-none">
+                <span className="absolute -bottom-6 right-2 text-9xl font-black text-brand-black/3 tracking-tighter">
+                  {step.step}
+                </span>
+              </div>
 
               {/* Glowing Pill Step Indicator */}
               <span className="absolute -top-3 left-8 text-[9px] font-black text-white bg-brand-black px-3 py-1 rounded-full border border-brand-border/20 shadow-xs uppercase tracking-wider">

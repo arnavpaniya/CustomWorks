@@ -53,7 +53,7 @@ export default function HeroBanner() {
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-50 border border-zinc-200/60 text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-5 shadow-2xs select-none"
           >
             <span className="text-[12px] leading-none text-brand-orange animate-pulse">✦</span>
-            <span>Premium Custom Merchandise</span>
+            <span>Premium Custom Products</span>
           </motion.div>
 
           {/* Headline with Elegant Editorial Serif & Cursive flourishes */}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Corporate & Bulk Orders",
-  description: "Premium custom merchandise for your team, event, or brand.",
+  description: "Premium custom products for your team, event, or brand.",
 };
 
 const benefits = [
@@ -27,7 +27,7 @@ const benefits = [
   {
     icon: Building2,
     title: "End-to-End Fulfilment",
-    desc: "From designing to individual packaging and multi-location shipping, we handle the entire merchandise supply chain."
+    desc: "From designing to individual packaging and multi-location shipping, we handle the entire supply chain."
   }
 ];
 
@@ -50,10 +50,10 @@ export default function CorporatePage() {
           </span>
         </div>
         <h1 className="text-4xl sm:text-6xl font-black text-brand-black mb-6 tracking-tight">
-          Merchandise That Means <br className="hidden sm:block" /> Business
+          Custom Products That Mean <br className="hidden sm:block" /> Business
         </h1>
         <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-          Elevate your brand with premium custom apparel, stationery, and accessories. Perfect for employee onboarding, corporate events, client gifting, and team building.
+          Anything for your brand that can be custom-made, crafted by us with premium quality and delivered straight to you.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="mailto:corporate@customworks.in">

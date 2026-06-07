@@ -5,7 +5,7 @@ import React from "react";
 export default function MarqueeDivider() {
   const words = [
     "Crafted For You",
-    "Bespoke Merchandise",
+    "Bespoke Custom Products",
     "Estd 2026",
     "Premium Materials",
     "Zero Minimums",

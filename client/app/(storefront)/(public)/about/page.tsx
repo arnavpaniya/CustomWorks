@@ -23,11 +23,11 @@ export default function AboutPage() {
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-brand-black mb-6">
-          We Make Your Ideas Wearable
+          We Bring Your Custom Designs to Life
         </h1>
         <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto">
-          CustomWorks started with a simple belief: everyone deserves to wear something that truly
-          represents them. We built a platform where creativity meets craftsmanship — where your
+          CustomWorks started with a simple belief: everyone deserves custom-designed items that truly
+          represent them. We built a platform where creativity meets craftsmanship — where your
           design becomes a premium, real-world product.
         </p>
       </div>
@@ -40,7 +40,7 @@ export default function AboutPage() {
           </span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-brand-black leading-snug">
-          &ldquo;To democratize premium custom merchandise — making high-quality,
+          &ldquo;To democratize premium custom consumer products — making high-quality,
           personalized products accessible to everyone.&rdquo;
         </h2>
       </div>

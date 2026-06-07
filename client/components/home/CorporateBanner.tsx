@@ -19,7 +19,7 @@ export default function CorporateBanner() {
               Need Bulk Orders<br />for Your <span className="italic font-normal">Business?</span>
             </h2>
             <p className="text-brand-muted max-w-md text-sm leading-relaxed">
-              Corporate gifting, team merchandise, event swag — we handle everything.
+              Corporate gifting, team products, event swag — we handle everything.
               Dedicated account manager, custom packaging, bulk pricing.
             </p>
           </div>

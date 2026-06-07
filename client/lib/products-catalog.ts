@@ -750,7 +750,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     id: "stickers-mugs-badges",
     slug: "stickers-mugs-badges",
     name: "Custom Stickers, Tags, Mugs & Badges",
-    category: "Promotional Merchandise",
+    category: "Promotional Products",
     basePrice: 4.50,
     description: "Printed custom stickers, clothing hang tags, sublimation mugs, pop-up rollup standees, safety-pin badges, and ceiling marketing danglers.",
     moq: 10,

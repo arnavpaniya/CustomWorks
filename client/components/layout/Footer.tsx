@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, Mail, ArrowRight, ShieldCheck, Truck, RefreshCw } from "lucide-react";
+import { MessageCircle, Mail, ArrowRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 
 const InstagramIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
@@ -79,10 +79,15 @@ const YouTubeIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps
 
 const footerLinks = {
   Products: [
-    { label: "All Apparel", href: "/products" },
-    { label: "Custom T-Shirts", href: "/products?category=tshirts" },
-    { label: "Custom Mugs", href: "/products?category=mugs" },
-    { label: "Custom Caps", href: "/products?category=caps" },
+    { label: "Business Cards", href: "/products?category=Business Cards" },
+    { label: "Envelopes", href: "/products?category=Envelopes" },
+    { label: "Corporate Stationery", href: "/products?category=Corporate Stationery" },
+    { label: "Signage & Display", href: "/products?category=Signage & Display" },
+    { label: "ID & Lanyards", href: "/products?category=ID & Lanyards" },
+    { label: "Calendars & Planners", href: "/products?category=Calendars & Planners" },
+    { label: "Apparel & Embroidery", href: "/products?category=Apparel & Embroidery" },
+    { label: "Marketing Materials", href: "/products?category=Marketing Materials" },
+    { label: "Promotional Products", href: "/products?category=Promotional Products" },
   ],
   Company: [
     { label: "About Us", href: "/about" },
@@ -92,7 +97,7 @@ const footerLinks = {
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Refund Policy", href: "/refund-policy" },
+    { label: "Return & Refund Policy", href: "/refund-policy" },
     { label: "Shipping Policy", href: "/shipping-policy" },
     { label: "Payment Policy", href: "/payment-policy" },
     { label: "Terms of Service", href: "/terms" },
@@ -116,42 +121,11 @@ export default function Footer() {
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Top features banner */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-10 border-b border-zinc-900/60 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left relative z-10">
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-zinc-900 flex items-center justify-center text-brand-orange border border-zinc-800">
-            <Truck size={18} />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white font-serif">Express Delivery</h4>
-            <p className="text-xs text-zinc-500">Pan-India delivery straight to your doorstep.</p>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-zinc-900 flex items-center justify-center text-brand-orange border border-zinc-800">
-            <ShieldCheck size={18} />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white font-serif">Guaranteed Premium Quality</h4>
-            <p className="text-xs text-zinc-500">100% ringspun organic cotton and robust prints.</p>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-zinc-900 flex items-center justify-center text-brand-orange border border-zinc-800">
-            <RefreshCw size={18} />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-white font-serif">Seamless Customization</h4>
-            <p className="text-xs text-zinc-500">Interactive live sandbox for custom mockups.</p>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-10 relative z-10">
         {/* Main footer grid */}
-        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-10">
+        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Brand column */}
-          <div className="md:col-span-2 lg:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-6">
             <Link href="/" className="inline-block h-12 w-32 md:w-36 transition-transform hover:scale-[1.02]" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" light />
             </Link>
@@ -193,35 +167,6 @@ export default function Footer() {
               </ul>
             </div>
           ))}
-
-          {/* Newsletter Column */}
-          <div className="md:col-span-2 lg:col-span-2 space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-serif">
-              Stay in the Loop
-            </h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Subscribe to unlock early drops, customized project updates, and corporate discount campaigns.
-            </p>
-            <form onSubmit={(e) => e.preventDefault()} className="relative flex items-center mt-3">
-              <div className="absolute left-3 text-zinc-500 pointer-events-none">
-                <Mail size={15} />
-              </div>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full h-10 pl-9 pr-12 rounded-xl bg-zinc-900/60 border border-zinc-800/80 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-orange/80 transition-all font-sans"
-                aria-label="Email address for newsletter"
-                required
-              />
-              <button
-                type="submit"
-                className="absolute right-1 h-8 w-8 rounded-lg bg-zinc-800 hover:bg-brand-orange hover:text-white flex items-center justify-center text-zinc-400 transition-all duration-200"
-                aria-label="Submit email"
-              >
-                <ArrowRight size={14} />
-              </button>
-            </form>
-          </div>
         </div>
 
         {/* Bottom bar */}
