@@ -69,7 +69,9 @@ export default function RegisterPage() {
       await signInWithPopup(auth, new GoogleAuthProvider());
       window.location.href = "/dashboard";
     } catch (err: any) {
-      setErrors({ submit: err.message || "Google sign-up failed." });
+      if (err.code !== "auth/popup-closed-by-user") {
+        setErrors({ submit: err.message || "Google sign-up failed." });
+      }
     } finally { setLoading(false); }
   };
 

@@ -57,7 +57,9 @@ export default function LoginPage() {
       await signInWithPopup(auth, new GoogleAuthProvider());
       window.location.href = "/dashboard";
     } catch (err: any) {
-      setError(err.message || "Google sign-in failed.");
+      if (err.code !== "auth/popup-closed-by-user") {
+        setError(err.message || "Google sign-in failed.");
+      }
     } finally { setLoading(false); }
   };
 
