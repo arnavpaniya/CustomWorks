@@ -1,7 +1,6 @@
 const fs = require('fs');
-const path = require('path');
 
-const catalogPath = path.join(__dirname, '../../client/lib/products-catalog.ts');
+const catalogPath = '/Users/arnavpaniya/customworks/client/lib/products-catalog.ts';
 
 const tsCode = `export interface PriceTier {
   min: number;
@@ -545,6 +544,20 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     images: ["/images/placeholder-product.jpg"],
     rating: 4.8,
     reviewCount: 10,
+    customizerType: "email-quote-only"
+  },
+  {
+    id: "flyers-a4-130gsm",
+    slug: "flyers-a4-130gsm",
+    name: "Bulk Double-Sided Flyers A4 (130 GSM)",
+    category: "Marketing & Promotions",
+    basePrice: 0,
+    isQuoteOnly: true,
+    description: "Large format A4 flyers printed on 130 GSM Maplitho / Art Paper. Double-Sided (4+4 CMYK).\\nPremium quality ideal for corporate brochures, real estate marketing, and detailed infographics.",
+    moq: 2000,
+    images: ["/images/placeholder-product.jpg"],
+    rating: 4.9,
+    reviewCount: 18,
     customizerType: "email-quote-only"
   },
   {
