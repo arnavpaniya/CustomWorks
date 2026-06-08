@@ -60,7 +60,7 @@ const sections = [
       <>
         <ul className="list-disc list-inside space-y-2">
           <li>
-            We currently ship <strong>pan India</strong>. If your region is not listed, please contact us to inquire about shipping options.
+            We currently ship <strong>across Bengaluru</strong>. If your region is not listed, please contact us to inquire about shipping options.
           </li>
           <li>
             We do not ship to P.O. Boxes or parcel lockers. Please provide a valid street address for all orders.

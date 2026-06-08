@@ -105,7 +105,7 @@ const sections = [
           <li>Estimated delivery is <strong>5–10 business days</strong> from order confirmation, depending on product type and destination.</li>
           <li>Delivery timelines may extend during <strong>peak seasons, festivals, or high-demand periods</strong>.</li>
           <li>Shipping charges are calculated and displayed at checkout based on weight, dimensions, and destination.</li>
-          <li><strong>Free shipping</strong> is available on orders above ₹999 within India.</li>
+          <li><strong>Free shipping</strong> is available on orders above ₹999 within Bengaluru.</li>
           <li>CustomWorks is not liable for delays caused by the shipping carrier, weather conditions, or customs clearance.</li>
           <li>A valid contact number and complete address are required for successful delivery.</li>
         </ul>

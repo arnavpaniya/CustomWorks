@@ -28,11 +28,11 @@ const faqs = [
     items: [
       {
         q: "How long will it take to receive my order?",
-        a: "Most orders are processed, printed, and shipped within 3-5 business days. Delivery typically takes an additional 2-5 days depending on your location in India. Total estimated time from order to delivery is 5-10 business days."
+        a: "Most orders are processed, printed, and shipped within 3-5 business days. Delivery typically takes an additional 2-5 days depending on your location in Bengaluru. Total estimated time from order to delivery is 5-10 business days."
       },
       {
         q: "Do you offer free shipping?",
-        a: "Yes, we offer free shipping across India for all orders above ₹999. For orders below this amount, standard shipping rates apply based on your location."
+        a: "Yes, we offer free shipping across Bengaluru for all orders above ₹999. For orders below this amount, standard shipping rates apply based on your location."
       },
       {
         q: "How can I track my order?",

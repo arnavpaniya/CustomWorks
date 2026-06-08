@@ -20,7 +20,7 @@ const GoogleIcon = () => (
 const features = [
   { icon: Sparkles,    text: "Live design customizer" },
   { icon: ShieldCheck, text: "100% premium quality" },
-  { icon: Truck,       text: "Pan-India delivery" },
+  { icon: Truck,       text: "Fast, secure delivery" },
 ];
 
 export default function RegisterPage() {
@@ -318,7 +318,7 @@ export default function RegisterPage() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-base xl:text-lg text-white/50 mt-6 leading-relaxed max-w-md font-medium"
           >
-            Premium custom designed & printed products, crafted to order and delivered across India.
+            Premium custom designed & printed products, crafted to order and delivered across Bengaluru.
           </motion.p>
 
           {/* Feature Glass Pills */}

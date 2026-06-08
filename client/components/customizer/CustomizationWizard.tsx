@@ -868,7 +868,7 @@ export default function CustomizationWizard({ productId, productName, onClose }:
                             <div className="text-right">
                               <span className="text-2xl font-serif font-black text-brand-black">₹{totalPrice.toLocaleString("en-IN")}</span>
                               <p className="text-[8px] font-black text-zinc-400 uppercase tracking-wider block mt-0.5">
-                                + 18% GST & EXPRESS PAN-INDIA SHIPPING
+                                + 18% GST & EXPRESS SHIPPING
                               </p>
                             </div>
                           </div>
