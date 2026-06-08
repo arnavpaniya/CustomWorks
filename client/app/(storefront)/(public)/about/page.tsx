@@ -74,6 +74,15 @@ export default function AboutPage() {
           We obsess over product quality so you don&apos;t have to. Every order gets our full attention.
         </p>
       </div>
+      {/* Legal Info */}
+      <div className="text-center mt-16 pt-8 border-t border-brand-border/50">
+        <p className="text-sm text-brand-muted">
+          <span className="font-bold text-brand-black">Legal Name:</span> MOHITH K ARALIKATTE
+        </p>
+        <p className="text-sm text-brand-muted mt-1">
+          <span className="font-bold text-brand-black">Trade Name:</span> CustomWorks
+        </p>
+      </div>
     </div>
   );
 }
