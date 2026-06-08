@@ -88,15 +88,15 @@ export default function Header() {
 
       <header
         className={cn(
-          "sticky top-4 z-50 clay-nav mx-4 sm:mx-6 md:mx-8 rounded-2xl transition-all duration-300",
+          "sticky top-4 z-50 clay-nav mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-full transition-all duration-300",
           scrolled && "shadow-md border-black/5 dark:border-white/5",
         )}
       >
         {/* Desktop Header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-4 sm:gap-8">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 gap-4 sm:gap-8">
             {/* Logo */}
-            <Link href="/" className="shrink-0 flex items-center h-14 w-36 md:w-40" aria-label="CustomWorks Home">
+            <Link href="/" className="shrink-0 flex items-center h-10 w-32 md:w-36" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" />
             </Link>
 

@@ -68,9 +68,9 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-10 relative z-10">
         {/* Main footer grid */}
-        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-5 gap-10">
+        <div className="py-12 md:py-16 flex flex-col lg:flex-row gap-10 lg:gap-16">
           {/* Brand column */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="lg:w-2/5 space-y-6">
             <Link href="/" className="inline-block h-12 w-32 md:w-36 transition-transform hover:scale-[1.02]" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" light />
             </Link>
@@ -91,25 +91,27 @@ export default function Footer() {
           </div>
 
           {/* Dynamic Link columns */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading} className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-serif">
-                {heading}
-              </h3>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-zinc-400 hover:text-white transition-colors duration-200"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="lg:w-3/5 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {Object.entries(footerLinks).map(([heading, links]) => (
+              <div key={heading} className="space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-serif">
+                  {heading}
+                </h3>
+                <ul className="space-y-3">
+                  {links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-zinc-400 hover:text-white transition-colors duration-200"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Bottom bar */}
