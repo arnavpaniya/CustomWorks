@@ -43,7 +43,7 @@ export default function CheckoutPage() {
         total: finalTotal
       };
 
-      const res = await fetch("http://localhost:5001/api/orders/checkout", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/orders/checkout` : "https://customworks.onrender.com/api/orders/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

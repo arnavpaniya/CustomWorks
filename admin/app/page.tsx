@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     const localPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "mohit123";
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://customworks.onrender.com/api";
       let token = "";
       let user = "";
       let loginSuccess = false;

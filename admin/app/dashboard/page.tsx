@@ -161,7 +161,7 @@ interface AnalyticsData {
   }>;
 }
 
-const API_URL = "http://localhost:4000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://customworks.onrender.com/api";
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export default function AdminDashboard() {
