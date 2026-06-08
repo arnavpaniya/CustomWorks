@@ -31,6 +31,13 @@ app.use('/api/products',  require('./routes/products'));
 // Health check
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }));
 
+// Root welcome route
+app.get('/', (_, res) => res.json({ 
+  message: 'CustomWorks API is up and running! 🚀',
+  status: 'active',
+  version: '1.0.0'
+}));
+
 // Start server
 const port = process.env.PORT || 4000;
 app.listen(port, () =>
