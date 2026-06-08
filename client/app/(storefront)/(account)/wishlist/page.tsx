@@ -31,7 +31,7 @@ const INITIAL_WISHLIST: WishlistItem[] = [
     startingPrice: 1,
     rating: 4.9,
     reviewCount: 342,
-    badge: "Best Seller",
+
     gradient: "from-zinc-100 to-zinc-200",
   },
   {

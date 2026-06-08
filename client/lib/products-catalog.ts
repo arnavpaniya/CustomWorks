@@ -44,7 +44,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -237,7 +237,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -420,7 +420,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -618,7 +618,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -801,7 +801,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -984,7 +984,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {
@@ -1172,7 +1172,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     "rating": 4.9,
     "reviewCount": 342,
-    "badge": "Best Seller",
+
     "customizerType": "business-cards",
     "priceTiers": [
       {

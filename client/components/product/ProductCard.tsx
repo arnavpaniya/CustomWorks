@@ -74,27 +74,6 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           </Link>
         </h3>
 
-        {/* Rating */}
-        {product.rating && (
-          <div className="flex items-center gap-1.5 mb-3">
-            <div className="flex items-center gap-0.5">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={11}
-                  className={
-                    star <= Math.round(product.rating!)
-                      ? "fill-amber-400 text-amber-400"
-                      : "fill-brand-border text-brand-border"
-                  }
-                />
-              ))}
-            </div>
-            <span className="text-xs text-brand-muted">
-              {product.rating.toFixed(1)} ({product.reviewCount})
-            </span>
-          </div>
-        )}
 
         <div className="flex items-center justify-between gap-2">
           <p className="text-base font-bold text-brand-black">

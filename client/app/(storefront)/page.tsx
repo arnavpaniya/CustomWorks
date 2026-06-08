@@ -5,7 +5,6 @@ import MarqueeDivider from "@/components/home/MarqueeDivider";
 import HowItWorks from "@/components/home/HowItWorks";
 
 import WhyUs from "@/components/home/WhyUs";
-import Testimonials from "@/components/home/Testimonials";
 import CorporateBanner from "@/components/home/CorporateBanner";
 
 export const metadata: Metadata = {
@@ -22,7 +21,6 @@ export default function HomePage() {
       <MarqueeDivider />
       <HowItWorks />
       <WhyUs />
-      <Testimonials />
       <CorporateBanner />
     </>
   );
