@@ -101,7 +101,7 @@ export const useDesignStore = create<DesignState>((set, get) => ({
   setStep: (step) => set({ step }),
   setProduct: (productId) => {
     const product = PRODUCTS_CATALOG.find(p => p.id === productId || p.slug === productId);
-    const defaultVariant = product?.subproducts?.[0]?.id || "";
+    const defaultVariant = "";
     const defaultMoq = product?.moq || 10;
     
     // Set some defaults based on options schema

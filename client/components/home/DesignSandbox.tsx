@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowRight, Check, Sparkles, Shirt, Paintbrush, Layers, Type, Sliders, Coffee, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDesignStore } from "@/store/design.store";
-import CustomizationWizard from "@/components/customizer/CustomizationWizard";
+import QuoteSubmissionForm from "@/components/customizer/QuoteSubmissionForm";
 import { cn } from "@/lib/utils";
 
 const PRODUCTS = [
@@ -541,7 +541,7 @@ export default function DesignSandbox() {
 
       {/* Advanced Customizer modal render */}
       {showWizard && (
-        <CustomizationWizard
+        <QuoteSubmissionForm
           productId={selectedProduct.id}
           productName={`Premium Customized ${selectedProduct.name}`}
           onClose={() => setShowWizard(false)}

@@ -23,7 +23,7 @@ function SuccessContent() {
       </p>
 
       <div className="flex items-center justify-center gap-4">
-        <Button asChild variant="default" size="lg">
+        <Button asChild variant="primary" size="lg">
           <Link href="/products">Continue Shopping</Link>
         </Button>
       </div>

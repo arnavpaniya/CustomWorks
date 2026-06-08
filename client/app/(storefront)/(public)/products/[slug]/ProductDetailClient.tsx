@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-import CustomizationWizard from "@/components/customizer/CustomizationWizard";
+import QuoteSubmissionForm from "@/components/customizer/QuoteSubmissionForm";
 import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
 import { useDesignStore } from "@/store/design.store";
 import { toast } from "sonner";
@@ -70,9 +70,8 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
     );
   }
 
-  // Get active subproduct details
-  const activeSubproduct = product.subproducts?.find(sp => sp.id === selectedVariantId) || product.subproducts?.[0];
-  const activeTiers = activeSubproduct?.priceTiers || product.priceTiers || [];
+  // Get active pricing tiers
+  const activeTiers = product.priceTiers || [];
 
   const priceResult = getPricingResult();
   const unitPrice = priceResult.unitPrice;
@@ -186,34 +185,6 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
             </div>
           </div>
 
-          {/* Subproduct selector (Variants) */}
-          {product.subproducts && product.subproducts.length > 0 && (
-            <div className="mb-6">
-              <p className="text-sm font-semibold text-brand-black mb-2">Select Printing Type / Variant</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {product.subproducts.map((sp) => (
-                  <button
-                    key={sp.id}
-                    onClick={() => setVariant(sp.id)}
-                    className={cn(
-                      "px-4 py-3 rounded-lg border text-left text-sm font-medium transition-all flex flex-col justify-between h-16",
-                      selectedVariantId === sp.id
-                        ? "bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-md"
-                        : "bg-white text-brand-black border-brand-border hover:border-brand-black"
-                    )}
-                  >
-                    <span>{sp.name}</span>
-                    {sp.basePrice > 0 && (
-                      <span className={cn("text-xs font-semibold mt-1", selectedVariantId === sp.id ? "text-brand-orange" : "text-brand-muted")}>
-                        From {formatPrice(sp.basePrice)}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
 
 
           {/* CTA Buttons */}
@@ -221,7 +192,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
             {isEmailEnquiry ? (
               <a
                 href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Quote request for ${product.name}`)}&body=${encodeURIComponent(
-                  `Hi CustomWorks,\n\nI want to enquire about "${product.name}" (${activeSubproduct?.name || "Standard"}), Quantity: ${quantity}.\n\nPlease share a quote.`
+                  `Hi CustomWorks,\n\nI want to enquire about "${product.name}", Quantity: ${quantity}.\n\nPlease share a quote.`
                 )}`}
                 className="flex-1"
               >
@@ -241,7 +212,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 className="flex-1"
                 onClick={() => setShowWizard(true)}
               >
-                Customize & Design Now
+                Submit Artwork & Request Quote
               </Button>
             )}
             <button
@@ -284,9 +255,9 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
         </div>
       </div>
 
-      {/* Customization Wizard Modal */}
+      {/* Quote Submission Form Modal */}
       {showWizard && (
-        <CustomizationWizard
+        <QuoteSubmissionForm
           productId={product.id}
           productName={product.name}
           onClose={() => setShowWizard(false)}
