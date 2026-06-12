@@ -43,7 +43,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
             src={product.images[0] ?? "/images/placeholder-product.jpg"}
             alt={product.name}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </Link>
@@ -77,7 +77,11 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
         <div className="flex items-center justify-between gap-2">
           <p className="text-base font-bold text-brand-black">
-            {product.basePrice > 0 ? `From ${formatPrice(product.basePrice)}` : 'Price on Request'}
+            {product.basePrice > 0 ? (
+              <>
+                {formatPrice(product.basePrice)} <span className="text-xs font-normal text-brand-muted">/ pc</span>
+              </>
+            ) : 'Price on Request'}
           </p>
           <Link href={`/products/${product.slug}`}>
             <Button variant="accent" size="sm">

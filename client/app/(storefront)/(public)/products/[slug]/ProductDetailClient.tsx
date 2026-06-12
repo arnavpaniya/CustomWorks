@@ -75,6 +75,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
   const priceResult = getPricingResult();
   const unitPrice = priceResult.unitPrice;
+  const totalPrice = priceResult.totalPrice;
   const isEmailEnquiry = priceResult.isEmailEnquiry;
 
   return (
@@ -117,7 +118,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
           )}
 
           {/* Main image */}
-          <div className="flex-1 relative aspect-square rounded-2xl overflow-hidden bg-[#F5F5F5] border border-brand-border">
+          <div className="flex-1 relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#F5F5F5] border border-brand-border">
             <Image
               src={product.images[activeImage] ?? "/images/placeholder-product.jpg"}
               alt={product.name}
@@ -148,20 +149,22 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
 
           {/* Price display */}
           <div className="mb-6 p-4 rounded-xl bg-brand-surface border border-brand-border">
-            <p className="text-sm text-brand-muted mb-1">Wholesale Pricing Starting From</p>
+            <p className="text-sm text-brand-muted mb-1">Price</p>
             {isEmailEnquiry ? (
               <p className="text-2xl font-black text-brand-orange">Quote on Request</p>
             ) : (
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-brand-black">
-                  {formatPrice(product.basePrice)}
-                </span>
-                <span className="text-sm text-brand-muted">per unit</span>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black text-brand-black">
+                    {formatPrice(unitPrice)}
+                  </span>
+                  <span className="text-sm text-brand-muted">per piece</span>
+                </div>
+                <div className="text-sm text-brand-black font-semibold mt-1">
+                  Total: {formatPrice(totalPrice)}
+                </div>
               </div>
             )}
-            <p className="text-xs text-brand-muted mt-2">
-              * Rates decrease significantly with higher volume bulk tiers.
-            </p>
           </div>
 
           {/* MOQs & Quantity */}
@@ -173,8 +176,8 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
               <input
                 type="number"
                 min={product.moq}
-                value={quantity}
-                onChange={(e) => setQuantity(Math.max(product.moq, Number(e.target.value)))}
+                value={quantity || ""}
+                onChange={(e) => setQuantity(Number(e.target.value))}
                 className="w-32 h-10 px-3 border border-brand-border rounded-lg bg-white text-brand-black font-semibold text-center focus:outline-none focus:ring-2 focus:ring-brand-black"
               />
               {quantity < product.moq && (
@@ -212,7 +215,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 className="flex-1"
                 onClick={() => setShowWizard(true)}
               >
-                Submit Artwork & Request Quote
+                Customise and Add to Cart
               </Button>
             )}
             <button
