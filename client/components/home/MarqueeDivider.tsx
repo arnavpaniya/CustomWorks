@@ -8,7 +8,6 @@ export default function MarqueeDivider() {
     "Bespoke Custom Products",
     "Estd 2026",
     "Premium Materials",
-    "Zero Minimums",
     "Bespoke Craftsmanship",
   ];
 

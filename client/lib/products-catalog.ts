@@ -519,7 +519,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     isQuoteOnly: true,
     description: "Professionally printed marketing materials designed to enhance brand visibility. 90 GSM Maplitho / Art Paper (Matte Finish).\nDouble-Sided (4+4 CMYK).\nIdeal for mass promotions and retail offers.",
     moq: 2000,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/flyers-a5-90gsm/flyer_a5_front.png",
+      "/products/flyers-a5-90gsm/flyer_a5_back.png",
+      "/products/flyers-a5-90gsm/flyer_a5_stack.png",
+      "/products/flyers-a5-90gsm/flyer_a5_size.png"
+    ],
     rating: 4.7,
     reviewCount: 15,
     customizerType: "email-quote-only"
