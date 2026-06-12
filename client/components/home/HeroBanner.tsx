@@ -1,162 +1,211 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Scissors, ShieldCheck, Box, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowRight, Scissors, ShieldCheck, Zap } from "lucide-react";
 
 export default function HeroBanner() {
-  const { scrollY } = useScroll();
-
-  // Premium scroll-linked parallax transforms (high-performance GPU layers)
-  const bgY = useTransform(scrollY, [0, 800], ["0%", "15%"]);
-  const bgScale = useTransform(scrollY, [0, 800], [1.0, 1.1]);
-  const bgOpacity = useTransform(scrollY, [0, 800], [1, 0.9]);
-
-  // Gentle layout scroll transform
-  const textY = useTransform(scrollY, [0, 800], [0, -30]);
-
   return (
-    <section
-      className="relative min-h-[90vh] sm:min-h-screen flex items-center bg-white overflow-hidden px-4 sm:px-6 md:px-8 lg:px-20 mt-[-88px] pt-[88px]"
-      aria-label="Hero banner"
-    >
-      {/* Full-screen Parallax Background Image Layer */}
-      <motion.div
+    <section className="relative min-h-screen flex items-center bg-[#FAFAFA] overflow-hidden pt-[88px] pb-12 border-b border-zinc-200/60" aria-label="Hero banner">
+      
+      {/* Background grid canvas */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-40 animate-pulse-slow"
         style={{
-          y: bgY,
-          scale: bgScale,
-          opacity: bgOpacity,
-          backgroundImage: "url(/images/hero-bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center right",
-          backgroundRepeat: "no-repeat",
+          backgroundImage: `
+            linear-gradient(to right, rgba(10, 10, 10, 0.035) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(10, 10, 10, 0.035) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
         }}
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       />
 
-      {/* Dark/White Fade Mask Overlay for Mobile/Tablet readability */}
-      <div className="absolute inset-0 bg-linear-to-r from-white via-white/90 to-transparent pointer-events-none lg:hidden z-5" />
-
-      {/* Hero Content Container with Parallax depth movement */}
-      <motion.div 
-        style={{ y: textY }}
-        className="relative max-w-7xl mx-auto pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-32 lg:pb-36 w-full z-10"
-      >
-        <div className="max-w-3xl flex flex-col items-start text-left">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+        
+        {/* Gapless Editorial Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-200/60 shadow-sm bg-white mt-8 sm:mt-12">
           
-          {/* Tagline Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-50 border border-zinc-200/60 text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-5 shadow-2xs select-none"
-          >
-            <span className="text-[12px] leading-none text-brand-orange animate-pulse">✦</span>
-            <span>Premium Custom Products</span>
-          </motion.div>
+          {/* Left Column: Heading and Brand Details */}
+          <div className="lg:col-span-7 p-8 sm:p-14 md:p-16 border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]">
+            
+            {/* Badge & Title */}
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange bg-brand-orange/5 border border-brand-orange/10 px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 mb-8 select-none">
+                <span className="text-[12px] leading-none text-brand-orange animate-pulse">✦</span>
+                Premium Custom Manufacturing
+              </span>
+              
+              <h1 className="text-4xl sm:text-6xl md:text-7.5xl font-serif font-light text-brand-black leading-[1.08] tracking-tight mb-8 select-none">
+                We <span className="italic font-normal text-brand-orange">manufacture</span> custom <span className="italic font-normal">artifacts</span> that define your brand.
+              </h1>
+              
+              <p className="text-sm sm:text-base text-brand-muted leading-relaxed max-w-xl font-medium">
+                CustomWorks is a dedicated industrial partner. We craft premium apparel, corporate stationery, bespoke packaging, and promotional accessories with raw precision and meticulous detail.
+              </p>
+            </div>
 
-          {/* Headline with Elegant Editorial Serif & Cursive flourishes */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-brand-black leading-[1.12] tracking-tight mb-5"
-          >
-            <span className="italic font-normal">Custom</span> Made.<br />
-            <span className="italic font-normal">Extraordinary.</span>
-          </motion.h1>
+            {/* Feature Highlights Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-zinc-100/80 my-8 sm:my-12">
+              <div className="flex gap-3 items-start">
+                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
+                  <Scissors size={14} className="stroke-[2.5]" />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Bespoke Specs</h4>
+                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">100% custom layouts</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-3 items-start">
+                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
+                  <ShieldCheck size={14} className="stroke-[2.5]" />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Tiered Pricing</h4>
+                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">Pay less for volume</p>
+                </div>
+              </div>
 
-          {/* Subtitle / Narrative */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.25 }}
-            className="text-base sm:text-lg text-brand-muted leading-relaxed mb-8 max-w-md font-medium"
-          >
-            Your idea. Our craft.<br className="hidden sm:inline" />
-            {" "}One-of-a-kind products,<br className="hidden sm:inline" />
-            {" "}made to leave a mark.
-          </motion.p>
+              <div className="flex gap-3 items-start">
+                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
+                  <Zap size={14} className="stroke-[2.5]" />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Factory Direct</h4>
+                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">Raw industrial speed</p>
+                </div>
+              </div>
+            </div>
 
-          {/* Premium Call-to-Actions (CTAs) */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
-            className="flex flex-wrap gap-4 mb-10"
-          >
-            <Link href="/products">
-              <Button
-                variant="accent"
-                size="lg"
-                className="group px-8 py-6.5 rounded-full bg-brand-black text-white hover:bg-brand-orange hover:shadow-lg transition-all duration-300 font-bold uppercase tracking-wider text-xs flex items-center gap-3 border border-brand-black hover:border-brand-orange active:scale-98"
-              >
-                Start Your Design
-                <ArrowRight
-                  size={14}
-                  className="group-hover:translate-x-1.5 transition-transform duration-300"
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <Link href="/products" className="w-full sm:w-auto">
+                <button className="w-full h-13 px-8 rounded-md bg-brand-black hover:bg-brand-orange text-white text-xs font-bold uppercase tracking-wider transition-colors duration-200 flex items-center justify-center gap-2 group cursor-pointer border border-transparent shadow-xs">
+                  Start Customizing
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
+              </Link>
+              <Link href="/products" className="w-full sm:w-auto">
+                <button className="w-full h-13 px-8 rounded-md bg-transparent hover:bg-zinc-50 text-brand-black text-xs font-bold uppercase tracking-wider transition-colors duration-200 border border-zinc-200/80 flex items-center justify-center gap-2 cursor-pointer shadow-2xs">
+                  Explore Catalog
+                </button>
+              </Link>
+            </div>
+
+          </div>
+
+          {/* Right Column: Gapless Vertical Stack of Product Showcase Cards */}
+          <div className="lg:col-span-5 grid grid-cols-1 grid-rows-3 h-full min-h-[600px] lg:min-h-0 bg-zinc-50">
+            
+            {/* Card 1: Apparel */}
+            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
+              {/* Image Background */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src="/images/hero_apparel_mockup.png"
+                  alt="Embroidered hoodie manufacturing"
+                  fill
+                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  priority
                 />
-              </Button>
-            </Link>
-            <Link href="/products">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-6.5 rounded-full border border-zinc-300/80 bg-white/40 hover:bg-white text-black hover:text-black hover:shadow-md transition-all duration-300 font-bold uppercase tracking-wider text-xs active:scale-98"
-              >
-                Explore Products
-              </Button>
-            </Link>
-          </motion.div>
-
-          {/* Bottom Custom Features Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="z-30 relative border border-zinc-200/80 rounded-3xl bg-white/80 backdrop-blur-md px-5 py-4 sm:px-8 sm:py-5 flex flex-wrap gap-x-8 gap-y-5 items-center shadow-xs w-full max-w-[85vw] sm:max-w-fit select-none"
-          >
-            {/* Feature 1 */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-brand-black shrink-0">
-                <Scissors size={14} className="stroke-2" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
               </div>
-              <div>
-                <h4 className="text-[10px] font-black uppercase tracking-wider text-brand-black">Bespoke</h4>
-                <p className="text-[9px] text-zinc-500 font-bold mt-0.5">Built around you</p>
+
+              {/* Tag Overlays */}
+              <div className="relative z-10 flex items-center justify-between select-none">
+                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
+                  [ 01 / APPAREL ]
+                </span>
+                <span className="text-[8px] font-mono font-bold text-zinc-300">
+                  ACTIVE RUN
+                </span>
+              </div>
+              
+              <div className="relative z-10 text-white">
+                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
+                  Custom Apparel
+                </h3>
+                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
+                  Organic cotton tees, heavy fleece hoodies, and corporate uniforms.
+                </p>
               </div>
             </div>
 
-            <div className="hidden sm:block h-8 w-px bg-zinc-200/80" />
-
-            {/* Feature 2 */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-brand-black shrink-0">
-                <ShieldCheck size={14} className="stroke-2" />
+            {/* Card 2: Stationery */}
+            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
+              {/* Image Background */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src="/images/hero_stationery_mockup.png"
+                  alt="Corporate stationery printing"
+                  fill
+                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
               </div>
-              <div>
-                <h4 className="text-[10px] font-black uppercase tracking-wider text-brand-black">Premium Quality</h4>
-                <p className="text-[9px] text-zinc-500 font-bold mt-0.5">Made to last</p>
+
+              {/* Tag Overlays */}
+              <div className="relative z-10 flex items-center justify-between select-none">
+                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
+                  [ 02 / IDENTITY ]
+                </span>
+                <span className="text-[8px] font-mono font-bold text-zinc-300">
+                  METALLIC INK
+                </span>
+              </div>
+              
+              <div className="relative z-10 text-white">
+                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
+                  Corporate Identity
+                </h3>
+                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
+                  Matte cardstock visiting cards, letterheads, and DL envelopes.
+                </p>
               </div>
             </div>
 
-            <div className="hidden md:block h-8 w-px bg-zinc-200/80" />
-
-            {/* Feature 4 */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-brand-black shrink-0">
-                <Zap size={14} className="stroke-2" />
+            {/* Card 3: Hangtags */}
+            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
+              {/* Image Background */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src="/products/hang-tags/hangtag.png"
+                  alt="Custom tags and stickers"
+                  fill
+                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
               </div>
-              <div>
-                <h4 className="text-[10px] font-black uppercase tracking-wider text-brand-black">Fast & Reliable</h4>
-                <p className="text-[9px] text-zinc-500 font-bold mt-0.5">On-time, every time.</p>
+
+              {/* Tag Overlays */}
+              <div className="relative z-10 flex items-center justify-between select-none">
+                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
+                  [ 03 / ACCESSORIES ]
+                </span>
+                <span className="text-[8px] font-mono font-bold text-zinc-300">
+                  SWAG TAGS
+                </span>
+              </div>
+              
+              <div className="relative z-10 text-white">
+                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
+                  Tags & Accessories
+                </h3>
+                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
+                  High-fidelity clothing hangtags, textured stickers, and keychains.
+                </p>
               </div>
             </div>
-          </motion.div>
+
+          </div>
 
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

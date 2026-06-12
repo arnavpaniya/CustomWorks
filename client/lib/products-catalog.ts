@@ -35,12 +35,20 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
   {
     id: "visiting-card-300gsm",
     slug: "visiting-card-300gsm",
-    name: "Visiting Card 300 GSM",
+    name: "Premium Visiting Cards",
     category: "Business Cards",
     basePrice: 1.75,
-    description: "Premium-quality business cards printed on durable 300 GSM card stock, designed to leave a lasting professional impression. Perfect for entrepreneurs, corporate professionals, startups, students, and those looking to network at events. Customise your visiting cards with your logo, brand colours, contact details, and unique design elements to reflect your identity.\n\n• Material: Premium 300 GSM Card Stock\n• Finish: Smooth Matte Finish\n• Printing Technology: High-Quality Digital Printing\n• Card Size: Standard Visiting Card Size",
+    description: "Premium-quality business cards printed on durable card stock, designed to leave a lasting professional impression. Customise your visiting cards with your logo, brand colours, contact details, and unique design elements to reflect your identity. Choose standard 300 GSM, thicker 350 GSM, or heavy-duty 400 GSM cardstock.\n\n• Material: Premium Card Stock (300 / 350 / 400 GSM)\n• Finish: Smooth Matte Finish\n• Printing Technology: High-Quality Digital Printing\n• Card Size: Standard Visiting Card Size",
     moq: 200,
-    images: ["/products/visiting-card-300gsm/card-1.png", "/products/visiting-card-300gsm/card-2.png", "/products/visiting-card-300gsm/visiting-card-guide.png"],
+    images: [
+      "/products/visiting-cards/visiting-card-1.png",
+      "/products/visiting-cards/visiting-card-2.png",
+      "/products/visiting-cards/visiting-card-3.png",
+      "/products/visiting-cards/visiting-card-4.png",
+      "/products/visiting-cards/card-1.png",
+      "/products/visiting-cards/card-2.png",
+      "/products/visiting-cards/visiting-card-guide.png"
+    ],
     rating: 4.9,
     reviewCount: 154,
     customizerType: "business-cards",
@@ -64,120 +72,16 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     ],
     options: [
       {
-        name: "Print Sides",
-        key: "printSides",
+        name: "Paper GSM",
+        key: "gsm",
         type: "select",
         choices: [
-          { label: "Double Sided", value: "double-sided" },
-          { label: "Single Sided (50% off base rate)", value: "single-sided" }
+          { label: "300 GSM (Standard)", value: "300gsm" },
+          { label: "350 GSM (+₹0.75/card)", value: "350gsm", priceAdj: 0.75 },
+          { label: "400 GSM (+₹1.75/card)", value: "400gsm", priceAdj: 1.75 }
         ],
-        defaultValue: "double-sided"
+        defaultValue: "300gsm"
       },
-      {
-        name: "Corners Finish",
-        key: "corners",
-        type: "select",
-        choices: [
-          { label: "Sharp Standard Edges", value: "sharp" },
-          { label: "Rounded Edges (+₹0.95/card)", value: "rounded", priceAdj: 0.95 }
-        ],
-        defaultValue: "sharp"
-      }
-    ]
-  },
-  {
-    id: "visiting-card-350gsm",
-    slug: "visiting-card-350gsm",
-    name: "Visiting Card 350 GSM",
-    category: "Business Cards",
-    basePrice: 2.50,
-    description: "Premium 350 GSM matte business cards designed for a stronger, thicker, and more professional feel. The matte finish provides a smooth, elegant texture with a refined look.\n\n• Material: Premium 350 GSM Matte Card Stock\n• Finish: Elegant Matte Finish (Non-Glossy)\n• Card Size: Standard Visiting Card Size",
-    moq: 500,
-    images: ["/products/visiting-card-350gsm/card-1.png", "/products/visiting-card-350gsm/card-2.png", "/products/visiting-card-350gsm/visiting-card-guide.png"],
-    rating: 4.8,
-    reviewCount: 92,
-    customizerType: "business-cards",
-    priceTiers: [
-      { min: 500, max: 599, price: 2.50 },
-      { min: 600, max: 699, price: 2.45 },
-      { min: 700, max: 799, price: 2.40 },
-      { min: 800, max: 899, price: 2.35 },
-      { min: 900, max: 999, price: 2.30 },
-      { min: 1000, max: 1499, price: 2.25 },
-      { min: 1500, max: 1999, price: 2.20 },
-      { min: 2000, max: 2999, price: 2.15 },
-      { min: 3000, max: 4999, price: 2.05 },
-      { min: 5000, max: 7499, price: 1.95 },
-      { min: 7500, max: 9999, price: 1.85 },
-      { min: 10000, max: 19999, price: 1.75 },
-      { min: 20000, max: 29999, price: 1.60 },
-      { min: 30000, max: 999999, price: 1.50 }
-    ],
-    options: [
-      {
-        name: "Print Sides",
-        key: "printSides",
-        type: "select",
-        choices: [
-          { label: "Double Sided", value: "double-sided" },
-          { label: "Single Sided (50% off base rate)", value: "single-sided" }
-        ],
-        defaultValue: "double-sided"
-      },
-      {
-        name: "Matte/Glossy Finish",
-        key: "finish",
-        type: "select",
-        choices: [
-          { label: "Matte Finish", value: "matte" },
-          { label: "Glossy Finish", value: "glossy" }
-        ],
-        defaultValue: "matte"
-      },
-      {
-        name: "Corners Finish",
-        key: "corners",
-        type: "select",
-        choices: [
-          { label: "Sharp Standard Edges", value: "sharp" },
-          { label: "Rounded Edges (+₹0.95/card)", value: "rounded", priceAdj: 0.95 }
-        ],
-        defaultValue: "sharp"
-      }
-    ]
-  },
-  {
-    id: "visiting-card-400gsm",
-    slug: "visiting-card-400gsm",
-    name: "Visiting Card 400 GSM",
-    category: "Business Cards",
-    basePrice: 3.50,
-    description: "High-quality 400 GSM business cards designed for enhanced durability and a strong professional presence. The thicker card stock offers a firm, refined feel.\n\n• Material: High-Quality 400 GSM Card Stock\n• Finish: Smooth Professional Matte Finish\n• Card Size: Standard Visiting Card Size",
-    moq: 200,
-    images: ["/products/visiting-card-400gsm/card-1.png", "/products/visiting-card-400gsm/card-2.png", "/products/visiting-card-400gsm/visiting-card-guide.png"],
-    rating: 5.0,
-    reviewCount: 41,
-    customizerType: "business-cards",
-    priceTiers: [
-      { min: 200, max: 299, price: 3.50 },
-      { min: 300, max: 399, price: 3.45 },
-      { min: 400, max: 499, price: 3.40 },
-      { min: 500, max: 599, price: 3.35 },
-      { min: 600, max: 699, price: 3.30 },
-      { min: 700, max: 799, price: 3.25 },
-      { min: 800, max: 899, price: 3.20 },
-      { min: 900, max: 999, price: 3.15 },
-      { min: 1000, max: 1499, price: 3.05 },
-      { min: 1500, max: 1999, price: 2.95 },
-      { min: 2000, max: 2999, price: 2.85 },
-      { min: 3000, max: 4999, price: 2.75 },
-      { min: 5000, max: 7499, price: 2.65 },
-      { min: 7500, max: 9999, price: 2.55 },
-      { min: 10000, max: 19999, price: 2.45 },
-      { min: 20000, max: 29999, price: 2.30 },
-      { min: 30000, max: 999999, price: 2.25 }
-    ],
-    options: [
       {
         name: "Print Sides",
         key: "printSides",
@@ -1148,7 +1052,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 12.00,
     description: "Premium hang tags designed to enhance clothing and product presentation while strengthening brand identity.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/hang-tags/hangtag.png",
+      "/products/hang-tags/hangtag-1.png",
+      "/products/hang-tags/hangtag-2.png",
+      "/products/hang-tags/hangtag-3.png"
+    ],
     rating: 4.8,
     reviewCount: 95,
     customizerType: "standard-tiers",
@@ -1194,7 +1103,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 1800.00,
     description: "High-impact promotional standees designed for exhibitions, retail promotions, corporate displays, and marketing campaigns.",
     moq: 1,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/standees/standee1.png",
+      "/products/standees/standee2.png",
+      "/products/standees/standee3.png",
+      "/products/standees/standee4.png"
+    ],
     rating: 4.8,
     reviewCount: 45,
     customizerType: "standard-tiers",

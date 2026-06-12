@@ -100,7 +100,22 @@ export function calculatePricing(
       });
     }
 
-    const unitPrice = baseRate + cornersAdj;
+    // GSM adjustment
+    const gsm = options.gsm || "300gsm";
+    let gsmAdj = 0;
+    if (gsm === "350gsm") {
+      gsmAdj = 0.75;
+    } else if (gsm === "400gsm") {
+      gsmAdj = 1.75;
+    }
+    if (gsmAdj > 0 && result.breakdown) {
+      result.breakdown.adjustments.push({
+        name: `${gsm.toUpperCase()} Paper premium`,
+        amount: gsmAdj
+      });
+    }
+
+    const unitPrice = baseRate + cornersAdj + gsmAdj;
     result.unitPrice = Number(unitPrice.toFixed(2));
     result.totalPrice = Number((result.unitPrice * quantity).toFixed(2));
     return result;

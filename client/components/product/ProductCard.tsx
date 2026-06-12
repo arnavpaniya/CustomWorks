@@ -3,9 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { cn, formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export interface Product {
@@ -29,64 +28,69 @@ interface ProductCardProps {
 export default function ProductCard({ product, className }: ProductCardProps) {
   return (
     <motion.article
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
       className={cn(
-        "group bg-white rounded-2xl overflow-hidden border border-brand-border hover:shadow-lg transition-shadow duration-300",
+        "group bg-white flex flex-col justify-between border-b border-r border-zinc-200/60 hover:bg-zinc-50/20 transition-colors duration-300 relative",
         className,
       )}
     >
-      {/* Image */}
-      <div className="relative aspect-square bg-brand-surface overflow-hidden">
+      {/* Image Container */}
+      <div className="relative aspect-square bg-zinc-50/50 overflow-hidden border-b border-zinc-200/60">
         <Link href={`/products/${product.slug}`} className="absolute inset-0 z-0 block">
           <Image
             src={product.images[0] ?? "/images/placeholder-product.jpg"}
             alt={product.name}
             fill
-            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+            className="object-contain p-5 sm:p-6 group-hover:scale-[1.04] transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </Link>
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {product.isNew && <Badge variant="default">New</Badge>}
-          {product.badge && <Badge variant="warning">{product.badge}</Badge>}
+        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+          {product.isNew && <Badge variant="default" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5">New</Badge>}
+          {product.badge && <Badge variant="warning" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5">{product.badge}</Badge>}
         </div>
 
-        {/* Wishlist */}
+        {/* Wishlist Button */}
         <button
-          className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-brand-muted hover:text-red-500 hover:bg-white transition-all opacity-0 group-hover:opacity-100"
+          className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-white border border-zinc-200/80 text-brand-muted hover:text-red-500 hover:bg-zinc-50 transition-all opacity-0 group-hover:opacity-100 shadow-xs z-10 cursor-pointer"
           aria-label={`Add ${product.name} to wishlist`}
         >
-          <Heart size={15} />
+          <Heart size={14} />
         </button>
       </div>
 
-      {/* Info */}
-      <div className="p-4">
-        <p className="text-xs text-[#9A9A9A] uppercase tracking-wider mb-1">
-          {product.category}
-        </p>
-        <h3 className="text-sm font-semibold text-brand-black leading-tight mb-2 line-clamp-2">
-          <Link href={`/products/${product.slug}`} className="hover:text-brand-orange hover:underline transition-all">
-            {product.name}
-          </Link>
-        </h3>
+      {/* Info Section */}
+      <div className="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <span className="text-[9px] font-black text-[#9A9A9A] uppercase tracking-widest block mb-1.5">
+            {product.category}
+          </span>
+          <h3 className="text-xs sm:text-sm font-bold text-brand-black leading-snug mb-3 line-clamp-2">
+            <Link href={`/products/${product.slug}`} className="hover:text-brand-orange transition-colors">
+              {product.name}
+            </Link>
+          </h3>
+        </div>
 
-
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-base font-bold text-brand-black">
+        {/* Price & Action */}
+        <div className="flex items-center justify-between gap-2 pt-2 mt-auto border-t border-zinc-100/60">
+          <p className="text-xs sm:text-sm font-black text-brand-black">
             {product.basePrice > 0 ? (
               <>
-                {formatPrice(product.basePrice)} <span className="text-xs font-normal text-brand-muted">/ pc</span>
+                {formatPrice(product.basePrice)} <span className="text-[9px] font-normal text-brand-muted uppercase">/ pc</span>
               </>
-            ) : 'Price on Request'}
+            ) : (
+              <span className="text-[9px] font-black uppercase tracking-wider text-brand-orange">Quote Only</span>
+            )}
           </p>
           <Link href={`/products/${product.slug}`}>
-            <Button variant="accent" size="sm">
+            <button className="h-7 px-3.5 rounded-md bg-brand-black hover:bg-brand-orange text-white text-[9px] font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer">
               Customize
-            </Button>
+            </button>
           </Link>
         </div>
       </div>

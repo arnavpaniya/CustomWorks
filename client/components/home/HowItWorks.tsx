@@ -9,8 +9,7 @@ const steps = [
     step: "01",
     title: "Choose Your Product",
     description:
-      "Browse our curated catalogue of premium apparel, high-grade ceramic mugs, and custom accessories.",
-    gradient: "from-[#FF5E36] to-amber-500",
+      "Browse our curated catalogue of custom manufactured stationery, premium apparel, signs, and identity accessories.",
   },
   {
     icon: Palette,
@@ -18,71 +17,64 @@ const steps = [
     title: "Customize & Design",
     description:
       "Upload your artwork or compose custom text layouts using our live browser mockup customization interface.",
-    gradient: "from-indigo-500 to-[#EC4899]",
   },
   {
     icon: Package,
     step: "03",
     title: "We Deliver",
     description:
-      "Our master printing technicians craft your custom products and ship them direct to your doorstep.",
-    gradient: "from-emerald-400 to-[#0D9488]",
+      "Our advanced manufacturing facilities craft your bespoke designs with industrial-grade precision and ship them direct to your door.",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className="py-24 bg-white" aria-labelledby="how-heading">
+    <section className="py-24 bg-white border-b border-zinc-200/60" aria-labelledby="how-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-18">
-          <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange bg-brand-orange/5 border border-brand-orange/10 px-3.5 py-1.5 rounded-full select-none">
+        
+        {/* Header Block */}
+        <div className="text-center mb-16 select-none">
+          <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange bg-brand-orange/5 border border-brand-orange/10 px-3.5 py-1.5 rounded-full">
             Simple Process
           </span>
-          <h2 id="how-heading" className="text-4xl sm:text-5xl lg:text-6xl font-serif font-light text-brand-black mt-4 tracking-tight">
+          <h2 id="how-heading" className="text-4xl sm:text-5xl font-serif font-light text-brand-black mt-4 tracking-tight">
             How It <span className="italic font-normal">Works</span>
           </h2>
-          <p className="text-sm text-brand-muted mt-3 max-w-md mx-auto leading-relaxed">
-            From design to delivery, we&apos;ve streamlined custom ordering in three effortless steps.
+          <p className="text-sm text-brand-muted mt-2 max-w-md mx-auto leading-relaxed">
+            From custom design to industrial-scale manufacturing, ordering is completed in three refined steps.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative">
-          
-          {/* Decorative Connector Line (Desktop Only) */}
-          <div className="hidden md:block absolute top-[52px] left-[15%] right-[15%] h-[2px] bg-linear-to-r from-brand-orange/20 via-[#EC4899]/30 to-[#0D9488]/20 z-0" />
-
+        {/* 3-Column Border-Joined Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-zinc-200/60 shadow-sm">
           {steps.map((step, i) => (
             <motion.div
               key={step.step}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.12, duration: 0.6 }}
-              className="relative flex flex-col items-center text-center bg-white rounded-3xl border border-brand-border/60 p-8 shadow-xs hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 group z-10"
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="relative flex flex-col justify-between bg-white p-8 sm:p-10 border-b border-r border-zinc-200/60 hover:bg-zinc-50/10 transition-colors duration-300 group z-10 min-h-[260px]"
             >
-              {/* Background digit wrapper for clean boundary clipping */}
-              <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none select-none">
-                <span className="absolute -bottom-6 right-2 text-9xl font-black text-brand-black/3 tracking-tighter">
-                  {step.step}
-                </span>
-              </div>
-
-              {/* Glowing Pill Step Indicator */}
-              <span className="absolute -top-3 left-8 text-[9px] font-black text-white bg-brand-black px-3 py-1 rounded-full border border-brand-border/20 shadow-xs uppercase tracking-wider">
-                Step {step.step}
+              {/* Step number marker */}
+              <span className="absolute top-8 sm:top-10 right-8 sm:right-10 text-[10px] font-mono font-bold text-zinc-300 group-hover:text-brand-orange transition-colors">
+                [ {step.step} ]
               </span>
 
-              {/* Icon Container with subtle inner glow */}
-              <div className={`h-14 w-14 flex items-center justify-center rounded-2xl bg-linear-to-br ${step.gradient} text-white mb-6 shadow-sm transform transition-transform duration-300 group-hover:scale-105`}>
-                <step.icon size={26} className="stroke-[2.5]" />
+              {/* Icon Container */}
+              <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-zinc-950 text-white mb-8 group-hover:scale-105 transition-transform duration-300">
+                <step.icon size={18} className="stroke-[2.5]" />
               </div>
 
-              <h3 className="text-lg font-bold text-brand-black mb-3 group-hover:text-brand-orange transition-colors">
-                {step.title}
-              </h3>
-              <p className="text-brand-muted text-xs sm:text-sm leading-relaxed font-medium">
-                {step.description}
-              </p>
+              {/* Text Area */}
+              <div>
+                <h3 className="text-base font-bold text-brand-black mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-brand-muted text-xs sm:text-sm leading-relaxed font-medium max-w-xs">
+                  {step.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

@@ -75,7 +75,7 @@ export default function Footer() {
               <Logo className="h-full w-full" light />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
-              Design customized premium apparel and accessories. Crafted with rich premium elements, manufactured with high organic care, and delivered to your doorstep.
+              CustomWorks is a premium manufacturing brand for custom designed items. From corporate identity and stationery to signage and bespoke apparel, we craft and deliver high-quality custom items directly to your doorstep.
             </p>
 
             {/* Email contact link */}
