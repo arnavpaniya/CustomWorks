@@ -166,14 +166,17 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                   Total: {formatPrice(totalPrice)} <span className="font-normal text-brand-muted text-xs">(exclusive of taxes)</span>
                 </div>
                 {product.priceTiers && product.priceTiers.length > 0 && !isEmailEnquiry && (
-                  <div className="mt-3">
+                  <div className="mt-3 flex items-center gap-3 flex-wrap">
                     <button 
                       onClick={() => setIsPricingModalOpen(true)}
-                      className="text-xs text-brand-orange bg-brand-orange/10 hover:bg-brand-orange/20 px-3 py-2 rounded-md inline-flex items-center gap-1.5 font-medium transition-colors"
+                      className="text-xs text-brand-orange bg-brand-orange/10 hover:bg-brand-orange/20 px-3 py-2 rounded-md inline-flex items-center gap-1.5 font-medium transition-colors shrink-0"
                     >
                       <Tag className="w-3.5 h-3.5" />
                       View Volume Pricing
                     </button>
+                    <span className="text-xs text-brand-muted font-medium">
+                      buy more to unlock lower pricing
+                    </span>
                   </div>
                 )}
               </div>
@@ -206,21 +209,31 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 mb-8">
             {isEmailEnquiry ? (
-              <a
-                href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Quote request for ${product.name}`)}&body=${encodeURIComponent(
-                  `Hi CustomWorks,\n\nI want to enquire about "${product.name}", Quantity: ${quantity}.\n\nPlease share a quote.`
-                )}`}
-                className="flex-1"
-              >
+              <>
                 <Button
-                  variant="primary"
+                  variant="accent"
                   size="lg"
-                  className="w-full flex items-center justify-center gap-2"
+                  className="flex-1"
+                  onClick={() => setShowWizard(true)}
                 >
-                  <Mail size={16} />
-                  Enquire by Email
+                  Customise & Get Quote
                 </Button>
-              </a>
+                <a
+                  href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Quote request for ${product.name}`)}&body=${encodeURIComponent(
+                    `Hi CustomWorks,\n\nI want to enquire about "${product.name}", Quantity: ${quantity}.\n\nPlease share a quote.`
+                  )}`}
+                  className="flex-1"
+                >
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full flex items-center justify-center gap-2 border-brand-border text-brand-black hover:bg-brand-surface hover:text-brand-black hover:border-brand-black/20"
+                  >
+                    <Mail size={16} />
+                    Enquire by Email
+                  </Button>
+                </a>
+              </>
             ) : (
               <Button
                 variant="accent"
