@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Star, Share2, ChevronRight, Info, Mail, Package, MessageCircle } from "lucide-react";
+import { Heart, Star, Share2, ChevronRight, Info, Mail, Package, MessageCircle, X, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
@@ -23,6 +23,7 @@ const CONTACT_EMAIL = "orders.customworks@gmail.com";
 export default function ProductDetailClient({ slug }: ProductDetailClientProps) {
   const [activeImage, setActiveImage] = useState(0);
   const [showWizard, setShowWizard] = useState(false);
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleShare = async () => {
@@ -161,13 +162,17 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                   <span className="text-sm text-brand-muted">per piece</span>
                 </div>
                 <div className="text-sm text-brand-black font-semibold mt-1">
-                  Total: {formatPrice(totalPrice)}
+                  Total: {formatPrice(totalPrice)} <span className="font-normal text-brand-muted text-xs">(exclusive of taxes)</span>
                 </div>
                 {product.priceTiers && product.priceTiers.length > 0 && !isEmailEnquiry && (
                   <div className="mt-3">
-                    <p className="text-xs text-brand-orange bg-brand-orange/10 px-2.5 py-1.5 rounded-md inline-block font-medium">
-                      ✨ Buy more, save more! Increase quantity to unlock lower per-piece pricing.
-                    </p>
+                    <button 
+                      onClick={() => setIsPricingModalOpen(true)}
+                      className="text-xs text-brand-orange bg-brand-orange/10 hover:bg-brand-orange/20 px-3 py-2 rounded-md inline-flex items-center gap-1.5 font-medium transition-colors"
+                    >
+                      <Tag className="w-3.5 h-3.5" />
+                      View Volume Pricing
+                    </button>
                   </div>
                 )}
               </div>
@@ -272,6 +277,137 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
           productName={product.name}
           onClose={() => setShowWizard(false)}
         />
+      )}
+
+      {/* Pricing Modal */}
+      {isPricingModalOpen && product.priceTiers && (
+        <div 
+          onClick={() => setIsPricingModalOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        >
+          <motion.div 
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-zinc-100"
+          >
+            {/* Header */}
+            <div className="relative p-6 border-b border-zinc-100 bg-gradient-to-br from-zinc-50 to-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-brand-orange/10 rounded-2xl">
+                    <Tag className="w-5 h-5 text-brand-orange animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-brand-black leading-tight">
+                      Volume Discount Pricing
+                    </h3>
+                    <p className="text-xs text-brand-muted mt-0.5">
+                      Buy in bulk to get wholesale rates
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsPricingModalOpen(false)}
+                  className="p-1.5 text-zinc-400 hover:text-zinc-600 rounded-full hover:bg-zinc-100 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <div className="mb-4 bg-zinc-50 rounded-xl p-3.5 flex items-center gap-3 border border-zinc-100">
+                <Info className="w-4.5 h-4.5 text-brand-orange shrink-0" />
+                <p className="text-xs text-zinc-600 leading-relaxed">
+                  Your selected quantity of <strong className="text-brand-orange">{quantity.toLocaleString()} pcs</strong> places you in the highlighted pricing tier below.
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                {/* Table Header */}
+                <div className="grid grid-cols-3 text-[11px] font-bold text-zinc-400 uppercase tracking-wider pb-2 px-3">
+                  <span>Quantity</span>
+                  <span className="text-right">Price / Unit</span>
+                  <span className="text-right">Discount</span>
+                </div>
+
+                {/* Table Rows */}
+                {(() => {
+                  const basePrice = product.priceTiers[0].price;
+                  return product.priceTiers.map((tier, idx) => {
+                    const isActive = quantity >= tier.min && quantity <= tier.max;
+                    const discount = basePrice > 0 ? Math.round(((basePrice - tier.price) / basePrice) * 100) : 0;
+                    
+                    return (
+                      <div 
+                        key={idx} 
+                        className={cn(
+                          "grid grid-cols-3 items-center py-2.5 px-3 rounded-xl transition-all duration-150 border",
+                          isActive 
+                            ? "bg-brand-orange/[0.04] border-brand-orange/30 shadow-xs" 
+                            : "border-transparent hover:bg-zinc-50/50"
+                        )}
+                      >
+                        {/* Quantity Column */}
+                        <div className="flex items-center gap-2">
+                          <span className={cn(
+                            "text-sm font-semibold",
+                            isActive ? "text-brand-orange font-bold" : "text-zinc-700"
+                          )}>
+                            {tier.min.toLocaleString()}
+                            {tier.max && tier.max !== Infinity ? ` - ${tier.max.toLocaleString()}` : '+'}
+                          </span>
+                          {isActive && (
+                            <span className="text-[10px] font-bold text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full shrink-0">
+                              Active
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Price Column */}
+                        <span className={cn(
+                          "text-sm text-right",
+                          isActive ? "text-brand-orange font-bold" : "text-zinc-800 font-medium"
+                        )}>
+                          {formatPrice(tier.price)}
+                        </span>
+
+                        {/* Discount Column */}
+                        <div className="text-right">
+                          {discount > 0 ? (
+                            <span className={cn(
+                              "text-xs font-semibold px-2 py-0.5 rounded-full inline-block",
+                              isActive 
+                                ? "bg-green-100 text-green-800" 
+                                : "bg-green-50 text-green-600"
+                            )}>
+                              Save {discount}%
+                            </span>
+                          ) : (
+                            <span className="text-xs text-zinc-400 italic font-normal pr-1">-</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-zinc-100 bg-zinc-50/50 flex justify-end gap-3">
+              <Button 
+                onClick={() => setIsPricingModalOpen(false)}
+                className="w-full sm:w-auto bg-brand-black hover:bg-brand-black/90 text-white rounded-xl py-2 px-6 font-semibold"
+              >
+                Done
+              </Button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );
