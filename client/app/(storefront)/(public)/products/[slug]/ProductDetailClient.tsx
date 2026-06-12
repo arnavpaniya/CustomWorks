@@ -163,6 +163,13 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 <div className="text-sm text-brand-black font-semibold mt-1">
                   Total: {formatPrice(totalPrice)}
                 </div>
+                {product.priceTiers && product.priceTiers.length > 0 && !isEmailEnquiry && (
+                  <div className="mt-3">
+                    <p className="text-xs text-brand-orange bg-brand-orange/10 px-2.5 py-1.5 rounded-md inline-block font-medium">
+                      ✨ Buy more, save more! Increase quantity to unlock lower per-piece pricing.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -483,7 +483,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 30.00,
     description: "Professionally printed C4 size envelopes designed to enhance brand presentation and maintain a polished corporate identity.\n\n• Material: High-Quality Envelope Paper\n• Size: C4 Size Envelope\n• Print: Single-Sided Printing",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/envelopes-c4/c4_front.png",
+      "/products/envelopes-c4/c4_back.png",
+      "/products/envelopes-c4/c4_stack.png",
+      "/products/envelopes-c4/c4_size.png"
+    ],
     rating: 4.9,
     reviewCount: 22,
     customizerType: "envelopes",
