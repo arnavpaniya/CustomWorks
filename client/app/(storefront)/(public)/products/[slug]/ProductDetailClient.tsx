@@ -126,6 +126,7 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
               fill
               className="object-contain p-4"
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             {product.badge && (
               <div className="absolute top-4 left-4">

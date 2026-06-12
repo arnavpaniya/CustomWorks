@@ -292,6 +292,7 @@ export default function RegisterPage() {
             fill
             className="object-cover opacity-30 mix-blend-luminosity"
             priority
+            sizes="50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-black to-transparent opacity-80" />
