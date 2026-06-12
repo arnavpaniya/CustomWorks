@@ -87,10 +87,10 @@ export default function Header() {
         )}
       >
         {/* Desktop Header */}
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 gap-4 sm:gap-8">
+        <div className="pl-4 pr-2 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 gap-2 sm:gap-8">
             {/* Logo */}
-            <Link href="/" className="shrink-0 flex items-center h-10 w-32 md:w-36" aria-label="CustomWorks Home">
+            <Link href="/" className="shrink-0 flex items-center h-9 w-26 sm:h-10 sm:w-32 md:w-36" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" />
             </Link>
 
