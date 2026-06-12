@@ -44,13 +44,7 @@ export default function Header() {
 
   if (pathname?.startsWith("/admin")) return null;
 
-  const handleAccountClick = () => {
-    if (user) {
-      window.location.href = "/dashboard";
-    } else {
-      window.location.href = "/login";
-    }
-  };
+
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -138,8 +132,8 @@ export default function Header() {
               </button>
  
               {/* Account */}
-              <button
-                onClick={handleAccountClick}
+              <Link
+                href={user ? "/dashboard" : "/login"}
                 className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="My account"
               >
@@ -148,7 +142,7 @@ export default function Header() {
                 ) : (
                   <User size={18} />
                 )}
-              </button>
+              </Link>
  
               {/* Wishlist */}
               <Link

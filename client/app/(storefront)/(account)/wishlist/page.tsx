@@ -22,61 +22,7 @@ interface WishlistItem {
   gradient: string;
 }
 
-const INITIAL_WISHLIST: WishlistItem[] = [
-  {
-    id: "w1",
-    name: "Custom Business Cards (Visiting Cards)",
-    slug: "custom-business-cards",
-    category: "Business Cards",
-    startingPrice: 1,
-    rating: 4.9,
-    reviewCount: 342,
-
-    gradient: "from-zinc-100 to-zinc-200",
-  },
-  {
-    id: "w2",
-    name: "Custom Vinyl Banners & Signs",
-    slug: "custom-banners",
-    category: "Signage & Display",
-    startingPrice: 22,
-    rating: 4.8,
-    reviewCount: 112,
-    badge: "Fast Shipping",
-    gradient: "from-amber-50 to-orange-100",
-  },
-  {
-    id: "w3",
-    name: "Corporate ID Cards & Lanyards",
-    slug: "id-lanyards",
-    category: "ID & Lanyards",
-    startingPrice: 15,
-    rating: 4.9,
-    reviewCount: 201,
-    gradient: "from-emerald-50 to-teal-100",
-  },
-  {
-    id: "w4",
-    name: "Custom Table Calendars",
-    slug: "custom-calendars",
-    category: "Calendars & Planners",
-    startingPrice: 135,
-    rating: 4.8,
-    reviewCount: 46,
-    badge: "Corporate Favorite",
-    gradient: "from-violet-50 to-purple-100",
-  },
-  {
-    id: "w5",
-    name: "Corporate Brand Notebook Diaries",
-    slug: "corporate-diaries",
-    category: "Calendars & Planners",
-    startingPrice: 275,
-    rating: 4.8,
-    reviewCount: 77,
-    gradient: "from-sky-50 to-blue-100",
-  },
-];
+const INITIAL_WISHLIST: WishlistItem[] = [];
 
 export default function WishlistPage() {
   const { user, loading } = useAuth();

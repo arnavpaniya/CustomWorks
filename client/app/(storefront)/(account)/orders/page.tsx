@@ -19,16 +19,16 @@ import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import { useAuth } from "@/lib/useAuth";
 
-const MOCK_ORDERS = [
-  { id: "CW-20260501", date: "1 May 2026", total: 3590, status: "DELIVERED", items: 3, products: "Custom Business Cards, Letterheads" },
-  { id: "CW-20260415", date: "15 Apr 2026", total: 1498, status: "DISPATCHED", items: 2, products: "Premium Organic Cotton Tee" },
-  { id: "CW-20260402", date: "2 Apr 2026", total: 5640, status: "PROCESSING", items: 5, products: "Corporate ID Lanyards, PVC Cards" },
-  { id: "CW-20260328", date: "28 Mar 2026", total: 899, status: "DESIGNING", items: 1, products: "Vintage Canvas Trucker Cap" },
-  { id: "CW-20260315", date: "15 Mar 2026", total: 2197, status: "DELIVERED", items: 3, products: "Custom Ceramic Mug, T-Shirt" },
-  { id: "CW-20260301", date: "1 Mar 2026", total: 12400, status: "DELIVERED", items: 8, products: "Vinyl Banners (Steel Frame)" },
-  { id: "CW-20260220", date: "20 Feb 2026", total: 4150, status: "CANCELLED", items: 2, products: "Tri-Fold Brochures" },
-  { id: "CW-20260210", date: "10 Feb 2026", total: 875, status: "READY_TO_SHIP", items: 1, products: "Premium Organic Cotton Tee" },
-];
+interface MockOrder {
+  id: string;
+  date: string;
+  total: number;
+  status: string;
+  items: number;
+  products: string;
+}
+
+const MOCK_ORDERS: MockOrder[] = [];
 
 const statusConfig: Record<string, { label: string; variant: "default" | "success" | "warning" | "error" | "muted" }> = {
   DESIGNING: { label: "Designing", variant: "muted" },

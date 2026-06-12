@@ -5,15 +5,20 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { User, Package, Heart, Bookmark, LogOut, ChevronRight, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/lib/useAuth";
 
-const MOCK_ORDERS = [
-  { id: "CW-20260501", date: "1 May 2026", total: 3590, status: "DELIVERED", items: 3 },
-  { id: "CW-20260415", date: "15 Apr 2026", total: 1498, status: "DISPATCHED", items: 2 },
-  { id: "CW-20260402", date: "2 Apr 2026", total: 5640, status: "PROCESSING", items: 5 },
-];
+interface MockOrder {
+  id: string;
+  date: string;
+  total: number;
+  status: string;
+  items: number;
+}
+
+const MOCK_ORDERS: MockOrder[] = [];
 
 const statusConfig = {
   DESIGNING:    { label: "Designing",      variant: "muted"    as const },
@@ -139,26 +144,37 @@ export default function AccountDashboard() {
               </Link>
             </div>
             <div className="space-y-3">
-              {MOCK_ORDERS.map((order) => {
-                const status = statusConfig[order.status as keyof typeof statusConfig];
-                return (
-                  <Link
-                    key={order.id}
-                    href={`/orders/${order.id}`}
-                    className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-surface transition-colors border border-brand-border"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-brand-black">#{order.id}</p>
-                      <p className="text-xs text-[#9A9A9A]">{order.date} · {order.items} items</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant={status.variant}>{status.label}</Badge>
-                      <p className="text-sm font-bold">₹{order.total.toLocaleString("en-IN")}</p>
-                      <ChevronRight size={14} className="text-[#9A9A9A]" />
-                    </div>
+              {MOCK_ORDERS.length > 0 ? (
+                MOCK_ORDERS.map((order) => {
+                  const status = statusConfig[order.status as keyof typeof statusConfig];
+                  return (
+                    <Link
+                      key={order.id}
+                      href={`/orders/${order.id}`}
+                      className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-surface transition-colors border border-brand-border"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-brand-black">#{order.id}</p>
+                        <p className="text-xs text-[#9A9A9A]">{order.date} · {order.items} items</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge variant={status.variant}>{status.label}</Badge>
+                        <p className="text-sm font-bold">₹{order.total.toLocaleString("en-IN")}</p>
+                        <ChevronRight size={14} className="text-[#9A9A9A]" />
+                      </div>
+                    </Link>
+                  );
+                })
+              ) : (
+                <div className="text-center py-8 border border-dashed border-brand-border rounded-2xl bg-brand-surface/20">
+                  <p className="text-sm text-brand-muted mb-4">You haven't placed any orders yet.</p>
+                  <Link href="/products">
+                    <Button variant="accent" size="sm">
+                      Start Shopping
+                    </Button>
                   </Link>
-                );
-              })}
+                </div>
+              )}
             </div>
           </div>
         </div>

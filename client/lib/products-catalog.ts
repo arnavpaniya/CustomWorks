@@ -418,7 +418,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 20.00,
     description: "Professionally printed DL size envelopes designed to enhance brand presentation and maintain a polished corporate identity.\n\n• Material: High-Quality Envelope Paper\n• Size: DL Size Envelope\n• Print: Single-Sided Printing",
     moq: 10,
-    images: ["/products/envelopes-dl/dl_envelope_1.png", "/products/envelopes-dl/dl_envelope_2.png", "/products/envelopes-dl/dl_envelope_size.png"],
+    images: ["/products/envelopes-dl/dl.png", "/products/envelopes-dl/dl-1.png", "/products/envelopes-dl/dl-2.png"],
     rating: 4.8,
     reviewCount: 45,
     customizerType: "envelopes",
@@ -483,12 +483,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 30.00,
     description: "Professionally printed C4 size envelopes designed to enhance brand presentation and maintain a polished corporate identity.\n\n• Material: High-Quality Envelope Paper\n• Size: C4 Size Envelope\n• Print: Single-Sided Printing",
     moq: 10,
-    images: [
-      "/products/envelopes-c4/c4_front.png",
-      "/products/envelopes-c4/c4_back.png",
-      "/products/envelopes-c4/c4_stack.png",
-      "/products/envelopes-c4/c4_size.png"
-    ],
+    images: ["/products/envelopes-c4/cl-1.png"],
     rating: 4.9,
     reviewCount: 22,
     customizerType: "envelopes",
@@ -871,7 +866,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     isQuoteOnly: true,
     description: "High-quality custom printed T-Shirts available in round neck and polo styles. Ideal for corporate events, promotional giveaways, and team building. Multiple fabric and printing options available.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: ["/products/custom-tshirts/tshirt.png"],
     rating: 4.8,
     reviewCount: 95,
     customizerType: "email-quote-only"
@@ -879,15 +874,29 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
   {
     id: "corporate-uniforms",
     slug: "corporate-uniforms",
-    name: "Corporate Uniforms & Hoodies",
+    name: "Corporate Uniforms",
     category: "Apparel & Uniforms",
     basePrice: 0,
     isQuoteOnly: true,
-    description: "Premium corporate uniforms, hoodies, jackets, and jerseys customized with your brand logo. Available with high-quality embroidery or premium printing for a professional look.",
+    description: "Premium corporate uniforms, formal shirts, workwear, and promotional apparel customized with your brand logo. Available with high-quality embroidery or premium printing for a professional look.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: ["/products/corporate-uniforms/corporate-uni.png"],
     rating: 4.9,
     reviewCount: 67,
+    customizerType: "email-quote-only"
+  },
+  {
+    id: "custom-hoodies",
+    slug: "custom-hoodies",
+    name: "Custom Hoodies & Jackets",
+    category: "Apparel & Uniforms",
+    basePrice: 0,
+    isQuoteOnly: true,
+    description: "Premium custom hoodies, jackets, and sweatshirts designed to keep your team warm and stylish. Fully customizable with your logo in high-quality print or embroidery.",
+    moq: 10,
+    images: ["/products/corporate-uniforms/jackets.png"],
+    rating: 4.9,
+    reviewCount: 52,
     customizerType: "email-quote-only"
   },
   {
@@ -899,7 +908,7 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     isQuoteOnly: true,
     description: "Professional embroidery and personalisation services designed to add premium detailing and durability to apparel, uniforms, and accessories.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: ["/products/custom-embroidery/custom-apperal.png"],
     rating: 4.9,
     reviewCount: 45,
     customizerType: "email-quote-only"

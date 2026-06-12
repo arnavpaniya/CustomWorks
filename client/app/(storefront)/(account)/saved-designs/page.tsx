@@ -19,53 +19,7 @@ interface SavedDesign {
   gradientTo: string;
 }
 
-const INITIAL_DESIGNS: SavedDesign[] = [
-  {
-    id: "d1",
-    productName: "Custom Business Cards",
-    variant: "300 GSM Standard · Matte · Double Sided",
-    customSummary: 'Front text: "Team Alpha" · Editorial Serif · #FF5E36',
-    savedAt: "2 hours ago",
-    gradientFrom: "from-zinc-900",
-    gradientTo: "to-zinc-700",
-  },
-  {
-    id: "d2",
-    productName: "Premium Organic Cotton Tee",
-    variant: "M · Obsidian Black · Front Center",
-    customSummary: 'Text: "BUILD" · Street Sans · Puff Print',
-    savedAt: "Yesterday",
-    gradientFrom: "from-amber-900",
-    gradientTo: "to-orange-700",
-  },
-  {
-    id: "d3",
-    productName: "Vinyl Banner (Starflex)",
-    variant: "6×4 ft · Glossy · Steel Frame",
-    customSummary: "Logo uploaded · Full bleed design",
-    savedAt: "3 days ago",
-    gradientFrom: "from-emerald-900",
-    gradientTo: "to-teal-700",
-  },
-  {
-    id: "d4",
-    productName: "Corporate ID Lanyards",
-    variant: "20mm Polyester · China Hook",
-    customSummary: "Company logo · Double-sided print",
-    savedAt: "1 week ago",
-    gradientFrom: "from-violet-900",
-    gradientTo: "to-purple-700",
-  },
-  {
-    id: "d5",
-    productName: "Table Calendar (Rectangle)",
-    variant: "Landscape · Wire-O Bound",
-    customSummary: "12 month layout · Brand color palette",
-    savedAt: "2 weeks ago",
-    gradientFrom: "from-sky-900",
-    gradientTo: "to-blue-700",
-  },
-];
+const INITIAL_DESIGNS: SavedDesign[] = [];
 
 export default function SavedDesignsPage() {
   const { user, loading } = useAuth();
