@@ -15,7 +15,7 @@ interface Props {
   onClose: () => void;
 }
 
-const WHATSAPP_NUMBER = "919999999999"; // Replace with actual number
+const WHATSAPP_NUMBER = "919632022529"; // Replace with actual number
 
 export default function QuoteSubmissionForm({ productId, productName, onClose }: Props) {
   const design = useDesignStore();

@@ -83,8 +83,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-brand-black">Call Us</h3>
                   <p className="text-sm text-brand-muted mt-1 mb-2">Available during business hours.</p>
-                  <a href="tel:+919876543210" className="text-brand-black font-semibold hover:underline text-sm">
-                    +91 98765 43210
+                  <a href="tel:+919632022529" className="text-brand-black font-semibold hover:underline text-sm">
+                    +91 96320 22529
                   </a>
                 </div>
               </div>

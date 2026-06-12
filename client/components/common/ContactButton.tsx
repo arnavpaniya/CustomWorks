@@ -12,7 +12,7 @@ export default function ContactButton() {
 
   return (
     <motion.a
-      href="https://wa.me/"
+      href="https://wa.me/919632022529"
       aria-label="Chat on WhatsApp"
       className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl group"
       initial={{ scale: 0, opacity: 0 }}
