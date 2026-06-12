@@ -23,7 +23,7 @@ const variantClasses: Record<Variant, string> = {
   ghost:
     "bg-transparent text-brand-black hover:bg-brand-surface active:scale-[0.98]",
   accent:
-    "bg-brand-black dark:bg-brand-white text-brand-white dark:text-brand-black hover:bg-[#2A2A2A] dark:hover:bg-brand-border border border-black/10 dark:border-white/10 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.2),_inset_-1px_-1px_2px_rgba(0,0,0,0.4),_0_4px_12px_rgba(0,0,0,0.12)] active:scale-[0.96]",
+    "bg-brand-black text-brand-white hover:bg-[#2A2A2A] border border-black/10 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.2),_inset_-1px_-1px_2px_rgba(0,0,0,0.4),_0_4px_12px_rgba(0,0,0,0.12)] active:scale-[0.96]",
 };
 
 const sizeClasses: Record<Size, string> = {
