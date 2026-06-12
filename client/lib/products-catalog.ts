@@ -45,8 +45,6 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
       "/products/visiting-cards/visiting-card-2.png",
       "/products/visiting-cards/visiting-card-3.png",
       "/products/visiting-cards/visiting-card-4.png",
-      "/products/visiting-cards/card-1.png",
-      "/products/visiting-cards/card-2.png",
       "/products/visiting-cards/visiting-card-guide.png"
     ],
     rating: 4.9,
