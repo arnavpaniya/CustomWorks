@@ -19,10 +19,7 @@ const STEPS = [
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
-  const [selectedMethod, setSelectedMethod] = useState("UPI");
-  const [upiId, setUpiId] = useState("");
-  const [cardDetails, setCardDetails] = useState({ number: "", expiry: "", cvv: "" });
-  const [selectedBank, setSelectedBank] = useState("");
+  const [selectedMethod, setSelectedMethod] = useState("ONLINE");
   
   const { items, subtotal, total, getShippingCharge, setShippingCharge } = useCartStore();
 
@@ -75,85 +72,17 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Initialize Cashfree
+      // Initialize Cashfree and open hosted checkout (handles UPI, Card, NetBanking, Wallets)
       const cashfree = await load({
-        mode: "production" // Cashfree keys provided were prod keys
+        mode: "production"
       });
 
-      let paymentMethod: any = null;
+      const checkoutOptions: any = {
+        paymentSessionId: data.paymentSessionId,
+        returnUrl: `${window.location.origin.replace("http://", "https://")}/order-success?order_id=${data.orderId}`,
+      };
 
-      if (selectedMethod === "UPI") {
-        if (!upiId) {
-          toast.error("Please enter your UPI ID");
-          setIsProcessing(false);
-          return;
-        }
-        paymentMethod = {
-          upi: {
-            channel: "collect",
-            upi_id: upiId.trim()
-          }
-        };
-      } else if (selectedMethod === "CARD") {
-        if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvv) {
-          toast.error("Please fill in all card details");
-          setIsProcessing(false);
-          return;
-        }
-        const [expiryMM, expiryYY] = cardDetails.expiry.split("/");
-        if (!expiryMM || !expiryYY) {
-          toast.error("Invalid expiry date format. Use MM/YY");
-          setIsProcessing(false);
-          return;
-        }
-        paymentMethod = {
-          card: {
-            card_number: cardDetails.number.replace(/\s+/g, ""),
-            card_expiry_mm: expiryMM.trim().padStart(2, "0"),
-            card_expiry_yy: expiryYY.trim().length === 2 ? "20" + expiryYY.trim() : expiryYY.trim(),
-            card_cvv: cardDetails.cvv.trim(),
-            card_holder_name: address.name || "Card Holder"
-          }
-        };
-      } else if (selectedMethod === "NETBANKING") {
-        if (!selectedBank) {
-          toast.error("Please select your bank");
-          setIsProcessing(false);
-          return;
-        }
-        const bankCodes: Record<string, string> = {
-          SBI: "3003",
-          HDFC: "3022",
-          ICICI: "3019",
-          AXIS: "3005",
-          KOTAK: "3033"
-        };
-        const bankCode = bankCodes[selectedBank];
-        if (!bankCode) {
-          toast.error("Unsupported bank selection");
-          setIsProcessing(false);
-          return;
-        }
-        paymentMethod = {
-          netbanking: {
-            netbanking_bank_code: bankCode
-          }
-        };
-      }
-
-      if (paymentMethod) {
-        toast.info("Initiating payment request...");
-        await cashfree.pay({
-          paymentSessionId: data.paymentSessionId,
-          paymentMethod,
-          returnUrl: `${window.location.origin.replace("http://", "https://")}/order-success?order_id=${data.orderId}`,
-        });
-      } else {
-        cashfree.checkout({
-          paymentSessionId: data.paymentSessionId,
-          returnUrl: `${window.location.origin.replace("http://", "https://")}/order-success?order_id=${data.orderId}`,
-        });
-      }
+      cashfree.checkout(checkoutOptions);
 
     } catch (err: any) {
       console.error(err);
@@ -234,179 +163,61 @@ export default function CheckoutPage() {
             {step === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
                 <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6">
-                  <h2 className="font-bold text-lg text-[#0A0A0A] mb-2">Payment</h2>
+                  <h2 className="font-bold text-lg text-[#0A0A0A] mb-2">Payment Method</h2>
                   <div className="flex items-center gap-2 mb-6 p-3 bg-green-50 rounded-xl">
                     <ShieldCheck size={16} className="text-green-600" />
                     <p className="text-xs text-green-700 font-medium">100% secure checkout. Your payment info is encrypted.</p>
                   </div>
                   
-                  {/* Payment gateway selection */}
-                  <div className="space-y-4">
-                    {/* Method 1: UPI */}
+                  <div className="space-y-3">
+                    {/* Pay Online */}
                     <div 
-                      onClick={() => setSelectedMethod("UPI")}
+                      onClick={() => setSelectedMethod("ONLINE")}
                       className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
-                        selectedMethod === "UPI" 
-                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                        "border rounded-xl p-4 cursor-pointer transition-all",
+                        selectedMethod !== "COD" 
+                          ? "border-[#0A0A0A] bg-[#0A0A0A]/5 ring-1 ring-[#0A0A0A]" 
                           : "border-zinc-200 hover:border-zinc-300"
                       )}
                     >
-                      <div className="flex items-start justify-between w-full">
-                        <div className="flex gap-3">
-                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
-                            {selectedMethod === "UPI" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-narrative-forest">UPI (Google Pay, PhonePe, Paytm)</p>
-                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay securely using any UPI app.</p>
-                          </div>
+                      <div className="flex items-center gap-3">
+                        <div className="h-5 w-5 rounded-full border-2 border-zinc-300 flex items-center justify-center flex-shrink-0">
+                          {selectedMethod !== "COD" && <div className="h-2.5 w-2.5 rounded-full bg-[#0A0A0A]" />}
                         </div>
-                        <Smartphone className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                        <div className="flex-1">
+                          <p className="text-sm font-bold text-[#0A0A0A]">Pay Online</p>
+                          <p className="text-xs text-[#6B6B6B] mt-0.5">UPI · Credit/Debit Card · Net Banking · Wallets</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                          <Smartphone size={16} className="text-[#6B6B6B]" />
+                          <CreditCard size={16} className="text-[#6B6B6B]" />
+                          <Landmark size={16} className="text-[#6B6B6B]" />
+                        </div>
                       </div>
-                      
-                      {selectedMethod === "UPI" && (
-                        <div className="mt-2 pl-8 pr-2 w-full flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
-                          <label htmlFor="upi-id-input" className="text-xs font-semibold text-narrative-forest/70">UPI ID</label>
-                          <input 
-                            id="upi-id-input"
-                            type="text" 
-                            placeholder="username@okaxis" 
-                            value={upiId}
-                            onChange={(e) => setUpiId(e.target.value)}
-                            className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
-                          />
-                        </div>
+                      {selectedMethod !== "COD" && (
+                        <p className="text-xs text-[#6B6B6B] mt-3 ml-8">You'll be redirected to Cashfree's secure payment page to complete your payment.</p>
                       )}
                     </div>
 
-                    {/* Method 2: Credit/Debit Card */}
-                    <div 
-                      onClick={() => setSelectedMethod("CARD")}
-                      className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
-                        selectedMethod === "CARD" 
-                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
-                          : "border-zinc-200 hover:border-zinc-300"
-                      )}
-                    >
-                      <div className="flex items-start justify-between w-full">
-                        <div className="flex gap-3">
-                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
-                            {selectedMethod === "CARD" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-narrative-forest">Credit / Debit Card</p>
-                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay via Visa, Mastercard, RuPay, or Diners.</p>
-                          </div>
-                        </div>
-                        <CreditCard className="text-narrative-forest/80 flex-shrink-0" size={20} />
-                      </div>
-                      
-                      {selectedMethod === "CARD" && (
-                        <div className="mt-2 pl-8 pr-2 w-full grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
-                          <div className="col-span-2 flex flex-col gap-1.5">
-                            <label htmlFor="card-number-input" className="text-xs font-semibold text-narrative-forest/70">Card Number</label>
-                            <input 
-                              id="card-number-input"
-                              type="text" 
-                              placeholder="4111 2222 3333 4444" 
-                              value={cardDetails.number}
-                              onChange={(e) => setCardDetails(prev => ({ ...prev, number: e.target.value }))}
-                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label htmlFor="card-expiry-input" className="text-xs font-semibold text-narrative-forest/70">Expiry Date</label>
-                            <input 
-                              id="card-expiry-input"
-                              type="text" 
-                              placeholder="MM/YY" 
-                              value={cardDetails.expiry}
-                              onChange={(e) => setCardDetails(prev => ({ ...prev, expiry: e.target.value }))}
-                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label htmlFor="card-cvv-input" className="text-xs font-semibold text-narrative-forest/70">CVV</label>
-                            <input 
-                              id="card-cvv-input"
-                              type="password" 
-                              placeholder="***" 
-                              maxLength={3}
-                              value={cardDetails.cvv}
-                              onChange={(e) => setCardDetails(prev => ({ ...prev, cvv: e.target.value }))}
-                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Method 3: Net Banking */}
-                    <div 
-                      onClick={() => setSelectedMethod("NETBANKING")}
-                      className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
-                        selectedMethod === "NETBANKING" 
-                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
-                          : "border-zinc-200 hover:border-zinc-300"
-                      )}
-                    >
-                      <div className="flex items-start justify-between w-full">
-                        <div className="flex gap-3">
-                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
-                            {selectedMethod === "NETBANKING" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-narrative-forest">Net Banking</p>
-                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay directly from your bank account.</p>
-                          </div>
-                        </div>
-                        <Landmark className="text-narrative-forest/80 flex-shrink-0" size={20} />
-                      </div>
-                      
-                      {selectedMethod === "NETBANKING" && (
-                        <div className="mt-2 pl-8 pr-2 w-full flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
-                          <label htmlFor="bank-select" className="text-xs font-semibold text-narrative-forest/70">Select Bank</label>
-                          <select 
-                            id="bank-select"
-                            value={selectedBank}
-                            onChange={(e) => setSelectedBank(e.target.value)}
-                            className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
-                          >
-                            <option value="">-- Choose Your Bank --</option>
-                            <option value="SBI">State Bank of India</option>
-                            <option value="HDFC">HDFC Bank</option>
-                            <option value="ICICI">ICICI Bank</option>
-                            <option value="AXIS">Axis Bank</option>
-                            <option value="KOTAK">Kotak Mahindra Bank</option>
-                          </select>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Method 4: COD */}
+                    {/* COD */}
                     <div 
                       onClick={() => setSelectedMethod("COD")}
                       className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
+                        "border rounded-xl p-4 cursor-pointer transition-all",
                         selectedMethod === "COD" 
-                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                          ? "border-[#0A0A0A] bg-[#0A0A0A]/5 ring-1 ring-[#0A0A0A]" 
                           : "border-zinc-200 hover:border-zinc-300"
                       )}
                     >
-                      <div className="flex items-start justify-between w-full">
-                        <div className="flex gap-3">
-                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
-                            {selectedMethod === "COD" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-narrative-forest">Cash on Delivery (COD)</p>
-                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay via cash or digital UPI when your order is delivered to your doorstep.</p>
-                          </div>
+                      <div className="flex items-center gap-3">
+                        <div className="h-5 w-5 rounded-full border-2 border-zinc-300 flex items-center justify-center flex-shrink-0">
+                          {selectedMethod === "COD" && <div className="h-2.5 w-2.5 rounded-full bg-[#0A0A0A]" />}
                         </div>
-                        <MapPin className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                        <div className="flex-1">
+                          <p className="text-sm font-bold text-[#0A0A0A]">Cash on Delivery</p>
+                          <p className="text-xs text-[#6B6B6B] mt-0.5">Pay when your order arrives at your doorstep.</p>
+                        </div>
+                        <MapPin size={18} className="text-[#6B6B6B] flex-shrink-0" />
                       </div>
                     </div>
                   </div>
