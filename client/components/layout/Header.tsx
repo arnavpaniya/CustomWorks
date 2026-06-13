@@ -88,15 +88,15 @@ export default function Header() {
 
       <header
         className={cn(
-          "sticky top-4 z-50 clay-nav mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-full transition-all duration-300",
+          "sticky top-2 sm:top-4 z-50 clay-nav mx-auto w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-5xl rounded-full transition-all duration-300 overflow-hidden",
           scrolled && "shadow-md border-black/5 dark:border-white/5",
         )}
       >
         {/* Desktop Header */}
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 gap-4 sm:gap-8">
+        <div className="px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-12 sm:h-14 gap-1 sm:gap-4 md:gap-8">
             {/* Logo */}
-            <Link href="/" className="shrink-0 flex items-center h-10 w-32 md:w-36" aria-label="CustomWorks Home">
+            <Link href="/" className="shrink-0 flex items-center h-8 sm:h-10 w-24 sm:w-32 md:w-36" aria-label="CustomWorks Home">
               <Logo className="h-full w-full" />
             </Link>
 
@@ -127,11 +127,11 @@ export default function Header() {
 
 
             {/* Actions */}
-            <div className="flex items-center gap-1">
-              {/* Search */}
+            <div className="flex items-center gap-0 sm:gap-1">
+              {/* Search — hidden on very small screens, available in drawer */}
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                className="hidden sm:flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="Toggle search"
               >
                 <Search size={18} />
@@ -140,11 +140,11 @@ export default function Header() {
               {/* Account */}
               <button
                 onClick={handleAccountClick}
-                className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                className="hidden sm:flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label="My account"
               >
                 {user?.photoURL ? (
-                  <img src={user.photoURL} alt="avatar" className="h-7 w-7 rounded-full object-cover" />
+                  <img src={user.photoURL} alt="avatar" className="h-6 w-6 sm:h-7 sm:w-7 rounded-full object-cover" />
                 ) : (
                   <User size={18} />
                 )}
@@ -162,7 +162,7 @@ export default function Header() {
               {/* Cart */}
               <Link
                 href="/cart"
-                className="relative h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                className="relative h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
                 aria-label={`Cart with ${itemCount} items`}
               >
                 <ShoppingBag size={18} />
@@ -176,7 +176,7 @@ export default function Header() {
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="md:hidden h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors ml-1"
+                className="md:hidden h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors flex-shrink-0"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
               >
@@ -240,7 +240,7 @@ export default function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-black/50 z-[55] md:hidden"
             onClick={() => setMobileOpen(false)}
           />
         )}
@@ -254,7 +254,7 @@ export default function Header() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 left-0 h-[100dvh] w-[85vw] max-w-sm bg-white border-r border-brand-border z-50 md:hidden flex flex-col shadow-2xl"
+            className="fixed top-0 left-0 h-[100dvh] w-[80vw] max-w-xs bg-white border-r border-brand-border z-[60] md:hidden flex flex-col shadow-2xl"
             aria-label="Mobile navigation"
           >
             <div className="flex items-center justify-between p-4 border-b border-brand-border">
@@ -271,6 +271,25 @@ export default function Header() {
             </div>
 
             <div className="flex-1 overflow-y-auto py-2">
+              {/* Mobile Search */}
+              <div className="px-4 pb-3 sm:hidden">
+                <div className="relative">
+                  <Search
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9A9A9A]"
+                  />
+                  <input
+                    type="search"
+                    placeholder="Search products…"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && (e.target as HTMLInputElement).value.trim()) {
+                        window.location.href = `/products?q=${encodeURIComponent((e.target as HTMLInputElement).value.trim())}`;
+                      }
+                    }}
+                    className="w-full h-10 pl-9 pr-4 rounded-lg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-black focus:border-transparent bg-white text-brand-black"
+                  />
+                </div>
+              </div>
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
