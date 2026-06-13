@@ -22,7 +22,7 @@ export default function HowItWorks() {
       </div>
 
       {/* Storyline Vertical Stages */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 z-10 relative flex flex-col gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 z-10 relative flex flex-col gap-16">
         
         {/* Stage 1: Design Studio */}
         <motion.div
@@ -30,7 +30,7 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 lg:grid-cols-12 bg-narrative-sage/10 border border-narrative-sage/20 rounded-[2.5rem] overflow-hidden"
+          className="sticky top-24 grid grid-cols-1 lg:grid-cols-12 bg-[#E9EFEF] border border-narrative-sage/30 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
         >
           {/* Left Block: Narrative */}
           <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between min-h-[300px]">
@@ -42,7 +42,7 @@ export default function HowItWorks() {
                 Configure & <span className="italic font-normal text-narrative-sage">Customize</span>
               </h3>
               <p className="text-sm text-narrative-forest/80 leading-relaxed font-medium">
-                Browse our extensive catalog of blank items—from hoodies to visiting cards to branded standees. Upload your artwork, set exact dimensions, and adjust live options inside our sandbox customizer.
+                Browse our extensive catalog of blank items—from custom boxes to visiting cards to premium desk accessories. Upload your artwork, set exact dimensions, and adjust live options inside our sandbox customizer.
               </p>
             </div>
             
@@ -59,50 +59,16 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Right Block: Visual Mock Workstation */}
-          <div className="lg:col-span-6 bg-[#E9EFEF]/60 border-t lg:border-t-0 lg:border-l border-narrative-sage/20 p-8 flex items-center justify-center min-h-[300px]">
-            <div className="w-full max-w-sm border border-narrative-sage/20 bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-lg relative overflow-hidden">
-              {/* Window Header */}
-              <div className="flex items-center justify-between border-b border-narrative-sage/10 pb-3 mb-4 select-none">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
-                </div>
-                <span className="text-[9px] font-mono text-narrative-sage font-bold tracking-wider">CANVAS_STUDIO_V2</span>
-              </div>
-              
-              {/* Workspace Area */}
-              <div className="h-36 relative overflow-hidden rounded-xl border border-narrative-sage/25 shadow-sm bg-zinc-50 group">
-                <Image
-                  src="/images/design_workspace.jpg"
-                  alt="Design studio workspace"
-                  fill
-                  className="object-cover group-hover:scale-102 transition-transform duration-500"
-                  sizes="350px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-3.5">
-                  <span className="text-[10px] font-mono font-bold text-white tracking-widest uppercase">
-                    Active Canvas
-                  </span>
-                  <span className="text-[8px] font-mono text-zinc-300 mt-0.5">
-                    LIVE DESIGN SANDBOX
-                  </span>
-                </div>
-              </div>
-
-              {/* Design Controls Overlay/Footer */}
-              <div className="mt-4 pt-3 border-t border-narrative-sage/10 flex items-center justify-between text-[9px] font-mono text-narrative-forest/70">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Connected</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span>Zoom: 100%</span>
-                  <span>Grid: On</span>
-                </div>
-              </div>
-            </div>
+          {/* Right Block: Full-Bleed Studio Visual */}
+          <div className="lg:col-span-6 relative min-h-[350px] lg:min-h-[400px] w-full border-t lg:border-t-0 lg:border-l border-narrative-sage/20">
+            <Image
+              src="/images/lifecycle_design.png"
+              alt="Design studio workspace showing custom box packaging layouts"
+              fill
+              className="object-cover hover:scale-[1.01] transition-transform duration-500"
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-narrative-forest/20 to-transparent pointer-events-none" />
           </div>
         </motion.div>
 
@@ -112,44 +78,21 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 lg:grid-cols-12 bg-narrative-clay/10 border border-narrative-clay/20 rounded-[2.5rem] overflow-hidden"
+          className="sticky top-32 grid grid-cols-1 lg:grid-cols-12 bg-[#F6ECE9] border border-narrative-clay/30 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          {/* Right Block: Visual Factory Console (placed left on layout for alternating style) */}
-          <div className="lg:col-span-6 bg-[#F6ECE9]/60 border-b lg:border-b-0 lg:border-r border-narrative-clay/20 p-8 flex items-center justify-center min-h-[300px] order-2 lg:order-1">
-            <div className="w-full max-w-sm border border-narrative-clay/20 bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-lg relative overflow-hidden">
-              {/* Window Header */}
-              <div className="flex items-center justify-between border-b border-narrative-clay/10 pb-3 mb-4 select-none">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
-                </div>
-                <span className="text-[9px] font-mono text-narrative-clay font-bold tracking-wider">FACTORY_LINE_A</span>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-[10px] font-mono text-narrative-forest/80 border-b border-narrative-clay/10 pb-2">
-                  <span>Manufacturing Queue</span>
-                  <span className="font-bold text-narrative-forest">ID_#9231</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px] font-mono text-narrative-forest/80 border-b border-narrative-clay/10 pb-2">
-                  <span>Embroidery Speed</span>
-                  <span className="font-bold text-narrative-forest">850 SPM</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px] font-mono text-narrative-forest/80 pb-1">
-                  <span>Calibration Status</span>
-                  <span className="text-narrative-clay font-bold uppercase tracking-wider">FABRICATING (78%)</span>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="w-full h-2 bg-narrative-clay/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-narrative-clay rounded-full w-[78%]" />
-                </div>
-              </div>
-            </div>
+          {/* Left Block: Full-Bleed Factory Visual */}
+          <div className="lg:col-span-6 relative min-h-[350px] lg:min-h-[400px] w-full border-b lg:border-b-0 lg:border-r border-narrative-clay/20 order-2 lg:order-1">
+            <Image
+              src="/images/lifecycle_fabrication.png"
+              alt="Precision Industrial Laser Engraving on Kraft Box Board"
+              fill
+              className="object-cover hover:scale-[1.01] transition-transform duration-500"
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-narrative-forest/20 to-transparent pointer-events-none" />
           </div>
 
-          {/* Left Block: Narrative */}
+          {/* Right Block: Narrative */}
           <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between min-h-[300px] order-1 lg:order-2">
             <div>
               <span className="text-[9px] font-mono font-bold text-narrative-clay uppercase tracking-wider block mb-4">
@@ -159,7 +102,7 @@ export default function HowItWorks() {
                 Fabrication & <span className="italic font-normal text-narrative-clay">Quality Check</span>
               </h3>
               <p className="text-sm text-narrative-forest/80 leading-relaxed font-medium">
-                Your layout templates are sent directly to our fabrication lines. We employ automated embroidery stitching, digital print presses, and high-impact laser cutting to craft every hoodie, card, and standee to precise tolerances.
+                Your layout templates are sent directly to our fabrication lines. We employ precision laser cutting, digital print presses, and high-impact custom stamping to craft every card, box, and accessory to exact tolerances.
               </p>
             </div>
             
@@ -167,11 +110,11 @@ export default function HowItWorks() {
             <div className="flex flex-col gap-2 mt-8">
               <div className="flex items-center gap-2 text-xs font-bold text-narrative-forest/80">
                 <Hammer size={14} className="text-narrative-clay" />
-                <span>High-density industrial stitching</span>
+                <span>Precision laser engraving and die cutting</span>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-narrative-forest/80">
                 <Hammer size={14} className="text-narrative-clay" />
-                <span>Pre-shipping manual quality control</span>
+                <span>Pre-shipping manual quality control check</span>
               </div>
             </div>
           </div>
@@ -183,7 +126,7 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 lg:grid-cols-12 bg-narrative-ochre/10 border border-narrative-ochre/20 rounded-[2.5rem] overflow-hidden"
+          className="sticky top-40 grid grid-cols-1 lg:grid-cols-12 bg-[#F5F1E5] border border-narrative-ochre/30 rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
         >
           {/* Left Block: Narrative */}
           <div className="lg:col-span-6 p-8 sm:p-14 flex flex-col justify-between min-h-[300px]">
@@ -203,7 +146,7 @@ export default function HowItWorks() {
             <div className="flex flex-col gap-2 mt-8">
               <div className="flex items-center gap-2 text-xs font-bold text-narrative-forest/80">
                 <Check size={14} className="text-narrative-ochre stroke-[3]" />
-                <span>Custom protective brand boxing</span>
+                <span>Custom protective brand packaging</span>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-narrative-forest/80">
                 <Check size={14} className="text-narrative-ochre stroke-[3]" />
@@ -212,48 +155,16 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Right Block: Delivery Status */}
-          <div className="lg:col-span-6 bg-[#F5F1E5]/60 border-t lg:border-t-0 lg:border-l border-narrative-ochre/20 p-8 flex items-center justify-center min-h-[300px]">
-            <div className="w-full max-w-sm border border-narrative-ochre/20 bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-lg relative overflow-hidden">
-              {/* Window Header */}
-              <div className="flex items-center justify-between border-b border-narrative-ochre/10 pb-3 mb-4 select-none">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#FF5F56]" />
-                  <span className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
-                  <span className="w-2 h-2 rounded-full bg-[#27C93F]" />
-                </div>
-                <span className="text-[9px] font-mono text-narrative-ochre font-bold tracking-wider">ROUTE_DISPATCHED</span>
-              </div>
-              
-              <div className="h-36 relative overflow-hidden rounded-xl border border-narrative-ochre/25 shadow-sm bg-zinc-50 group">
-                <Image
-                  src="/images/premium_packaging.jpg"
-                  alt="Premium custom packaging"
-                  fill
-                  className="object-cover group-hover:scale-102 transition-transform duration-500"
-                  sizes="350px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-3.5">
-                  <span className="text-[10px] font-mono font-bold text-white tracking-widest uppercase">
-                    Direct Shipment
-                  </span>
-                  <span className="text-[8px] font-mono text-zinc-300 mt-0.5">
-                    EST. ARRIVAL: 3-5 DAYS
-                  </span>
-                </div>
-              </div>
-
-              {/* Delivery Steps */}
-              <div className="mt-4 pt-3 border-t border-narrative-ochre/10 flex items-center justify-between text-[9px] font-mono text-narrative-forest/70">
-                <div className="flex items-center gap-1.5 text-emerald-600 font-bold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>On Transit</span>
-                </div>
-                <div>
-                  <span>Carbon-Neutral Route</span>
-                </div>
-              </div>
-            </div>
+          {/* Right Block: Full-Bleed Delivery Visual */}
+          <div className="lg:col-span-6 relative min-h-[350px] lg:min-h-[400px] w-full border-t lg:border-t-0 lg:border-l border-narrative-ochre/20">
+            <Image
+              src="/images/lifecycle_delivery.png"
+              alt="Premium custom cardboard packaging and boxes stacked ready for delivery"
+              fill
+              className="object-cover hover:scale-[1.01] transition-transform duration-500"
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-narrative-forest/20 to-transparent pointer-events-none" />
           </div>
         </motion.div>
 

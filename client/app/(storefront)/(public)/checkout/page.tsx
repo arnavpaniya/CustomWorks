@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CreditCard, MapPin, ShoppingBag, ShieldCheck } from "lucide-react";
+import { Check, CreditCard, MapPin, ShoppingBag, ShieldCheck, Smartphone, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart.store";
 import { formatPrice } from "@/lib/utils";
@@ -18,6 +18,11 @@ const STEPS = [
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
+  const [selectedMethod, setSelectedMethod] = useState("UPI");
+  const [upiId, setUpiId] = useState("");
+  const [cardDetails, setCardDetails] = useState({ number: "", expiry: "", cvv: "" });
+  const [selectedBank, setSelectedBank] = useState("");
+  
   const { items, subtotal, total } = useCartStore();
 
   const sub = subtotal();
@@ -40,7 +45,8 @@ export default function CheckoutPage() {
         subtotal: sub,
         gst,
         shipping,
-        total: finalTotal
+        total: finalTotal,
+        paymentMethod: selectedMethod === "COD" ? "COD" : "ONLINE"
       };
 
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/orders/checkout` : "https://customworks.onrender.com/api/orders/checkout", {
@@ -51,6 +57,12 @@ export default function CheckoutPage() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to initiate checkout");
+
+      if (data.paymentMethod === "COD") {
+        toast.success("Order placed successfully via Cash on Delivery!");
+        window.location.href = `/order-success?order_id=${data.orderId}`;
+        return;
+      }
 
       // Initialize Cashfree
       const cashfree = await load({
@@ -146,12 +158,178 @@ export default function CheckoutPage() {
                     <ShieldCheck size={16} className="text-green-600" />
                     <p className="text-xs text-green-700 font-medium">100% secure checkout. Your payment info is encrypted.</p>
                   </div>
-                  {/* Payment gateway placeholder */}
-                  <div className="border-2 border-dashed border-[#E5E5E5] rounded-xl p-10 text-center">
-                    <CreditCard size={40} className="text-[#9A9A9A] mx-auto mb-3" />
-                    <p className="text-sm text-[#6B6B6B] mb-1">Payment gateway will be integrated here</p>
-                    <p className="text-xs text-[#9A9A9A]">UPI · Cards · Net Banking · EMI</p>
+                  
+                  {/* Payment gateway selection */}
+                  <div className="space-y-4">
+                    {/* Method 1: UPI */}
+                    <div 
+                      onClick={() => setSelectedMethod("UPI")}
+                      className={cn(
+                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
+                        selectedMethod === "UPI" 
+                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                          : "border-zinc-200 hover:border-zinc-300"
+                      )}
+                    >
+                      <div className="flex items-start justify-between w-full">
+                        <div className="flex gap-3">
+                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
+                            {selectedMethod === "UPI" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-narrative-forest">UPI (Google Pay, PhonePe, Paytm)</p>
+                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay securely using any UPI app.</p>
+                          </div>
+                        </div>
+                        <Smartphone className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                      </div>
+                      
+                      {selectedMethod === "UPI" && (
+                        <div className="mt-2 pl-8 pr-2 w-full flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
+                          <label htmlFor="upi-id-input" className="text-xs font-semibold text-narrative-forest/70">UPI ID</label>
+                          <input 
+                            id="upi-id-input"
+                            type="text" 
+                            placeholder="username@okaxis" 
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
+                            className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Method 2: Credit/Debit Card */}
+                    <div 
+                      onClick={() => setSelectedMethod("CARD")}
+                      className={cn(
+                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
+                        selectedMethod === "CARD" 
+                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                          : "border-zinc-200 hover:border-zinc-300"
+                      )}
+                    >
+                      <div className="flex items-start justify-between w-full">
+                        <div className="flex gap-3">
+                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
+                            {selectedMethod === "CARD" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-narrative-forest">Credit / Debit Card</p>
+                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay via Visa, Mastercard, RuPay, or Diners.</p>
+                          </div>
+                        </div>
+                        <CreditCard className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                      </div>
+                      
+                      {selectedMethod === "CARD" && (
+                        <div className="mt-2 pl-8 pr-2 w-full grid grid-cols-2 gap-3" onClick={(e) => e.stopPropagation()}>
+                          <div className="col-span-2 flex flex-col gap-1.5">
+                            <label htmlFor="card-number-input" className="text-xs font-semibold text-narrative-forest/70">Card Number</label>
+                            <input 
+                              id="card-number-input"
+                              type="text" 
+                              placeholder="4111 2222 3333 4444" 
+                              value={cardDetails.number}
+                              onChange={(e) => setCardDetails(prev => ({ ...prev, number: e.target.value }))}
+                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                            <label htmlFor="card-expiry-input" className="text-xs font-semibold text-narrative-forest/70">Expiry Date</label>
+                            <input 
+                              id="card-expiry-input"
+                              type="text" 
+                              placeholder="MM/YY" 
+                              value={cardDetails.expiry}
+                              onChange={(e) => setCardDetails(prev => ({ ...prev, expiry: e.target.value }))}
+                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                            <label htmlFor="card-cvv-input" className="text-xs font-semibold text-narrative-forest/70">CVV</label>
+                            <input 
+                              id="card-cvv-input"
+                              type="password" 
+                              placeholder="***" 
+                              maxLength={3}
+                              value={cardDetails.cvv}
+                              onChange={(e) => setCardDetails(prev => ({ ...prev, cvv: e.target.value }))}
+                              className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Method 3: Net Banking */}
+                    <div 
+                      onClick={() => setSelectedMethod("NETBANKING")}
+                      className={cn(
+                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
+                        selectedMethod === "NETBANKING" 
+                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                          : "border-zinc-200 hover:border-zinc-300"
+                      )}
+                    >
+                      <div className="flex items-start justify-between w-full">
+                        <div className="flex gap-3">
+                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
+                            {selectedMethod === "NETBANKING" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-narrative-forest">Net Banking</p>
+                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay directly from your bank account.</p>
+                          </div>
+                        </div>
+                        <Landmark className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                      </div>
+                      
+                      {selectedMethod === "NETBANKING" && (
+                        <div className="mt-2 pl-8 pr-2 w-full flex flex-col gap-1.5" onClick={(e) => e.stopPropagation()}>
+                          <label htmlFor="bank-select" className="text-xs font-semibold text-narrative-forest/70">Select Bank</label>
+                          <select 
+                            id="bank-select"
+                            value={selectedBank}
+                            onChange={(e) => setSelectedBank(e.target.value)}
+                            className="h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-narrative-forest w-full bg-white"
+                          >
+                            <option value="">-- Choose Your Bank --</option>
+                            <option value="SBI">State Bank of India</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                            <option value="AXIS">Axis Bank</option>
+                            <option value="KOTAK">Kotak Mahindra Bank</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Method 4: COD */}
+                    <div 
+                      onClick={() => setSelectedMethod("COD")}
+                      className={cn(
+                        "border rounded-xl p-4 cursor-pointer transition-all flex flex-col gap-3",
+                        selectedMethod === "COD" 
+                          ? "border-narrative-forest bg-narrative-forest/5 ring-1 ring-narrative-forest" 
+                          : "border-zinc-200 hover:border-zinc-300"
+                      )}
+                    >
+                      <div className="flex items-start justify-between w-full">
+                        <div className="flex gap-3">
+                          <div className="h-5 w-5 rounded-full border border-zinc-300 flex items-center justify-center mt-0.5 flex-shrink-0">
+                            {selectedMethod === "COD" && <div className="h-2.5 w-2.5 rounded-full bg-narrative-forest" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-narrative-forest">Cash on Delivery (COD)</p>
+                            <p className="text-xs text-narrative-forest/60 mt-0.5">Pay via cash or digital UPI when your order is delivered to your doorstep.</p>
+                          </div>
+                        </div>
+                        <MapPin className="text-narrative-forest/80 flex-shrink-0" size={20} />
+                      </div>
+                    </div>
                   </div>
+
                   <Button variant="accent" size="lg" className="mt-6 w-full" onClick={() => setStep(3)}>
                     Continue to Review
                   </Button>

@@ -125,11 +125,6 @@ export default function HeroBanner() {
                   <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform duration-250" />
                 </button>
               </Link>
-              <Link href="/about" className="w-full sm:w-auto">
-                <button className="w-full h-14 px-8 rounded-full bg-transparent hover:bg-narrative-clay/5 text-narrative-forest text-xs font-bold uppercase tracking-wider transition-colors duration-250 border border-narrative-forest/30 flex items-center justify-center gap-2 cursor-pointer">
-                  Read Our Story
-                </button>
-              </Link>
             </div>
           </motion.div>
 

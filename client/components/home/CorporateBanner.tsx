@@ -83,8 +83,8 @@ export default function CorporateBanner() {
             {/* Right column - Styled image */}
             <div className="lg:col-span-5 relative h-[250px] sm:h-[350px] w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
               <Image
-                src="/images/corporate_team.jpg"
-                alt="Corporate team working together"
+                src="/images/corporate_packaging.png"
+                alt="Custom brand packaging boxes"
                 fill
                 className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                 sizes="(max-width: 1024px) 100vw, 40vw"

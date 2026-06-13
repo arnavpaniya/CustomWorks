@@ -52,9 +52,6 @@ export default function CorporatePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left Col */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-narrative-clay/10 text-narrative-clay text-xs font-semibold uppercase tracking-wider">
-                <Sparkles size={12} /> B2B & Bulk Solutions
-              </div>
               <h1 className="text-4xl sm:text-6xl font-black font-serif text-narrative-forest leading-[1.1] tracking-tight">
                 Custom products that <br />
                 <span className="text-narrative-clay italic font-normal">mean business</span>
@@ -80,8 +77,8 @@ export default function CorporatePage() {
             <div className="lg:col-span-5">
               <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-lg border border-zinc-200/20">
                 <Image
-                  src="/images/corporate_team.jpg"
-                  alt="CustomWorks corporate branding solutions team"
+                  src="/images/corporate_packaging.png"
+                  alt="CustomWorks premium branded custom packaging solutions"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 500px"

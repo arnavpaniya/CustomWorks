@@ -39,9 +39,6 @@ export default function AboutPage() {
       <section className="bg-[#FAF6F0] py-16 sm:py-24 border-b border-zinc-200/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full bg-narrative-clay/10 text-narrative-clay text-xs font-semibold uppercase tracking-wider">
-              <Sparkles size={12} /> Our Story
-            </div>
             <h1 className="text-4xl sm:text-6xl font-black font-serif text-narrative-forest mb-6 leading-[1.15]">
               We bring your <span className="text-narrative-clay italic font-normal">custom designs</span> to life
             </h1>

@@ -17,17 +17,13 @@ router.get('/', authMiddleware, async (req, res) => {
 // POST /api/orders/checkout (Public route for storefront)
 router.post('/checkout', async (req, res) => {
   try {
-    const { items, address, subtotal, gst, shipping, total } = req.body;
+    const { items, address, subtotal, gst, shipping, total, paymentMethod } = req.body;
     
     // Basic validation
     if (!items || !items.length || !address) {
       return res.status(400).json({ error: 'Invalid checkout data' });
     }
 
-    // In a real app, we would recalculate subtotal, gst, and total server-side
-    // using the database product prices to prevent manipulation.
-    // For this prototype, we'll trust the client total.
-    
     const orderData = {
       customerSnapshot: {
         name: address.name,
@@ -49,7 +45,8 @@ router.post('/checkout', async (req, res) => {
         gst,
         shippingCharge: shipping,
         totalAmount: total
-      }
+      },
+      paymentMethod: paymentMethod || "ONLINE"
     };
 
     const newOrder = await store.createOrder(orderData);
@@ -57,12 +54,20 @@ router.post('/checkout', async (req, res) => {
       throw new Error("Failed to create order in database");
     }
 
+    if (paymentMethod === "COD") {
+      return res.json({
+        orderId: newOrder.id,
+        paymentMethod: "COD"
+      });
+    }
+
     // Create Cashfree session
     const cashfreeSession = await cashfreeService.createPaymentSession(newOrder);
 
     res.json({
       orderId: newOrder.id,
-      paymentSessionId: cashfreeSession.payment_session_id
+      paymentSessionId: cashfreeSession.payment_session_id,
+      paymentMethod: "ONLINE"
     });
   } catch (err) {
     console.error("Checkout error:", err);

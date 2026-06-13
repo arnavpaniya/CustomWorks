@@ -322,6 +322,9 @@ module.exports = {
   createOrder: async (orderData) => {
     const nextNum = Math.floor(100000 + Math.random() * 900000);
     const id = `CW-${nextNum}`;
+    const paymentMethod = orderData.paymentMethod === "COD" ? "cod" : "cashfree";
+    const status = orderData.paymentMethod === "COD" ? "processing" : "pending_payment";
+    const statusNote = orderData.paymentMethod === "COD" ? "Order placed via Cash on Delivery." : "Order created. Awaiting payment.";
     
     const dbOrder = {
       id,
@@ -334,17 +337,17 @@ module.exports = {
         status: "pending",
         amountPaid: 0,
         amountDue: orderData.pricing?.totalAmount || 0,
-        method: "cashfree",
+        method: paymentMethod,
         gatewayId: null,
         paymentHistory: []
       },
-      status: "pending_payment",
+      status,
       statusHistory: [
         {
-          status: "pending_payment",
+          status,
           changedAt: new Date().toISOString(),
           changedBy: "System Gateway",
-          note: "Order created. Awaiting payment."
+          note: statusNote
         }
       ],
       invoiceUrl: null,
