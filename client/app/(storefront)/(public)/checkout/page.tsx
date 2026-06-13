@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { calculateShippingCharge } from "@/lib/shipping-engine";
 import { Check, CreditCard, MapPin, ShoppingBag, ShieldCheck, Smartphone, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart.store";
@@ -23,17 +24,27 @@ export default function CheckoutPage() {
   const [cardDetails, setCardDetails] = useState({ number: "", expiry: "", cvv: "" });
   const [selectedBank, setSelectedBank] = useState("");
   
-  const { items, subtotal, total } = useCartStore();
-
-  const sub = subtotal();
-  const gst = sub * 0.18;
-  const shipping = sub >= 999 ? 0 : 99;
-  const finalTotal = total();
+  const { items, subtotal, total, getShippingCharge, setShippingCharge } = useCartStore();
 
   const [address, setAddress] = useState({
     name: "", phone: "", line1: "", line2: "", city: "", state: "", pincode: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const sub = subtotal();
+  const gst = sub * 0.18;
+  const shipping = getShippingCharge();
+  const finalTotal = total();
+
+  // Dynamically calculate and update shipping charge based on address location
+  useEffect(() => {
+    if (address.city || address.pincode) {
+      const details = calculateShippingCharge(sub, address.city, address.pincode);
+      setShippingCharge(details.amount);
+    } else {
+      setShippingCharge(null);
+    }
+  }, [sub, address.city, address.pincode, setShippingCharge]);
 
   const handleCheckout = async () => {
     try {
@@ -431,6 +442,13 @@ export default function CheckoutPage() {
                       {address.line1}{address.line2 ? `, ${address.line2}` : ""}<br />
                       {address.city}, {address.state} – {address.pincode}
                     </p>
+                    {address.city && address.pincode && (
+                      <div className="mt-3 pt-3 border-t border-zinc-200/60">
+                        <span className="inline-flex items-center rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600">
+                          {calculateShippingCharge(sub, address.city, address.pincode).message}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <Button 
                     variant="accent" 
@@ -454,7 +472,19 @@ export default function CheckoutPage() {
             <div className="space-y-2.5 text-sm">
               <div className="flex justify-between"><span className="text-[#6B6B6B]">Subtotal</span><span>{formatPrice(sub)}</span></div>
               <div className="flex justify-between"><span className="text-[#6B6B6B]">GST (18%)</span><span>{formatPrice(gst)}</span></div>
-              <div className="flex justify-between"><span className="text-[#6B6B6B]">Shipping</span><span className={shipping === 0 ? "text-green-600" : ""}>{shipping === 0 ? "FREE" : formatPrice(shipping)}</span></div>
+              <div className="flex justify-between">
+                <span className="text-[#6B6B6B]">Shipping</span>
+                <div className="text-right">
+                  <span className={shipping === 0 ? "text-green-600" : ""}>
+                    {shipping === 0 ? "FREE" : formatPrice(shipping)}
+                  </span>
+                  {address.city && address.pincode && (
+                    <p className="text-[10px] text-zinc-500 font-light mt-0.5">
+                      {calculateShippingCharge(sub, address.city, address.pincode).message}
+                    </p>
+                  )}
+                </div>
+              </div>
               <div className="border-t border-[#E5E5E5] pt-2.5 flex justify-between font-bold text-base">
                 <span>Total</span><span>{formatPrice(finalTotal)}</span>
               </div>

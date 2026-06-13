@@ -167,5 +167,11 @@ export const useDesignStore = create<DesignState>((set, get) => ({
     return get().getPricingResult().totalPrice;
   },
 
-  reset: () => set(defaultState),
+  reset: () => {
+    const currentProductId = get().productId;
+    set(defaultState);
+    if (currentProductId) {
+      get().setProduct(currentProductId);
+    }
+  },
 }));
