@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, MessageCircle, Sparkles, HelpCircle } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 const faqs = [
   {
     category: "Ordering & Design",
-    color: "clay",
-    colorClass: "bg-narrative-clay/10 border-narrative-clay/15 text-narrative-clay",
     items: [
       {
         q: "How do I upload my own design?",
@@ -27,8 +25,6 @@ const faqs = [
   },
   {
     category: "Shipping & Delivery",
-    color: "sage",
-    colorClass: "bg-narrative-sage/10 border-narrative-sage/15 text-narrative-sage",
     items: [
       {
         q: "How long will it take to receive my order?",
@@ -46,8 +42,6 @@ const faqs = [
   },
   {
     category: "Returns & Refunds",
-    color: "ochre",
-    colorClass: "bg-narrative-ochre/10 border-narrative-ochre/15 text-narrative-ochre",
     items: [
       {
         q: "Can I return a customized product?",
@@ -69,108 +63,86 @@ export default function FAQPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero Header */}
-      <section className="bg-[#FAF6F0] py-16 sm:py-24 border-b border-zinc-200/40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full bg-narrative-clay/10 text-narrative-clay text-xs font-semibold uppercase tracking-wider">
-            <Sparkles size={12} /> Help Center
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-black font-serif text-narrative-forest mb-6 leading-[1.15]">
-            Frequently asked <span className="text-narrative-clay italic font-normal">questions</span>
-          </h1>
-          <p className="text-narrative-forest/75 text-lg leading-relaxed font-light max-w-xl mx-auto">
-            Find answers to common questions about designing, ordering, shipping, and return policies.
-          </p>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* Hero */}
+      <div className="text-center mb-16">
+        <div className="inline-block mb-3">
+          <span className="text-[10px] font-black uppercase tracking-widest text-brand-black bg-brand-black/5 px-2.5 py-0.5 rounded-full border border-brand-black/10">
+            Help Center
+          </span>
         </div>
-      </section>
+        <h1 className="text-4xl sm:text-5xl font-black text-brand-black mb-6">
+          Frequently Asked Questions
+        </h1>
+        <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto">
+          Find answers to common questions about designing, ordering, shipping, and returns.
+        </p>
+      </div>
 
-      {/* Accordion List */}
-      <section className="py-20 sm:py-28 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-16">
-          {faqs.map((category, catIdx) => (
-            <div key={category.category} className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className={`h-8 w-8 flex items-center justify-center rounded-lg border ${category.colorClass}`}>
-                  <HelpCircle size={15} />
-                </div>
-                <h2 className="text-2xl font-bold font-serif text-narrative-forest">{category.category}</h2>
-              </div>
-              
-              <div className="space-y-4">
-                {category.items.map((faq, itemIdx) => {
-                  const id = `${catIdx}-${itemIdx}`;
-                  const isOpen = openIndex === id;
-                  return (
-                    <div 
-                      key={id} 
-                      className={`bg-white border rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
-                        isOpen 
-                          ? "border-narrative-clay/40 ring-1 ring-narrative-clay/10 shadow-md" 
-                          : "border-zinc-200/40 hover:border-zinc-300 hover:shadow-md"
-                      }`}
+      <div className="space-y-12">
+        {faqs.map((category, catIdx) => (
+          <div key={category.category}>
+            <h2 className="text-2xl font-bold text-brand-black mb-6">{category.category}</h2>
+            <div className="space-y-4">
+              {category.items.map((faq, itemIdx) => {
+                const id = `${catIdx}-${itemIdx}`;
+                const isOpen = openIndex === id;
+                return (
+                  <div key={id} className="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-sm">
+                    <button
+                      onClick={() => toggleAccordion(id)}
+                      className="w-full flex items-center justify-between p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-black"
                     >
-                      <button
-                        onClick={() => toggleAccordion(id)}
-                        className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
-                      >
-                        <span className={`font-bold text-sm sm:text-base transition-colors ${isOpen ? "text-narrative-clay" : "text-narrative-forest"}`}>
-                          {faq.q}
-                        </span>
-                        <div className={`h-8 w-8 flex items-center justify-center rounded-full border border-zinc-200/40 text-narrative-forest shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 bg-narrative-clay text-white border-narrative-clay" : ""}`}>
-                          <ChevronDown size={16} />
-                        </div>
-                      </button>
-                      
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                          >
-                            <div className="px-6 pb-6 text-narrative-forest/70 text-xs sm:text-sm leading-relaxed border-t border-zinc-100 pt-4 font-light bg-zinc-50/30">
-                              {faq.a}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })}
-              </div>
+                      <span className="font-bold text-brand-black">{faq.q}</span>
+                      <ChevronDown
+                        size={20}
+                        className={`text-brand-muted transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                        >
+                          <div className="px-6 pb-6 text-brand-muted text-sm leading-relaxed border-t border-brand-border pt-4">
+                            {faq.a}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Call To Action */}
-        <div className="mt-24 bg-[#FAF6F0] rounded-[2rem] border border-zinc-200/40 p-8 sm:p-12 text-center shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-36 h-36 rounded-full bg-narrative-ochre/5 blur-2xl pointer-events-none" />
-          
-          <div className="h-14 w-14 mx-auto bg-white rounded-2xl border border-zinc-200/30 shadow-xs flex items-center justify-center mb-6">
-            <MessageCircle size={26} className="text-narrative-clay" />
-          </div>
-          
-          <h3 className="text-2xl font-bold font-serif text-narrative-forest mb-2">Still Have Questions?</h3>
-          <p className="text-narrative-forest/70 text-sm mb-8 max-w-sm mx-auto font-light leading-relaxed">
-            Can&apos;t find what you&apos;re looking for? Reach out to our customer support team directly.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="https://wa.me/919632022529" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-12 px-8 rounded-full bg-narrative-forest hover:bg-narrative-clay text-white font-bold text-sm tracking-wide shadow-md transition-all duration-300">
-                Chat on WhatsApp
-              </button>
-            </a>
-            <a href="/contact" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto h-12 px-8 rounded-full bg-white hover:bg-zinc-50 text-narrative-forest font-semibold text-sm border border-zinc-300 transition-colors">
-                Contact Form
-              </button>
-            </a>
-          </div>
+      {/* Still need help CTA */}
+      <div className="mt-20 bg-white border border-brand-border rounded-3xl p-10 text-center shadow-lg">
+        <div className="h-16 w-16 mx-auto bg-white rounded-2xl border border-brand-border shadow-sm flex items-center justify-center mb-6">
+          <MessageCircle size={28} className="text-brand-orange" />
         </div>
-      </section>
+        <h3 className="text-2xl font-black text-brand-black mb-3">Still have questions?</h3>
+        <p className="text-brand-muted mb-8 max-w-md mx-auto">
+          Can&apos;t find the answer you&apos;re looking for? Our friendly support team is here to help.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="https://wa.me/">
+             <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
+               Chat on WhatsApp
+             </Button>
+          </a>
+          <a href="/contact">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto px-8">
+              Contact Us
+            </Button>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

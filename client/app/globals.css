@@ -16,13 +16,6 @@
   --color-brand-surface: #F8F8FA;
   --color-brand-orange: #FF5E36;
   --color-brand-orange-light: #FFEDE9;
-  
-  /* Storytelling Earthy Narrative Colors */
-  --color-narrative-clay: #D97053;
-  --color-narrative-sage: #8FA89B;
-  --color-narrative-sand: #FAF6F0;
-  --color-narrative-forest: #1B2E26;
-  --color-narrative-ochre: #E3A857;
 
   /* Fonts */
   --font-serif: "Cormorant Garamond", Georgia, serif;
@@ -196,15 +189,6 @@ body {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-@keyframes marquee-scroll-reverse {
-  0% { transform: translate3d(-50%, 0, 0); }
-  100% { transform: translate3d(0, 0, 0); }
-}
-
 .animate-marquee-loop {
   animation: marquee-scroll 25s linear infinite;
-}
-
-.animate-marquee-loop-reverse {
-  animation: marquee-scroll-reverse 25s linear infinite;
 }

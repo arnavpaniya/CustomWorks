@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import HeroBanner from "@/components/home/HeroBanner";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import MarqueeDivider from "@/components/home/MarqueeDivider";
-import MultiRowMarquee from "@/components/home/MultiRowMarquee";
 import HowItWorks from "@/components/home/HowItWorks";
+
 import WhyUs from "@/components/home/WhyUs";
-import Testimonials from "@/components/home/Testimonials";
 import CorporateBanner from "@/components/home/CorporateBanner";
 
 export const metadata: Metadata = {
@@ -18,12 +17,10 @@ export default function HomePage() {
   return (
     <>
       <HeroBanner />
-      <MarqueeDivider />
       <FeaturedProducts />
-      <MultiRowMarquee />
+      <MarqueeDivider />
       <HowItWorks />
       <WhyUs />
-      <Testimonials />
       <CorporateBanner />
     </>
   );

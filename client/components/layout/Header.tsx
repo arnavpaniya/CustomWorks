@@ -44,7 +44,13 @@ export default function Header() {
 
   if (pathname?.startsWith("/admin")) return null;
 
-
+  const handleAccountClick = () => {
+    if (user) {
+      window.location.href = "/dashboard";
+    } else {
+      window.location.href = "/login";
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -80,153 +86,152 @@ export default function Header() {
         Skip to content
       </a>
 
-      <div className="sticky top-4 z-50 h-0 w-full overflow-visible">
-        <header
-          className={cn(
-            "clay-nav mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-full transition-all duration-300",
-            scrolled && "shadow-md border-black/5 dark:border-white/5",
-          )}
-        >
-          {/* Desktop Header */}
-          <div className="pl-4 pr-2 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-14 gap-2 sm:gap-8">
-              {/* Logo */}
-              <Link href="/" className="shrink-0 flex items-center h-9 w-26 sm:h-10 sm:w-32 md:w-36" aria-label="CustomWorks Home">
-                <Logo className="h-full w-full" />
+      <header
+        className={cn(
+          "sticky top-4 z-50 clay-nav mx-auto w-[calc(100%-2rem)] max-w-5xl rounded-full transition-all duration-300",
+          scrolled && "shadow-md border-black/5 dark:border-white/5",
+        )}
+      >
+        {/* Desktop Header */}
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 gap-4 sm:gap-8">
+            {/* Logo */}
+            <Link href="/" className="shrink-0 flex items-center h-10 w-32 md:w-36" aria-label="CustomWorks Home">
+              <Logo className="h-full w-full" />
+            </Link>
+
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-2" aria-label="Main navigation">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "px-4 py-2 text-sm font-semibold transition-colors duration-200 relative",
+                    pathname === link.href
+                      ? "text-brand-black font-bold"
+                      : "text-brand-muted hover:text-brand-black",
+                  )}
+                >
+                  {link.label}
+                  {pathname === link.href && (
+                    <motion.div
+                      layoutId="activeNavIndicator"
+                      className="absolute bottom-0 left-4 right-4 h-0.5 bg-brand-black rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              ))}
+            </nav>
+
+
+            {/* Actions */}
+            <div className="flex items-center gap-1">
+              {/* Search */}
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                aria-label="Toggle search"
+              >
+                <Search size={18} />
+              </button>
+ 
+              {/* Account */}
+              <button
+                onClick={handleAccountClick}
+                className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                aria-label="My account"
+              >
+                {user?.photoURL ? (
+                  <img src={user.photoURL} alt="avatar" className="h-7 w-7 rounded-full object-cover" />
+                ) : (
+                  <User size={18} />
+                )}
+              </button>
+ 
+              {/* Wishlist */}
+              <Link
+                href="/wishlist"
+                className="h-10 w-10 hidden sm:flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                aria-label="Wishlist"
+              >
+                <Heart size={18} />
               </Link>
-  
-              {/* Desktop Nav */}
-              <nav className="hidden md:flex items-center gap-2" aria-label="Main navigation">
-                {NAV_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "px-4 py-2 text-sm font-semibold transition-colors duration-200 relative",
-                      pathname === link.href
-                        ? "text-brand-black font-bold"
-                        : "text-brand-muted hover:text-brand-black",
-                    )}
-                  >
-                    {link.label}
-                    {pathname === link.href && (
-                      <motion.div
-                        layoutId="activeNavIndicator"
-                        className="absolute bottom-0 left-4 right-4 h-0.5 bg-brand-black rounded-full"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                ))}
-              </nav>
-  
-  
-              {/* Actions */}
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                {/* Search */}
-                <button
-                  onClick={() => setSearchOpen(!searchOpen)}
-                  className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  aria-label="Toggle search"
-                >
-                  <Search size={18} />
-                </button>
-   
-                {/* Account */}
-                <Link
-                  href={user ? "/dashboard" : "/login"}
-                  className="h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  aria-label="My account"
-                >
-                  {user?.photoURL ? (
-                    <img src={user.photoURL} alt="avatar" className="h-7 w-7 rounded-full object-cover" />
-                  ) : (
-                    <User size={18} />
-                  )}
-                </Link>
-   
-                {/* Wishlist */}
-                <Link
-                  href="/wishlist"
-                  className="h-10 w-10 hidden sm:flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  aria-label="Wishlist"
-                >
-                  <Heart size={18} />
-                </Link>
-   
-                {/* Cart */}
-                <Link
-                  href="/cart"
-                  className="relative h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  aria-label={`Cart with ${itemCount} items`}
-                >
-                  <ShoppingBag size={18} />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center bg-brand-black text-white text-[10px] font-bold rounded-full shadow-sm">
-                      {itemCount > 99 ? "99+" : itemCount}
-                    </span>
-                  )}
-                </Link>
-   
-                {/* Mobile menu button */}
-                <button
-                  onClick={() => setMobileOpen(!mobileOpen)}
-                  className="md:hidden h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
-                  aria-label={mobileOpen ? "Close menu" : "Open menu"}
-                  aria-expanded={mobileOpen}
-                >
-                  {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-                </button>
-              </div>
+ 
+              {/* Cart */}
+              <Link
+                href="/cart"
+                className="relative h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors"
+                aria-label={`Cart with ${itemCount} items`}
+              >
+                <ShoppingBag size={18} />
+                {itemCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center bg-brand-black text-white text-[10px] font-bold rounded-full shadow-sm">
+                    {itemCount > 99 ? "99+" : itemCount}
+                  </span>
+                )}
+              </Link>
+ 
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="md:hidden h-10 w-10 flex items-center justify-center rounded-lg text-brand-muted hover:text-brand-black hover:bg-brand-surface transition-colors ml-1"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
+              >
+                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
             </div>
-  
-            <AnimatePresence>
-              {searchOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden border-t border-brand-border"
-                >
-                  <div className="py-3 flex gap-2">
-                    <div className="relative flex-1">
-                      <Search
-                        size={16}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9A9A9A]"
-                      />
-                      <input
-                        ref={searchRef}
-                        type="search"
-                        placeholder="Search products…"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && searchQuery.trim()) {
-                            window.location.href = `/products?q=${encodeURIComponent(searchQuery.trim())}`;
-                          }
-                        }}
-                        className="w-full h-10 pl-9 pr-4 rounded-lg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-black focus:border-transparent bg-white text-brand-black"
-                      />
-                    </div>
-                    <Button
-                      variant="primary"
-                      size="md"
-                      onClick={() => {
-                        if (searchQuery.trim()) {
+          </div>
+
+          <AnimatePresence>
+            {searchOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden border-t border-brand-border"
+              >
+                <div className="py-3 flex gap-2">
+                  <div className="relative flex-1">
+                    <Search
+                      size={16}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9A9A9A]"
+                    />
+                    <input
+                      ref={searchRef}
+                      type="search"
+                      placeholder="Search products…"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && searchQuery.trim()) {
                           window.location.href = `/products?q=${encodeURIComponent(searchQuery.trim())}`;
                         }
                       }}
-                    >
-                      Search
-                    </Button>
+                      className="w-full h-10 pl-9 pr-4 rounded-lg border border-brand-border text-sm focus:outline-none focus:ring-2 focus:ring-brand-black focus:border-transparent bg-white text-brand-black"
+                    />
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </header>
-      </div>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => {
+                      if (searchQuery.trim()) {
+                        window.location.href = `/products?q=${encodeURIComponent(searchQuery.trim())}`;
+                      }
+                    }}
+                  >
+                    Search
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+      </header>
 
       {/* Mobile Drawer Overlay */}
       <AnimatePresence>
