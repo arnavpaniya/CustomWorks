@@ -1,11 +1,16 @@
 const { Cashfree, CFEnvironment } = require("cashfree-pg");
 
-// Configure Cashfree SDK
-Cashfree.XClientId = process.env.CASHFREE_APP_ID;
-Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
-Cashfree.XEnvironment = process.env.CASHFREE_ENVIRONMENT === "PRODUCTION" 
-  ? CFEnvironment.PRODUCTION 
-  : CFEnvironment.SANDBOX;
+// Configure and instantiate Cashfree SDK instance
+const cashfree = new Cashfree(
+  process.env.CASHFREE_ENVIRONMENT === "PRODUCTION" 
+    ? CFEnvironment.PRODUCTION 
+    : CFEnvironment.SANDBOX,
+  process.env.CASHFREE_APP_ID || "",
+  process.env.CASHFREE_SECRET_KEY || ""
+);
+
+// Explicitly set API version to match the expected version
+cashfree.XApiVersion = "2023-08-01";
 
 /**
  * Creates a payment session with Cashfree for a given order
@@ -29,14 +34,56 @@ const createPaymentSession = async (order) => {
         customer_name: order.customerSnapshot.name || "Guest Customer",
       },
       order_meta: {
-        return_url: `${process.env.FRONTEND_URL || "http://localhost:3000"}/order-success?order_id={order_id}`
+        return_url: `${process.env.FRONTEND_URL || "https://localhost:3000"}/order-success?order_id={order_id}`
       }
     };
 
-    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
+    const response = await cashfree.PGCreateOrder(request);
     return response.data;
   } catch (error) {
     console.error("Error creating Cashfree payment session:", error.response?.data?.message || error.message);
+    throw error;
+  }
+};
+
+/**
+ * Fetches order and payments from Cashfree to verify payment status
+ */
+const verifyPayment = async (orderId) => {
+  try {
+    const orderRes = await cashfree.PGFetchOrder(orderId);
+    const orderData = orderRes.data;
+
+    let paymentDetails = {
+      cf_order_id: orderData.cf_order_id,
+      order_amount: orderData.order_amount,
+      payment_status: orderData.order_status,
+      payment_method: null,
+      cf_payment_id: null,
+      payment_time: null
+    };
+
+    if (orderData.order_status === 'PAID') {
+      try {
+        const paymentsRes = await cashfree.PGOrderFetchPayments(orderId);
+        const successfulPayment = paymentsRes.data.find(p => p.payment_status === 'SUCCESS');
+        if (successfulPayment) {
+          paymentDetails.cf_payment_id = successfulPayment.cf_payment_id;
+          if (successfulPayment.payment_details) {
+            paymentDetails.payment_method = Object.keys(successfulPayment.payment_details)[0];
+          } else {
+            paymentDetails.payment_method = successfulPayment.payment_group || 'cashfree';
+          }
+          paymentDetails.payment_time = successfulPayment.payment_completion_time;
+        }
+      } catch (payErr) {
+        console.error(`Failed to fetch payment details for ${orderId}:`, payErr.message);
+      }
+    }
+
+    return paymentDetails;
+  } catch (error) {
+    console.error(`Failed to fetch order from Cashfree for ${orderId}:`, error.response?.data?.message || error.message);
     throw error;
   }
 };
@@ -46,7 +93,7 @@ const createPaymentSession = async (order) => {
  */
 const verifyWebhookSignature = (signature, rawBody, timestamp) => {
   try {
-    return Cashfree.PGVerifyWebhookSignature(signature, rawBody, timestamp);
+    return cashfree.PGVerifyWebhookSignature(signature, rawBody, timestamp);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
     return false;
@@ -55,5 +102,6 @@ const verifyWebhookSignature = (signature, rawBody, timestamp) => {
 
 module.exports = {
   createPaymentSession,
+  verifyPayment,
   verifyWebhookSignature
 };

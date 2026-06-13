@@ -1,4 +1,7 @@
-require('dotenv').config({ path: '../backend/.env' });
+const path = require('path');
+module.paths.push(path.resolve(__dirname, '../backend/node_modules'));
+
+require('dotenv').config({ path: path.resolve(__dirname, '../backend/.env') });
 const store = require('../backend/store');
 const cashfreeService = require('../backend/services/cashfreeService');
 

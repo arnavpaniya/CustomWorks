@@ -295,6 +295,21 @@ async function initDb() {
       )
     `);
 
+    // Create payments tracking table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS payments (
+        id SERIAL PRIMARY KEY,
+        order_id VARCHAR(50) NOT NULL REFERENCES orders(id),
+        cashfree_order_id VARCHAR(100) NOT NULL,
+        cf_payment_id VARCHAR(100),
+        payment_status VARCHAR(50) NOT NULL,
+        payment_method VARCHAR(50),
+        amount NUMERIC(10, 2) NOT NULL,
+        gateway_response JSONB,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Database tables verified. Seeding is disabled.
     console.log('Database tables verified.');
 
@@ -435,6 +450,57 @@ module.exports = {
       [JSON.stringify(order.payment), id]
     );
     return res.rows[0] ? mapOrderToClient(res.rows[0]) : null;
+  },
+
+  completeOrderPayment: async (id, cashfreeDetails) => {
+    const order = await module.exports.getOrderById(id);
+    if (!order) return null;
+
+    if (order.payment.status !== 'paid') {
+      order.payment.status = 'paid';
+      order.payment.amountPaid = Number(cashfreeDetails.order_amount);
+      order.payment.amountDue = 0;
+      order.payment.gatewayId = cashfreeDetails.cf_payment_id || cashfreeDetails.cf_order_id;
+      order.payment.paymentHistory.push({
+        amount: Number(cashfreeDetails.order_amount),
+        method: cashfreeDetails.payment_method || 'cashfree',
+        paidAt: cashfreeDetails.payment_time || new Date().toISOString(),
+        note: `Payment verified via Cashfree (CF Payment ID: ${cashfreeDetails.cf_payment_id || 'N/A'}).`
+      });
+
+      let status = order.status;
+      let statusHistory = [...order.statusHistory];
+      if (order.status === 'pending_payment') {
+        status = 'designing';
+        statusHistory.push({
+          status: 'designing',
+          changedAt: new Date().toISOString(),
+          changedBy: 'System Gateway',
+          note: 'Payment received. Order transitioned to Designing.'
+        });
+      }
+
+      await pool.query(
+        'UPDATE orders SET payment = $1, status = $2, status_history = $3 WHERE id = $4',
+        [JSON.stringify(order.payment), status, JSON.stringify(statusHistory), id]
+      );
+    }
+
+    await pool.query(
+      `INSERT INTO payments (order_id, cashfree_order_id, cf_payment_id, payment_status, payment_method, amount, gateway_response)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        id,
+        cashfreeDetails.cf_order_id,
+        cashfreeDetails.cf_payment_id || null,
+        cashfreeDetails.payment_status || 'SUCCESS',
+        cashfreeDetails.payment_method || null,
+        Number(cashfreeDetails.order_amount),
+        JSON.stringify(cashfreeDetails)
+      ]
+    );
+
+    return module.exports.getOrderById(id);
   },
 
   updateOrderInvoiceUrl: async (id, path) => {

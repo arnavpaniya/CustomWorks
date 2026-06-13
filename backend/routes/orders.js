@@ -126,4 +126,85 @@ router.post('/:id/payments', authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/orders/:id/verify-payment
+router.get('/:id/verify-payment', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const order = await store.getOrderById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // If order is already paid, return success directly
+    if (order.payment.status === 'paid') {
+      return res.json({ success: true, status: 'PAID', order });
+    }
+
+    // Call service to fetch details from Cashfree
+    let cashfreeDetails;
+    try {
+      cashfreeDetails = await cashfreeService.verifyPayment(orderId);
+    } catch (cfErr) {
+      console.error(`Cashfree verification error for order ${orderId}:`, cfErr.message);
+      return res.status(400).json({ error: 'Failed to verify payment with Cashfree API' });
+    }
+
+    if (cashfreeDetails.payment_status === 'PAID') {
+      // Mark order as paid in DB
+      const updatedOrder = await store.completeOrderPayment(orderId, cashfreeDetails);
+      return res.json({ success: true, status: 'PAID', order: updatedOrder });
+    }
+
+    res.json({
+      success: false,
+      status: cashfreeDetails.payment_status,
+      message: `Payment status is currently ${cashfreeDetails.payment_status}`
+    });
+  } catch (err) {
+    console.error("Order verification error:", err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// POST /api/orders/webhook
+router.post('/webhook', async (req, res) => {
+  try {
+    const signature = req.headers['x-webhook-signature'];
+    const timestamp = req.headers['x-webhook-timestamp'];
+    const rawBody = JSON.stringify(req.body);
+
+    const isValid = cashfreeService.verifyWebhookSignature(signature, rawBody, timestamp);
+    if (!isValid) {
+      console.warn("Invalid webhook signature received");
+      return res.status(400).json({ error: 'Invalid signature' });
+    }
+
+    const event = req.body;
+    console.log("Cashfree Webhook received:", event);
+
+    if (event.event_time && event.data && event.data.order && event.data.payment) {
+      const orderId = event.data.order.order_id;
+      const paymentStatus = event.data.payment.payment_status;
+      
+      if (paymentStatus === 'SUCCESS') {
+        const cashfreeDetails = {
+          cf_order_id: event.data.order.cf_order_id,
+          order_amount: event.data.order.order_amount,
+          payment_status: 'PAID',
+          payment_method: event.data.payment.payment_group || 'cashfree',
+          cf_payment_id: event.data.payment.cf_payment_id,
+          payment_time: event.data.payment.payment_completion_time
+        };
+        await store.completeOrderPayment(orderId, cashfreeDetails);
+        console.log(`Order ${orderId} successfully marked as PAID via webhook`);
+      }
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error("Webhook processing failed:", err);
+    res.status(500).json({ error: 'Webhook processing failed' });
+  }
+});
+
 module.exports = router;

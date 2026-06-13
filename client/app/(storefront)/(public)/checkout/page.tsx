@@ -146,12 +146,12 @@ export default function CheckoutPage() {
         await cashfree.pay({
           paymentSessionId: data.paymentSessionId,
           paymentMethod,
-          returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
+          returnUrl: `${window.location.origin.replace("http://", "https://")}/order-success?order_id=${data.orderId}`,
         });
       } else {
         cashfree.checkout({
           paymentSessionId: data.paymentSessionId,
-          returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
+          returnUrl: `${window.location.origin.replace("http://", "https://")}/order-success?order_id=${data.orderId}`,
         });
       }
 
