@@ -69,10 +69,80 @@ export default function CheckoutPage() {
         mode: "production" // Cashfree keys provided were prod keys
       });
 
-      cashfree.checkout({
-        paymentSessionId: data.paymentSessionId,
-        returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
-      });
+      let paymentMethod: any = null;
+
+      if (selectedMethod === "UPI") {
+        if (!upiId) {
+          toast.error("Please enter your UPI ID");
+          setIsProcessing(false);
+          return;
+        }
+        paymentMethod = {
+          upi: {
+            channel: "collect",
+            upi_id: upiId.trim()
+          }
+        };
+      } else if (selectedMethod === "CARD") {
+        if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvv) {
+          toast.error("Please fill in all card details");
+          setIsProcessing(false);
+          return;
+        }
+        const [expiryMM, expiryYY] = cardDetails.expiry.split("/");
+        if (!expiryMM || !expiryYY) {
+          toast.error("Invalid expiry date format. Use MM/YY");
+          setIsProcessing(false);
+          return;
+        }
+        paymentMethod = {
+          card: {
+            card_number: cardDetails.number.replace(/\s+/g, ""),
+            card_expiry_mm: expiryMM.trim().padStart(2, "0"),
+            card_expiry_yy: expiryYY.trim().length === 2 ? "20" + expiryYY.trim() : expiryYY.trim(),
+            card_cvv: cardDetails.cvv.trim(),
+            card_holder_name: address.name || "Card Holder"
+          }
+        };
+      } else if (selectedMethod === "NETBANKING") {
+        if (!selectedBank) {
+          toast.error("Please select your bank");
+          setIsProcessing(false);
+          return;
+        }
+        const bankCodes: Record<string, string> = {
+          SBI: "3003",
+          HDFC: "3022",
+          ICICI: "3019",
+          AXIS: "3005",
+          KOTAK: "3033"
+        };
+        const bankCode = bankCodes[selectedBank];
+        if (!bankCode) {
+          toast.error("Unsupported bank selection");
+          setIsProcessing(false);
+          return;
+        }
+        paymentMethod = {
+          netbanking: {
+            netbanking_bank_code: bankCode
+          }
+        };
+      }
+
+      if (paymentMethod) {
+        toast.info("Initiating payment request...");
+        await cashfree.pay({
+          paymentSessionId: data.paymentSessionId,
+          paymentMethod,
+          returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
+        });
+      } else {
+        cashfree.checkout({
+          paymentSessionId: data.paymentSessionId,
+          returnUrl: `${window.location.origin}/order-success?order_id=${data.orderId}`,
+        });
+      }
 
     } catch (err: any) {
       console.error(err);
