@@ -17,6 +17,13 @@
   --color-brand-orange: #FF5E36;
   --color-brand-orange-light: #FFEDE9;
 
+  /* Narrative Colors (Mapped to neutral black & white theme) */
+  --color-narrative-forest: #0A0A0A;
+  --color-narrative-clay: #0A0A0A;
+  --color-narrative-sage: #71717A;
+  --color-narrative-sand: #FAF6F0;
+  --color-narrative-ochre: #27272A;
+
   /* Fonts */
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
