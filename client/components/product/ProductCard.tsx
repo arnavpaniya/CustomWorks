@@ -32,12 +32,12 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
       className={cn(
-        "group bg-white flex flex-col justify-between border-b border-r border-zinc-200/60 hover:bg-zinc-50/20 transition-colors duration-300 relative",
+        "group bg-white flex flex-col justify-between rounded-2xl border border-zinc-200/40 shadow-sm hover:shadow-md overflow-hidden transition-all duration-300 relative",
         className,
       )}
     >
       {/* Image Container */}
-      <div className="relative aspect-square bg-zinc-50/50 overflow-hidden border-b border-zinc-200/60">
+      <div className="relative aspect-square bg-[#FAF6F0]/40 overflow-hidden rounded-t-2xl">
         <Link href={`/products/${product.slug}`} className="absolute inset-0 z-0 block">
           <Image
             src={product.images[0] ?? "/images/placeholder-product.jpg"}
@@ -50,13 +50,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-          {product.isNew && <Badge variant="default" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5">New</Badge>}
-          {product.badge && <Badge variant="warning" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5">{product.badge}</Badge>}
+          {product.isNew && <Badge variant="default" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5 bg-narrative-clay text-white">New</Badge>}
+          {product.badge && <Badge variant="warning" className="rounded-sm uppercase text-[8px] tracking-wider px-1.5 py-0.5 bg-narrative-ochre text-white">{product.badge}</Badge>}
         </div>
 
         {/* Wishlist Button */}
         <button
-          className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-white border border-zinc-200/80 text-brand-muted hover:text-red-500 hover:bg-zinc-50 transition-all opacity-0 group-hover:opacity-100 shadow-xs z-10 cursor-pointer"
+          className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-white border border-zinc-200/80 text-brand-muted hover:text-narrative-clay hover:bg-zinc-50 transition-all opacity-0 group-hover:opacity-100 shadow-xs z-10 cursor-pointer"
           aria-label={`Add ${product.name} to wishlist`}
         >
           <Heart size={14} />
@@ -66,29 +66,29 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       {/* Info Section */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <span className="text-[9px] font-black text-[#9A9A9A] uppercase tracking-widest block mb-1.5">
+          <span className="text-[9px] font-black text-narrative-clay/70 uppercase tracking-widest block mb-1.5">
             {product.category}
           </span>
           <h3 className="text-xs sm:text-sm font-bold text-brand-black leading-snug mb-3 line-clamp-2">
-            <Link href={`/products/${product.slug}`} className="hover:text-brand-orange transition-colors">
+            <Link href={`/products/${product.slug}`} className="hover:text-narrative-clay transition-colors">
               {product.name}
             </Link>
           </h3>
         </div>
 
         {/* Price & Action */}
-        <div className="flex items-center justify-between gap-2 pt-2 mt-auto border-t border-zinc-100/60">
+        <div className="flex items-center justify-between gap-2 pt-2 mt-auto border-t border-zinc-100">
           <p className="text-xs sm:text-sm font-black text-brand-black">
             {product.basePrice > 0 ? (
               <>
                 {formatPrice(product.basePrice)} <span className="text-[9px] font-normal text-brand-muted uppercase">/ pc</span>
               </>
             ) : (
-              <span className="text-[9px] font-black uppercase tracking-wider text-brand-orange">Quote Only</span>
+              <span className="text-[9px] font-black uppercase tracking-wider text-narrative-clay">Quote Only</span>
             )}
           </p>
           <Link href={`/products/${product.slug}`}>
-            <button className="h-7 px-3.5 rounded-md bg-brand-black hover:bg-brand-orange text-white text-[9px] font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer">
+            <button className="h-7 px-3.5 rounded-full bg-narrative-forest hover:bg-narrative-clay text-white text-[9px] font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer">
               Customize
             </button>
           </Link>

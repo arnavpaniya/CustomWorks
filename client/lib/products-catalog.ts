@@ -215,7 +215,11 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 2.00,
     description: "Modern square cut visiting cards designed to offer a unique and contemporary alternative to traditional rectangular cards.\n\n• Material: Premium 300 GSM Card Stock\n• Card Shape: Square Cut Format",
     moq: 400,
-    images: ["/products/square-cut-visiting-card/card-1.png", "/products/square-cut-visiting-card/card-2.png", "/products/square-cut-visiting-card/visiting-card-guide.png"],
+    images: [
+      "/products/square-cut-visiting-card/ChatGPT Image Jun 12, 2026, 11_16_37 PM.png",
+      "/products/square-cut-visiting-card/ChatGPT Image Jun 12, 2026, 11_18_44 PM.png",
+      "/products/square-cut-visiting-card/ChatGPT Image Jun 12, 2026, 11_18_52 PM.png"
+    ],
     rating: 4.7,
     reviewCount: 42,
     customizerType: "business-cards",
@@ -490,7 +494,10 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 20.00,
     description: "Professionally printed letterheads designed to maintain brand identity and ensure formal communication consistency.\n• Material: 80–100 GSM Bond Paper / Executive Bond\n• Print: Single-Sided (1+0 or 4+0 CMYK)\n• Sizes: A5 or A4",
     moq: 50,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/custom-letterheads/ChatGPT Image Jun 13, 2026, 12_11_04 AM.png",
+      "/products/custom-letterheads/ChatGPT Image Jun 13, 2026, 12_15_45 AM.png"
+    ],
     rating: 4.9,
     reviewCount: 56,
     customizerType: "standard-tiers",

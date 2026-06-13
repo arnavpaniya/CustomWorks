@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mail } from "lucide-react";
+import { Mail, Sparkles, ArrowUpRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 
 const InstagramIcon = ({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
@@ -23,7 +23,6 @@ const InstagramIcon = ({ size = 18, ...props }: { size?: number } & React.SVGPro
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
-
 
 const footerLinks = {
   Products: [
@@ -53,7 +52,12 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/customworks.in?igsh=YXFoNDR2cXNnNDlz", hoverClass: "hover:bg-gradient-to-tr hover:from-amber-500 hover:via-red-500 hover:to-purple-600 hover:text-white" },
+  { 
+    icon: InstagramIcon, 
+    label: "Instagram", 
+    href: "https://www.instagram.com/customworks.in?igsh=YXFoNDR2cXNnNDlz", 
+    hoverClass: "hover:bg-narrative-clay hover:border-narrative-clay hover:text-white" 
+  },
 ];
 
 export default function Footer() {
@@ -61,31 +65,56 @@ export default function Footer() {
   if (pathname?.startsWith("/admin")) return null;
 
   return (
-    <footer className="relative mt-24 mb-8 mx-4 sm:mx-6 md:mx-8 rounded-[2.5rem] bg-zinc-950 text-zinc-300 border border-zinc-900 shadow-2xl overflow-hidden" aria-label="Footer">
-      {/* Dynamic glow design background overlay */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
+    <footer 
+      className="relative mt-24 mb-8 mx-4 sm:mx-6 md:mx-8 rounded-[2rem] sm:rounded-[2.5rem] bg-narrative-forest text-zinc-300 border border-white/10 shadow-2xl overflow-hidden" 
+      aria-label="Footer"
+    >
+      {/* Narrative gradient glows inside the card */}
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-narrative-clay/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-[26rem] h-[26rem] bg-narrative-ochre/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-80 h-80 bg-narrative-sage/5 rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-10 relative z-10">
-        {/* Main footer grid */}
-        <div className="py-12 md:py-16 flex flex-col lg:flex-row gap-10 lg:gap-16">
-          {/* Brand column */}
-          <div className="lg:w-2/5 space-y-6">
-            <Link href="/" className="inline-block h-12 w-32 md:w-36 transition-transform hover:scale-[1.02]" aria-label="CustomWorks Home">
-              <Logo className="h-full w-full" light />
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 relative z-10">
+        
+        {/* Top Newsletter / CTA row */}
+        <div className="py-10 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h3 className="text-xl sm:text-2xl font-serif text-white font-bold">
+              Ready to bring your <span className="italic font-normal text-narrative-clay">ideas</span> to life?
+            </h3>
+          </div>
+          <div className="flex gap-3 w-full sm:w-auto">
+            <Link href="/products" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto h-11 px-6 rounded-full bg-white hover:bg-zinc-100 text-narrative-forest font-bold text-sm tracking-wide shadow-md transition-all duration-300 flex items-center justify-center gap-1">
+                Browse Products <ArrowUpRight size={16} />
+              </button>
             </Link>
-            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
-              CustomWorks is a premium manufacturing brand for custom designed items. From corporate identity and stationery to signage and bespoke apparel, we craft and deliver high-quality custom items directly to your doorstep.
+          </div>
+        </div>
+
+        {/* Main Footer Grid */}
+        <div className="py-12 md:py-16 flex flex-col lg:flex-row gap-10 lg:gap-16">
+          {/* Brand/About Col */}
+          <div className="lg:w-2/5 space-y-6">
+            <Link 
+              href="/" 
+              className="inline-block h-12 w-32 md:w-36 transition-transform hover:scale-[1.02]" 
+              aria-label="CustomWorks Home"
+            >
+              <Logo className="h-full w-full text-white" light />
+            </Link>
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm font-light">
+              CustomWorks is a premium fabrication house for customized products. From stationery and identity mockups to bespoke clothing, we craft and deliver excellence to your doorstep.
             </p>
 
-            {/* Email contact link */}
+            {/* Support Email button */}
             <div className="pt-2">
               <a
                 href="mailto:orders.customworks@gmail.com"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all shadow-sm group"
+                className="inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all shadow-sm group"
               >
-                <Mail size={15} className="text-brand-orange group-hover:scale-110 transition-transform" />
-                <span>Email orders.customworks@gmail.com</span>
+                <Mail size={15} className="text-narrative-clay group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-mono">orders.customworks@gmail.com</span>
               </a>
             </div>
           </div>
@@ -94,15 +123,15 @@ export default function Footer() {
           <div className="lg:w-3/5 grid grid-cols-2 sm:grid-cols-3 gap-8">
             {Object.entries(footerLinks).map(([heading, links]) => (
               <div key={heading} className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-serif">
+                <h4 className="text-[11px] font-bold tracking-widest text-zinc-400 font-mono uppercase">
                   {heading}
-                </h3>
-                <ul className="space-y-3">
+                </h4>
+                <ul className="space-y-2.5">
                   {links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-zinc-400 hover:text-white transition-colors duration-200"
+                        className="text-sm text-zinc-400 hover:text-white hover:underline underline-offset-4 decoration-narrative-clay/40 transition-all duration-200 font-light"
                       >
                         {link.label}
                       </Link>
@@ -115,21 +144,23 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-zinc-900 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+        <div className="border-t border-white/10 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-500 font-light">
           <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
             <p>&copy; {new Date().getFullYear()} CustomWorks. All rights reserved.</p>
-            <span className="hidden md:inline text-zinc-800">|</span>
-            <p className="flex items-center gap-1">Made with premium care in India 🇮🇳</p>
+            <span className="hidden md:inline text-white/10">|</span>
+            <p className="flex items-center gap-1">Made with premium care in Bengaluru, India 🇮🇳</p>
           </div>
 
-          {/* Social icons */}
+          {/* Socials */}
           <div className="flex items-center gap-3">
             {socialLinks.map(({ icon: Icon, label, href, hoverClass }) => (
               <a
                 key={label}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
-                className={`h-9 w-9 flex items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800/80 text-zinc-400 transition-all duration-300 shadow-sm ${hoverClass}`}
+                className={`h-9 w-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white transition-all duration-300 shadow-sm ${hoverClass}`}
               >
                 <Icon size={16} />
               </a>

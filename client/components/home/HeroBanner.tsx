@@ -1,206 +1,196 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowRight, Scissors, ShieldCheck, Zap } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function HeroBanner() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Mouse coordinate mapping for interactive card floating parallax
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth springs for card translations
+  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+
+  // Displacements for different layers (creates depth)
+  const apparelX = useTransform(springX, [-0.5, 0.5], [-25, 25]);
+  const apparelY = useTransform(springY, [-0.5, 0.5], [-25, 25]);
+
+  const stationeryX = useTransform(springX, [-0.5, 0.5], [15, -15]);
+  const stationeryY = useTransform(springY, [-0.5, 0.5], [15, -15]);
+
+  const hangtagX = useTransform(springX, [-0.5, 0.5], [-40, 40]);
+  const hangtagY = useTransform(springY, [-0.5, 0.5], [-40, 40]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const relativeX = (e.clientX - rect.left) / rect.width - 0.5;
+    const relativeY = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(relativeX);
+    mouseY.set(relativeY);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center bg-[#FAFAFA] overflow-hidden pt-[88px] pb-12 border-b border-zinc-200/60" aria-label="Hero banner">
+    <section
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative min-h-screen flex items-center bg-[#FAF6F0] overflow-hidden pt-[88px] pb-16 border-b border-zinc-200/40 select-none"
+      aria-label="Hero banner"
+    >
       
-      {/* Background grid canvas */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-40 animate-pulse-slow"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(10, 10, 10, 0.035) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(10, 10, 10, 0.035) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      />
+      {/* Narrative Shifting Backdrop Blobs */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        
+        {/* Shimmering Clay Blob */}
+        <motion.div
+          animate={{
+            x: [0, 60, -30, 0],
+            y: [0, -40, 50, 0],
+            scale: [1, 1.12, 0.95, 1],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-10 left-10 w-[450px] h-[450px] rounded-full bg-narrative-clay/10 blur-[110px]"
+        />
+
+        {/* Shimmering Sage Blob */}
+        <motion.div
+          animate={{
+            x: [0, -50, 40, 0],
+            y: [0, 50, -40, 0],
+            scale: [1, 0.9, 1.15, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute bottom-10 right-10 w-[550px] h-[550px] rounded-full bg-narrative-sage/15 blur-[120px]"
+        />
+
+        {/* Shimmering Ochre Blob */}
+        <motion.div
+          animate={{
+            x: [0, 40, -40, 0],
+            y: [0, 40, 30, 0],
+            scale: [1, 1.1, 0.9, 1],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-1/3 right-1/4 w-[380px] h-[380px] rounded-full bg-narrative-ochre/12 blur-[100px]"
+        />
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        
-        {/* Gapless Editorial Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-200/60 shadow-sm bg-white mt-8 sm:mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
           
-          {/* Left Column: Heading and Brand Details */}
-          <div className="lg:col-span-7 p-8 sm:p-14 md:p-16 border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]">
-            
-            {/* Badge & Title */}
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-orange bg-brand-orange/5 border border-brand-orange/10 px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 mb-8 select-none">
-                <span className="text-[12px] leading-none text-brand-orange animate-pulse">✦</span>
-                Premium Custom Manufacturing
-              </span>
-              
-              <h1 className="text-4xl sm:text-6xl md:text-7.5xl font-serif font-light text-brand-black leading-[1.08] tracking-tight mb-8 select-none">
-                We <span className="italic font-normal text-brand-orange">manufacture</span> custom <span className="italic font-normal">artifacts</span> that define your brand.
-              </h1>
-              
-              <p className="text-sm sm:text-base text-brand-muted leading-relaxed max-w-xl font-medium">
-                CustomWorks is a dedicated industrial partner. We craft premium apparel, corporate stationery, bespoke packaging, and promotional accessories with raw precision and meticulous detail.
-              </p>
-            </div>
+          {/* Left Column: Brand Story Intro */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-6 flex flex-col items-start text-left"
+          >
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-light text-narrative-forest leading-[1.08] tracking-tight mb-8">
+              From your <span className="italic font-normal text-narrative-clay">mind</span> to their <span className="italic font-normal text-narrative-ochre">hands</span>
+            </h1>
 
-            {/* Feature Highlights Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-zinc-100/80 my-8 sm:my-12">
-              <div className="flex gap-3 items-start">
-                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
-                  <Scissors size={14} className="stroke-[2.5]" />
-                </div>
-                <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Bespoke Specs</h4>
-                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">100% custom layouts</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-3 items-start">
-                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
-                  <ShieldCheck size={14} className="stroke-[2.5]" />
-                </div>
-                <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Tiered Pricing</h4>
-                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">Pay less for volume</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3 items-start">
-                <div className="p-2 border border-zinc-200 bg-zinc-50 text-brand-black">
-                  <Zap size={14} className="stroke-[2.5]" />
-                </div>
-                <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-wider text-brand-black">Factory Direct</h4>
-                  <p className="text-[10px] text-brand-muted mt-0.5 font-bold">Raw industrial speed</p>
-                </div>
-              </div>
-            </div>
+            <p className="text-base sm:text-lg text-narrative-forest/80 leading-relaxed max-w-xl font-medium mb-12">
+              Every brand is a living narrative. CustomWorks is your physical fabrication partner. We take your digital designs and manufacture them into tactile, high-grade apparel, letterpressed stationery, and custom branded packaging.
+            </p>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link href="/products" className="w-full sm:w-auto">
-                <button className="w-full h-13 px-8 rounded-md bg-brand-black hover:bg-brand-orange text-white text-xs font-bold uppercase tracking-wider transition-colors duration-200 flex items-center justify-center gap-2 group cursor-pointer border border-transparent shadow-xs">
-                  Start Customizing
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+                <button className="w-full h-14 px-8 rounded-full bg-narrative-clay hover:bg-narrative-clay/90 text-white text-xs font-bold uppercase tracking-wider transition-colors duration-250 flex items-center justify-center gap-2 group cursor-pointer border border-transparent shadow-md hover:shadow-lg">
+                  Start Your Design
+                  <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform duration-250" />
                 </button>
               </Link>
-              <Link href="/products" className="w-full sm:w-auto">
-                <button className="w-full h-13 px-8 rounded-md bg-transparent hover:bg-zinc-50 text-brand-black text-xs font-bold uppercase tracking-wider transition-colors duration-200 border border-zinc-200/80 flex items-center justify-center gap-2 cursor-pointer shadow-2xs">
-                  Explore Catalog
+              <Link href="/about" className="w-full sm:w-auto">
+                <button className="w-full h-14 px-8 rounded-full bg-transparent hover:bg-narrative-clay/5 text-narrative-forest text-xs font-bold uppercase tracking-wider transition-colors duration-250 border border-narrative-forest/30 flex items-center justify-center gap-2 cursor-pointer">
+                  Read Our Story
                 </button>
               </Link>
             </div>
+          </motion.div>
 
-          </div>
-
-          {/* Right Column: Gapless Vertical Stack of Product Showcase Cards */}
-          <div className="lg:col-span-5 grid grid-cols-1 grid-rows-3 h-full min-h-[600px] lg:min-h-0 bg-zinc-50">
+          {/* Right Column: Asymmetrical Product Collage */}
+          <div className="lg:col-span-6 relative flex items-center justify-center h-[520px] sm:h-[620px] w-full">
             
-            {/* Card 1: Apparel */}
-            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
-              {/* Image Background */}
-              <div className="absolute inset-0 z-0">
+            {/* Background Blob Frame */}
+            <div className="absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] bg-narrative-sage/30 rounded-[6rem] -rotate-12 blur-xs z-0" />
+            
+            {/* Product 1: Custom Apparel (Center, Mid-Layer) */}
+            <motion.div
+              style={{ x: apparelX, y: apparelY }}
+              className="absolute left-6 sm:left-12 bottom-20 sm:bottom-28 w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] z-20"
+            >
+              <div className="relative w-full h-full border-[10px] border-white bg-white rounded-[2rem] shadow-xl overflow-hidden rotate-6 hover:rotate-0 transition-transform duration-500 group">
                 <Image
                   src="/images/hero_apparel_mockup.png"
-                  alt="Embroidered hoodie manufacturing"
+                  alt="Premium custom hoodie"
                   fill
-                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 220px, 280px"
                   priority
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
-              </div>
 
-              {/* Tag Overlays */}
-              <div className="relative z-10 flex items-center justify-between select-none">
-                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
-                  [ 01 / APPAREL ]
-                </span>
-                <span className="text-[8px] font-mono font-bold text-zinc-300">
-                  ACTIVE RUN
-                </span>
               </div>
-              
-              <div className="relative z-10 text-white">
-                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
-                  Custom Apparel
-                </h3>
-                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
-                  Organic cotton tees, heavy fleece hoodies, and corporate uniforms.
-                </p>
-              </div>
-            </div>
+            </motion.div>
 
-            {/* Card 2: Stationery */}
-            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
-              {/* Image Background */}
-              <div className="absolute inset-0 z-0">
+            {/* Product 2: Stationery (Right, Back-Layer) */}
+            <motion.div
+              style={{ x: stationeryX, y: stationeryY }}
+              className="absolute right-4 sm:right-8 top-16 sm:top-24 w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] z-10"
+            >
+              <div className="relative w-full h-full border-[10px] border-white bg-white rounded-[2rem] shadow-lg overflow-hidden -rotate-12 hover:rotate-0 transition-transform duration-500 group">
                 <Image
                   src="/images/hero_stationery_mockup.png"
-                  alt="Corporate stationery printing"
+                  alt="High-end stationery set"
                   fill
-                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 200px, 260px"
                   priority
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
-              </div>
 
-              {/* Tag Overlays */}
-              <div className="relative z-10 flex items-center justify-between select-none">
-                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
-                  [ 02 / IDENTITY ]
-                </span>
-                <span className="text-[8px] font-mono font-bold text-zinc-300">
-                  METALLIC INK
-                </span>
               </div>
-              
-              <div className="relative z-10 text-white">
-                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
-                  Corporate Identity
-                </h3>
-                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
-                  Matte cardstock visiting cards, letterheads, and DL envelopes.
-                </p>
-              </div>
-            </div>
+            </motion.div>
 
-            {/* Card 3: Hangtags */}
-            <div className="relative group overflow-hidden border-r border-b border-zinc-200/60 bg-white flex flex-col justify-between p-6 sm:p-8 min-h-[200px] lg:min-h-[233px]">
-              {/* Image Background */}
-              <div className="absolute inset-0 z-0">
+            {/* Product 3: Hangtags (Top-Left, Fore-Layer) */}
+            <motion.div
+              style={{ x: hangtagX, y: hangtagY }}
+              className="absolute left-16 sm:left-24 top-20 sm:top-28 w-[130px] h-[130px] sm:w-[170px] sm:h-[170px] z-30"
+            >
+              <div className="relative w-full h-full border-[6px] border-white bg-white rounded-[1.5rem] shadow-2xl overflow-hidden rotate-12 hover:rotate-0 transition-transform duration-500 group">
                 <Image
                   src="/products/hang-tags/hangtag.png"
-                  alt="Custom tags and stickers"
+                  alt="Custom apparel hangtag"
                   fill
-                  className="object-cover opacity-90 group-hover:scale-[1.03] transition-transform duration-500"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 130px, 170px"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
-              </div>
 
-              {/* Tag Overlays */}
-              <div className="relative z-10 flex items-center justify-between select-none">
-                <span className="text-[9px] font-mono font-bold text-white bg-zinc-950/85 px-2 py-0.5 border border-zinc-800">
-                  [ 03 / ACCESSORIES ]
-                </span>
-                <span className="text-[8px] font-mono font-bold text-zinc-300">
-                  SWAG TAGS
-                </span>
               </div>
-              
-              <div className="relative z-10 text-white">
-                <h3 className="text-sm font-bold leading-none tracking-wide uppercase">
-                  Tags & Accessories
-                </h3>
-                <p className="text-[10px] text-zinc-200/90 mt-1.5 font-medium leading-relaxed max-w-xs">
-                  High-fidelity clothing hangtags, textured stickers, and keychains.
-                </p>
-              </div>
-            </div>
+            </motion.div>
 
           </div>
 

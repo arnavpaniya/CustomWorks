@@ -20,7 +20,7 @@ const GoogleIcon = () => (
 const features = [
   { icon: Sparkles,   text: "Live design customizer" },
   { icon: ShieldCheck, text: "100% premium quality" },
-  { icon: Truck,      text: "Fast, secure delivery" },
+  { icon: Truck,      text: "Bengaluru-wide shipping" },
 ];
 
 export default function LoginPage() {
@@ -64,214 +64,218 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen w-full flex flex-col lg:flex-row bg-white overflow-hidden">
-      {/* ── LEFT: Form Area ── */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full lg:w-[45%] xl:w-[40%] flex flex-col min-h-screen relative z-10 shadow-[10px_0_40px_rgba(0,0,0,0.05)]"
-      >
-        <div className="flex-1 flex flex-col p-8 sm:p-12 lg:p-16 xl:p-20 overflow-y-auto">
-
-
-          <div className="flex-1 flex flex-col justify-center">
-            <div className="mb-7">
-              <h1 className="text-[1.75rem] font-black text-brand-black tracking-tight leading-tight">
-                Welcome back
-              </h1>
-              <p className="text-sm text-brand-muted mt-1.5">
-                Sign in to your CustomWorks account
-              </p>
-            </div>
-
-            {/* Google SSO */}
-            <button
-              type="button"
-              onClick={handleGoogle}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-brand-border bg-white hover:bg-brand-surface text-sm font-semibold text-brand-black transition-all shadow-sm hover:shadow-md mb-5 disabled:opacity-60"
-            >
-              <GoogleIcon />
-              Continue with Google
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex-1 h-px bg-brand-border" />
-              <span className="text-[11px] font-medium text-brand-muted tracking-wide">OR</span>
-              <div className="flex-1 h-px bg-brand-border" />
-            </div>
-
-            {/* Error */}
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden mb-4"
-                >
-                  <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5 font-medium">
-                    {error}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-brand-black">Email address</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  className="w-full h-11 px-4 rounded-xl border border-brand-border bg-[#FAFAF9] text-sm text-brand-black placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand-black/20 focus:border-brand-black transition-all"
-                />
-              </div>
-
-              {/* Password */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-brand-black">Password</label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••••"
-                    autoComplete="current-password"
-                    className="w-full h-11 px-4 pr-11 rounded-xl border border-brand-border bg-[#FAFAF9] text-sm text-brand-black placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand-black/20 focus:border-brand-black transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-black transition-colors"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-              </div>
-
-              {/* T&C checkbox */}
-              <div className="flex items-start gap-2.5 pt-0.5">
-                <button
-                  type="button"
-                  onClick={() => setAgreed(!agreed)}
-                  className={`h-[18px] w-[18px] rounded-[5px] border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                    agreed
-                      ? "bg-brand-black border-brand-black"
-                      : "border-brand-border bg-white hover:border-brand-black"
-                  }`}
-                  role="checkbox"
-                  aria-checked={agreed}
-                >
-                  {agreed && <Check size={10} strokeWidth={3.5} className="text-white" />}
-                </button>
-                <p className="text-[11.5px] text-brand-muted leading-relaxed">
-                  I agree to the{" "}
-                  <Link href="/terms" className="text-brand-black font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity">
-                    Terms & Conditions
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="/privacy-policy" className="text-brand-black font-semibold underline underline-offset-2 hover:opacity-70 transition-opacity">
-                    Privacy Policy
-                  </Link>
-                </p>
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full h-11 bg-brand-black hover:bg-brand-black/90 active:scale-[0.98] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-black/15 mt-1 disabled:opacity-60"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-                    </svg>
-                    Signing in…
-                  </>
-                ) : (
-                  <>Sign In <ArrowRight size={15} /></>
-                )}
-              </button>
-            </form>
-
-            <p className="text-xs text-center text-brand-muted mt-6">
-              New to CustomWorks?{" "}
-              <Link href="/register" className="text-brand-black font-bold hover:underline underline-offset-2">
-                Create an account
-              </Link>
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* ── RIGHT: Visual Area ── */}
+    <main className="min-h-screen w-full flex flex-col lg:flex-row bg-[#FAF6F0] overflow-hidden">
+      {/* ── LEFT: Visual/Narrative Side (Hidden on mobile) ── */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="hidden lg:flex flex-1 bg-brand-black relative overflow-hidden flex-col items-center justify-center p-12 xl:p-20"
+        className="hidden lg:flex lg:w-[50%] xl:w-[55%] bg-narrative-forest relative overflow-hidden flex-col items-center justify-center p-12 xl:p-20"
       >
         {/* Background Image / Gradient */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/placeholder-product.jpg" // Using placeholder or cinematic mockup
-            alt="CustomWorks printing"
+            src="/images/premium_packaging.jpg"
+            alt="CustomWorks premium printing details"
             fill
-            className="object-cover opacity-30 mix-blend-luminosity"
+            className="object-cover opacity-20 mix-blend-luminosity"
             priority
             sizes="50vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-black to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-narrative-forest via-narrative-forest/90 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-narrative-forest to-transparent opacity-85" />
         </div>
 
-        {/* Radial glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08)_0%,transparent_60%)] pointer-events-none z-0" />
+        {/* Dynamic Blobs */}
+        <div className="absolute -top-12 -right-12 w-96 h-96 rounded-full bg-narrative-clay/10 blur-[100px] pointer-events-none z-0" />
+        <div className="absolute -bottom-12 -left-12 w-96 h-96 rounded-full bg-narrative-sage/10 blur-[100px] pointer-events-none z-0" />
 
         {/* Content */}
-        <div className="relative z-10 w-full max-w-xl text-left">
+        <div className="relative z-10 w-full max-w-xl text-left space-y-8">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl xl:text-6xl font-black text-white leading-[1.1] tracking-tight"
+            className="text-4xl xl:text-6xl font-black font-serif text-white leading-[1.15] tracking-tight"
           >
-            Design anything.<br />
-            <span className="text-white/40">Print everything.</span>
+            Design anything. <br />
+            <span className="text-narrative-ochre italic font-normal">Print everything.</span>
           </motion.h2>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-base xl:text-lg text-white/50 mt-6 leading-relaxed max-w-md font-medium"
+            className="text-base xl:text-lg text-white/70 leading-relaxed max-w-md font-light"
           >
-            Premium custom designed & printed products, crafted to order and delivered across Bengaluru.
+            Create bespoke custom designed products, made to order and shipped across Bengaluru.
           </motion.p>
 
-          {/* Feature Glass Pills */}
+          {/* Feature Pills */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-wrap gap-3 mt-12"
+            className="flex flex-col gap-3.5 mt-8 max-w-sm"
           >
             {features.map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-3 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 backdrop-blur-md rounded-full px-5 py-3 shadow-xl">
-                <Icon size={16} className="text-white/70 shrink-0" />
-                <span className="text-sm text-white font-medium">{text}</span>
+              <div key={text} className="flex items-center gap-3 bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl px-5 py-3.5 shadow-sm">
+                <div className="h-7 w-7 rounded-lg bg-white/10 flex items-center justify-center text-narrative-ochre shrink-0">
+                  <Icon size={14} />
+                </div>
+                <span className="text-sm text-white/90 font-medium">{text}</span>
               </div>
             ))}
           </motion.div>
+        </div>
+      </motion.div>
+
+      {/* ── RIGHT: Form Side ── */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full lg:w-[50%] xl:w-[45%] flex items-center justify-center p-6 sm:p-12 lg:p-16 min-h-screen relative z-10"
+      >
+        {/* Form Card */}
+        <div className="w-full max-w-md bg-white border border-zinc-200/40 shadow-md rounded-[2rem] p-8 sm:p-10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-narrative-clay/5 blur-2xl pointer-events-none" />
+          
+          <div className="mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold font-serif text-narrative-forest tracking-tight">
+              Welcome Back
+            </h1>
+            <p className="text-xs sm:text-sm text-narrative-forest/60 mt-1 font-light">
+              Sign in to your CustomWorks account to continue.
+            </p>
+          </div>
+
+          {/* Google Login */}
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-zinc-200/60 bg-white hover:bg-zinc-50 text-sm font-semibold text-narrative-forest transition-all shadow-xs mb-4 disabled:opacity-60 cursor-pointer"
+          >
+            <GoogleIcon />
+            Continue with Google
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 h-px bg-zinc-100" />
+            <span className="text-[10px] font-bold text-zinc-400 tracking-wide">OR EMAIL</span>
+            <div className="flex-1 h-px bg-zinc-100" />
+          </div>
+
+          {/* Error Message */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden mb-4"
+              >
+                <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5 font-medium">
+                  {error}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-narrative-forest">Email address</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@company.com"
+                autoComplete="email"
+                className="w-full h-11 px-4 rounded-xl border border-zinc-200/60 bg-white text-sm text-narrative-forest placeholder:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-narrative-forest">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••"
+                  autoComplete="current-password"
+                  className="w-full h-11 px-4 pr-11 rounded-xl border border-zinc-200/60 bg-white text-sm text-narrative-forest placeholder:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-narrative-forest transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Terms Checkbox */}
+            <div className="flex items-start gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => setAgreed(!agreed)}
+                className={`h-[18px] w-[18px] rounded-[5px] border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer ${
+                  agreed
+                    ? "bg-narrative-forest border-narrative-forest"
+                    : "border-zinc-300 bg-white hover:border-narrative-forest"
+                }`}
+                role="checkbox"
+                aria-checked={agreed}
+              >
+                {agreed && <Check size={10} strokeWidth={3.5} className="text-white" />}
+              </button>
+              <p className="text-[11px] sm:text-xs text-narrative-forest/70 leading-relaxed font-light">
+                I agree to the{" "}
+                <Link href="/terms" className="text-narrative-forest font-semibold underline underline-offset-2 hover:text-narrative-clay transition-colors">
+                  Terms & Conditions
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy-policy" className="text-narrative-forest font-semibold underline underline-offset-2 hover:text-narrative-clay transition-colors">
+                  Privacy Policy
+                </Link>
+              </p>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-11 rounded-full bg-narrative-forest hover:bg-narrative-clay active:scale-[0.98] text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-zinc-950/10 mt-2 disabled:opacity-60 cursor-pointer"
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                  Signing in…
+                </>
+              ) : (
+                <>Sign In <ArrowRight size={15} /></>
+              )}
+            </button>
+          </form>
+
+          <p className="text-xs text-center text-narrative-forest/70 mt-6 font-light">
+            New to CustomWorks?{" "}
+            <Link href="/register" className="text-narrative-clay font-bold hover:underline underline-offset-2 transition-colors">
+              Create an account
+            </Link>
+          </p>
         </div>
       </motion.div>
     </main>

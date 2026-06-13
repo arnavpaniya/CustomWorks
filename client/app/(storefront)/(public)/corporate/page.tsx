@@ -1,143 +1,195 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Building2, Package, Star, Zap, CheckCircle2, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { Building2, Package, Star, Zap, Sparkles, ArrowRight } from "lucide-react";
+import CorporateForm from "@/components/corporate/CorporateForm";
 
 export const metadata: Metadata = {
-  title: "Corporate & Bulk Orders",
-  description: "Premium custom products for your team, event, or brand.",
+  title: "Corporate & Bulk Orders – CustomWorks",
+  description: "Premium custom products for your team, event, or brand. Order in bulk with CustomWorks.",
 };
 
 const benefits = [
   {
     icon: Star,
-    title: "Premium Quality",
-    desc: "We use top-tier materials and state-of-the-art printing techniques to ensure your brand looks its absolute best."
+    title: "Unmatched Print Quality",
+    desc: "We use high-fidelity, industry-leading printing methods and top-grade materials to guarantee your brand looks incredibly premium.",
+    bgClass: "bg-narrative-clay/10 border-narrative-clay/15 text-narrative-clay"
   },
   {
     icon: Package,
-    title: "Volume Discounts",
-    desc: "The more you order, the more you save. We offer structured pricing tiers for bulk quantities starting from 50 units."
+    title: "Tiered Volume Discounts",
+    desc: "Scale your order and save. We offer highly competitive pricing tiers for corporate batches starting from just 10 units.",
+    bgClass: "bg-narrative-ochre/10 border-narrative-ochre/15 text-narrative-ochre"
   },
   {
     icon: Zap,
-    title: "Dedicated Support",
-    desc: "Get a dedicated account manager to assist with design setup, sampling, production tracking, and delivery logistics."
+    title: "Dedicated Account Managers",
+    desc: "Get direct support from design setup and physical sampling to final production and doorstep shipping logistics.",
+    bgClass: "bg-narrative-sage/10 border-narrative-sage/15 text-narrative-sage"
   },
   {
     icon: Building2,
     title: "End-to-End Fulfilment",
-    desc: "From designing to individual packaging and multi-location shipping, we handle the entire supply chain."
+    desc: "We handle the entire supply chain, including individual gift packaging and distribution across multiple locations.",
+    bgClass: "bg-narrative-forest/10 border-narrative-forest/15 text-narrative-forest"
   }
 ];
 
 const processSteps = [
-  "Share your requirements and artwork.",
-  "We provide a custom quote and digital mockups.",
-  "Approve a physical or digital sample.",
-  "Production begins followed by quality check.",
-  "Delivered safely to your office or multiple addresses."
+  { title: "Define Requirements", desc: "Share your product needs, artwork, and approximate volume." },
+  { title: "Get Digital Mockups", desc: "Our team shares a customized commercial quote and print blueprints." },
+  { title: "Sample Validation", desc: "Approve a digital prototype or physical sample before bulk run." },
+  { title: "Production & QC", desc: "We manufacture your order and inspect every item for flawless quality." },
+  { title: " Bengaluru Delivery", desc: "Safely shipped directly to your corporate headquarters or office hubs." }
 ];
-
-const CONTACT_EMAIL = "orders.customworks@gmail.com";
 
 export default function CorporatePage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Hero */}
-      <div className="text-center mb-20">
-        <div className="inline-block mb-3">
-          <span className="text-[10px] font-black uppercase tracking-widest text-brand-black bg-brand-black/5 px-2.5 py-0.5 rounded-full border border-brand-black/10">
-            Corporate & Bulk
-          </span>
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-black text-brand-black mb-6 tracking-tight">
-          Custom Products That Mean <br className="hidden sm:block" /> Business
-        </h1>
-        <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-          Anything for your brand that can be custom-made, crafted by us with premium quality and delivered straight to you.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Bulk / corporate order quote request")}`}>
-            <Button variant="accent" size="lg" className="w-full sm:w-auto px-8">
-              Request a Quote
-            </Button>
-          </a>
-          <Link href="/products">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 gap-2">
-              Browse Catalog <ArrowRight size={16} />
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Benefits */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-        {benefits.map((benefit, i) => {
-          const Icon = benefit.icon;
-          return (
-            <div key={i} className="bg-white border border-brand-border rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-12 w-12 rounded-2xl bg-brand-surface flex items-center justify-center mb-6">
-                <Icon size={24} className="text-brand-black" />
+    <div className="bg-white min-h-screen">
+      {/* Hero Header Section */}
+      <section className="bg-[#FAF6F0] py-16 sm:py-24 border-b border-zinc-200/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left Col */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-narrative-clay/10 text-narrative-clay text-xs font-semibold uppercase tracking-wider">
+                <Sparkles size={12} /> B2B & Bulk Solutions
               </div>
-              <h3 className="text-xl font-bold text-brand-black mb-3">{benefit.title}</h3>
-              <p className="text-sm text-brand-muted leading-relaxed">{benefit.desc}</p>
+              <h1 className="text-4xl sm:text-6xl font-black font-serif text-narrative-forest leading-[1.1] tracking-tight">
+                Custom products that <br />
+                <span className="text-narrative-clay italic font-normal">mean business</span>
+              </h1>
+              <p className="text-narrative-forest/75 text-lg leading-relaxed font-light max-w-xl mx-auto lg:mx-0">
+                Enhance your brand identity with custom uniforms, stationery, and curated client gifts. Crafted with premium finishes and delivered on time.
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                <a href="#quote-form" className="inline-block">
+                  <button className="h-12 px-8 rounded-full bg-narrative-forest hover:bg-narrative-clay text-white font-bold text-sm tracking-wide shadow-md transition-all duration-300">
+                    Get Custom Quote
+                  </button>
+                </a>
+                <a href="#how-it-works" className="inline-block">
+                  <button className="h-12 px-6 rounded-full border border-zinc-300 hover:bg-zinc-50 text-narrative-forest font-semibold text-sm transition-colors">
+                    Learn Our Process
+                  </button>
+                </a>
+              </div>
             </div>
-          );
-        })}
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20 bg-brand-black rounded-[3rem] p-8 sm:p-16 text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/20 rounded-full blur-[100px] pointer-events-none" />
-        
-        <div className="relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-black mb-6">How It Works</h2>
-          <div className="space-y-6">
-            {processSteps.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-4">
-                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20 font-bold text-brand-orange">
-                  {idx + 1}
+            {/* Right Col - Image banner */}
+            <div className="lg:col-span-5">
+              <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-lg border border-zinc-200/20">
+                <Image
+                  src="/images/corporate_team.jpg"
+                  alt="CustomWorks corporate branding solutions team"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs font-mono font-bold text-narrative-clay tracking-wider uppercase">WHY CHOOSE US</span>
+          <h2 className="text-3xl sm:text-4.5xl font-bold font-serif text-narrative-forest mt-2">
+            The CustomWorks Advantage
+          </h2>
+          <p className="text-narrative-forest/75 mt-4 font-light">
+            We partner with businesses to make premium custom merch friction-free and beautiful.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {benefits.map((benefit, i) => {
+            const Icon = benefit.icon;
+            return (
+              <div key={i} className="bg-white border border-zinc-200/40 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]">
+                <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-6 border ${benefit.bgClass}`}>
+                  <Icon size={22} />
                 </div>
-                <p className="text-zinc-300 pt-1">{step}</p>
+                <h3 className="text-lg font-bold text-narrative-forest mb-3">{benefit.title}</h3>
+                <p className="text-xs sm:text-sm text-narrative-forest/70 leading-relaxed font-light">{benefit.desc}</p>
               </div>
-            ))}
-          </div>
-          <div className="mt-10 pt-10 border-t border-white/10">
-            <h3 className="font-bold text-xl mb-4">Ready to start?</h3>
-            <p className="text-zinc-400 mb-6">Contact our corporate team directly by email for assistance.</p>
-            <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Bulk / corporate order quote request")}`}>
-              <Button variant="primary" size="lg" className="bg-white text-brand-black hover:bg-zinc-100 border-none shadow-lg">
-                Email Corporate Team
-              </Button>
-            </a>
-          </div>
+            );
+          })}
         </div>
+      </section>
 
-        <div className="relative z-10 hidden lg:block">
-           <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                 <div className="aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 p-6 flex flex-col items-center justify-center text-center">
-                    <span className="text-4xl mb-2">👕</span>
-                    <span className="font-bold text-sm text-zinc-300">Apparel</span>
-                 </div>
-                 <div className="aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 p-6 flex flex-col items-center justify-center text-center">
-                    <span className="text-4xl mb-2">☕</span>
-                    <span className="font-bold text-sm text-zinc-300">Drinkware</span>
-                 </div>
+      {/* How It Works (Rich Forest Green Section) */}
+      <section id="how-it-works" className="py-20 sm:py-28 bg-narrative-forest text-white border-y border-zinc-950/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left side process */}
+            <div className="lg:col-span-7 space-y-8">
+              <div>
+                <span className="text-xs font-mono font-bold text-narrative-ochre tracking-widest uppercase">WORKFLOW</span>
+                <h2 className="text-3xl sm:text-4.5xl font-bold font-serif leading-tight mt-2 text-white">
+                  Seamless order process, <br />
+                  <span className="text-narrative-sage italic font-normal">from design to delivery</span>
+                </h2>
               </div>
-              <div className="space-y-4 mt-8">
-                 <div className="aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 p-6 flex flex-col items-center justify-center text-center">
-                    <span className="text-4xl mb-2">📓</span>
-                    <span className="font-bold text-sm text-zinc-300">Stationery</span>
-                 </div>
-                 <div className="aspect-square bg-zinc-900 rounded-3xl border border-zinc-800 p-6 flex flex-col items-center justify-center text-center">
-                    <span className="text-4xl mb-2">🏷️</span>
-                    <span className="font-bold text-sm text-zinc-300">Accessories</span>
-                 </div>
+
+              <div className="space-y-6">
+                {processSteps.map((step, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20 font-bold text-sm text-narrative-ochre">
+                      {idx + 1}
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-sm text-white">{step.title}</h3>
+                      <p className="text-xs text-white/60 font-light leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-           </div>
+            </div>
+
+            {/* Right side category icons grid */}
+            <div className="lg:col-span-5 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 sm:p-12 relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-48 h-48 bg-narrative-ochre/15 rounded-full blur-[60px] pointer-events-none" />
+              
+              <div className="grid grid-cols-2 gap-4 relative z-10">
+                <div className="aspect-square bg-white/5 rounded-2xl border border-white/10 p-6 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300">
+                  <span className="text-4xl mb-3">👕</span>
+                  <span className="font-bold text-xs text-white/95">Apparel</span>
+                  <span className="text-[10px] text-white/50 mt-1 font-light">Tees & Hoodies</span>
+                </div>
+                <div className="aspect-square bg-white/5 rounded-2xl border border-white/10 p-6 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300">
+                  <span className="text-4xl mb-3">☕</span>
+                  <span className="font-bold text-xs text-white/95">Drinkware</span>
+                  <span className="text-[10px] text-white/50 mt-1 font-light">Mugs & Bottles</span>
+                </div>
+                <div className="aspect-square bg-white/5 rounded-2xl border border-white/10 p-6 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300">
+                  <span className="text-4xl mb-3">📓</span>
+                  <span className="font-bold text-xs text-white/95">Stationery</span>
+                  <span className="text-[10px] text-white/50 mt-1 font-light">Notebooks & Cards</span>
+                </div>
+                <div className="aspect-square bg-white/5 rounded-2xl border border-white/10 p-6 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300">
+                  <span className="text-4xl mb-3">🏷️</span>
+                  <span className="font-bold text-xs text-white/95">Accessories</span>
+                  <span className="text-[10px] text-white/50 mt-1 font-light">Caps & Bags</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Quote Form Section */}
+      <section id="quote-form" className="py-20 sm:py-28 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="text-xs font-mono font-bold text-narrative-clay tracking-wider uppercase">INQUIRY</span>
+          <h2 className="text-3xl font-bold font-serif text-narrative-forest mt-2">Get Started on Your Order</h2>
+          <p className="text-sm text-narrative-forest/60 mt-2 font-light">Fill out the quick questionnaire below and our bulk solutions team will review and reply within 12 hours.</p>
+        </div>
+        <CorporateForm />
+      </section>
     </div>
   );
 }

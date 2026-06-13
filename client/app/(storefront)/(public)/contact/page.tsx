@@ -1,11 +1,50 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, MessageCircle, MapPin, Clock, Send, ArrowRight, Phone } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, MessageCircle, MapPin, Clock, Send, ArrowRight, Phone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const CONTACT_EMAIL = "orders.customworks@gmail.com";
+
+const contactCards = [
+  {
+    icon: MessageCircle,
+    title: "Order Support & Quotes",
+    desc: "Reach out via email for orders, quotes, or custom inquiries.",
+    actionText: "orders.customworks@gmail.com",
+    href: `mailto:${CONTACT_EMAIL}`,
+    colorClass: "bg-narrative-clay/10 border-narrative-clay/15 text-narrative-clay",
+    hoverColor: "hover:bg-narrative-clay/15"
+  },
+  {
+    icon: Phone,
+    title: "Give Us a Call",
+    desc: "Available during support hours for quick assistance.",
+    actionText: "+91 96320 22529",
+    href: "tel:+919632022529",
+    colorClass: "bg-narrative-sage/10 border-narrative-sage/15 text-narrative-sage",
+    hoverColor: "hover:bg-narrative-sage/15"
+  },
+  {
+    icon: Clock,
+    title: "Support Hours",
+    desc: "Monday – Saturday",
+    actionText: "10:00 AM – 7:00 PM IST",
+    href: null,
+    colorClass: "bg-narrative-forest/10 border-narrative-forest/15 text-narrative-forest",
+    hoverColor: null
+  },
+  {
+    icon: MapPin,
+    title: "Bengaluru HQ",
+    desc: "CustomWorks Studio",
+    actionText: "Bengaluru, Karnataka, India",
+    href: null,
+    colorClass: "bg-narrative-ochre/10 border-narrative-ochre/15 text-narrative-ochre",
+    hoverColor: null
+  }
+];
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -41,173 +80,165 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Hero */}
-      <div className="text-center mb-16">
-        <div className="inline-block mb-3">
-          <span className="text-[10px] font-black uppercase tracking-widest text-brand-black bg-brand-black/5 px-2.5 py-0.5 rounded-full border border-brand-black/10">
-            Contact Us
-          </span>
+    <div className="bg-white min-h-screen">
+      {/* Hero Header */}
+      <section className="bg-[#FAF6F0] py-16 sm:py-24 border-b border-zinc-200/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full bg-narrative-clay/10 text-narrative-clay text-xs font-semibold uppercase tracking-wider">
+            <Sparkles size={12} /> Get in Touch
+          </div>
+          <h1 className="text-4xl sm:text-6xl font-black font-serif text-narrative-forest mb-6 leading-[1.15]">
+            We&apos;re here to <span className="text-narrative-clay italic font-normal">help you create</span>
+          </h1>
+          <p className="text-narrative-forest/75 text-lg sm:text-xl leading-relaxed font-light max-w-2xl mx-auto">
+            Have a question about an order, need assistance with your custom design, or want to discuss a bulk purchase? Drop us a line!
+          </p>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-brand-black mb-6">
-          We&apos;re Here to Help
-        </h1>
-        <p className="text-brand-muted text-lg leading-relaxed max-w-2xl mx-auto">
-          Have a question about an order, need help with a custom design, or want to discuss a bulk purchase? Our team is ready to assist you.
-        </p>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-        {/* Contact Info */}
-        <div className="lg:col-span-2 space-y-8">
-          <div>
-            <h2 className="text-2xl font-black text-brand-black mb-6">Get in Touch</h2>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-brand-orange-light flex items-center justify-center shrink-0">
-                  <MessageCircle size={20} className="text-brand-orange" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-black">Order Support</h3>
-                  <p className="text-sm text-brand-muted mt-1 mb-2">Use email for order help, quote requests, and detailed inquiries.</p>
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-orange font-semibold hover:underline text-sm flex items-center gap-1">
-                    {CONTACT_EMAIL} <ArrowRight size={14} />
-                  </a>
-                </div>
-              </div>
+      {/* Main Grid */}
+      <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 sm:gap-16 items-start">
+          {/* Info cards (Left) */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold font-serif text-narrative-forest mb-2">Connect Directly</h2>
+              <p className="text-sm text-narrative-forest/60 font-light">Choose the most convenient way to reach our Bengaluru team.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+              {contactCards.map((card, i) => {
+                const Icon = card.icon;
+                const CardWrapper = card.href ? "a" : "div";
+                const wrapperProps = card.href ? { href: card.href, className: "block group" } : {};
+                
+                return (
+                  <CardWrapper key={i} {...wrapperProps}>
+                    <div className={`p-6 rounded-2xl border bg-white border-zinc-200/40 shadow-sm transition-all duration-300 ${card.href ? `hover:border-zinc-300 hover:shadow-md ${card.hoverColor}` : ""}`}>
+                      <div className="flex gap-4 items-start">
+                        <div className={`h-10 w-10 flex items-center justify-center rounded-xl shrink-0 border ${card.colorClass}`}>
+                          <Icon size={18} />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="font-bold text-sm text-narrative-forest">{card.title}</h3>
+                          <p className="text-xs text-narrative-forest/60 font-light">{card.desc}</p>
+                          {card.actionText && (
+                            <p className={`text-sm font-semibold pt-1 font-mono break-all ${card.href ? "text-narrative-clay group-hover:underline" : "text-narrative-forest/80"}`}>
+                              {card.actionText}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardWrapper>
+                );
+              })}
+            </div>
+          </div>
 
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-brand-surface border border-brand-border flex items-center justify-center shrink-0">
-                  <Phone size={20} className="text-brand-muted" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-black">Call Us</h3>
-                  <p className="text-sm text-brand-muted mt-1 mb-2">Available during business hours.</p>
-                  <a href="tel:+919632022529" className="text-brand-black font-semibold hover:underline text-sm">
-                    +91 96320 22529
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-brand-surface border border-brand-border flex items-center justify-center shrink-0">
-                  <Clock size={20} className="text-brand-muted" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-black">Business Hours</h3>
-                  <p className="text-sm text-brand-muted mt-1">
-                    Monday – Saturday<br />
-                    10:00 AM – 7:00 PM IST
-                  </p>
-                </div>
-              </div>
+          {/* Form area (Right) */}
+          <div className="lg:col-span-3">
+            <div className="bg-[#FAF6F0] rounded-[2rem] border border-zinc-200/40 shadow-md p-8 sm:p-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-narrative-clay/5 blur-3xl pointer-events-none" />
               
-              <div className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-2xl bg-brand-surface border border-brand-border flex items-center justify-center shrink-0">
-                  <MapPin size={20} className="text-brand-muted" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-black">Headquarters</h3>
-                  <p className="text-sm text-brand-muted mt-1">
-                    CustomWorks Studio<br />
-                    Bengaluru, Karnataka<br />
-                    India
-                  </p>
-                </div>
-              </div>
+              <h2 className="text-2xl font-bold font-serif text-narrative-forest mb-6 relative z-10">Send a Message</h2>
+              
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="bg-white border border-zinc-200/40 rounded-2xl p-8 text-center shadow-sm relative z-10"
+                  >
+                    <div className="h-16 w-16 mx-auto bg-narrative-sage/10 text-narrative-sage border border-narrative-sage/20 rounded-full flex items-center justify-center mb-4">
+                      <Send size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-narrative-forest mb-2">Email Draft Opened</h3>
+                    <p className="text-narrative-forest/70 text-sm mb-6 max-w-sm mx-auto font-light">
+                      We have opened your email client to send the draft inquiry. Make sure to hit send to reach us at <span className="font-mono font-semibold">{CONTACT_EMAIL}</span>.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setSubmitted(false)}
+                      className="rounded-full border-zinc-300 hover:bg-zinc-50"
+                    >
+                      Send Another Message
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-1.5">
+                        <label htmlFor="name" className="text-xs font-semibold text-narrative-forest">Your Name</label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          required
+                          value={form.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          className="w-full h-11 px-4 rounded-xl border border-zinc-200/60 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label htmlFor="email" className="text-xs font-semibold text-narrative-forest">Email Address</label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          value={form.email}
+                          onChange={handleChange}
+                          placeholder="john@example.com"
+                          className="w-full h-11 px-4 rounded-xl border border-zinc-200/60 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label htmlFor="subject" className="text-xs font-semibold text-narrative-forest">Subject</label>
+                      <input
+                        id="subject"
+                        name="subject"
+                        type="text"
+                        required
+                        value={form.subject}
+                        onChange={handleChange}
+                        placeholder="Bulk Ordering / Custom Design Inquiry"
+                        className="w-full h-11 px-4 rounded-xl border border-zinc-200/60 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label htmlFor="message" className="text-xs font-semibold text-narrative-forest">Message</label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        required
+                        rows={5}
+                        value={form.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about the customized items you want to create, quantities, and timelines..."
+                        className="w-full px-4 py-3 rounded-xl border border-zinc-200/60 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-narrative-clay/20 focus:border-narrative-clay transition-all resize-y"
+                      />
+                    </div>
+
+                    <Button 
+                      type="submit" 
+                      className="w-full h-12 rounded-full bg-narrative-forest hover:bg-narrative-clay text-white font-bold text-sm tracking-wide shadow-md transition-all duration-300" 
+                      loading={loading}
+                    >
+                      Draft Email Request <ArrowRight size={16} className="ml-2 inline shrink-0" />
+                    </Button>
+                  </form>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
-
-        {/* Contact Form */}
-        <div className="lg:col-span-3">
-          <div className="bg-white rounded-3xl border border-brand-border shadow-xl p-8 sm:p-10">
-            <h2 className="text-2xl font-black text-brand-black mb-6">Send a Message</h2>
-            
-            {submitted ? (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-50 border border-green-100 rounded-2xl p-8 text-center"
-              >
-                <div className="h-16 w-16 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                  <Send size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-brand-black mb-2">Email Draft Opened</h3>
-                <p className="text-brand-muted mb-6">
-                  Send the draft to reach our team at {CONTACT_EMAIL}.
-                </p>
-                <Button variant="outline" onClick={() => setSubmitted(false)}>
-                  Send Another Message
-                </Button>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-1.5">
-                    <label htmlFor="name" className="text-sm font-medium text-brand-black">Your Name</label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                      className="w-full h-11 px-4 rounded-xl border border-brand-border bg-brand-surface focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-black transition-all"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label htmlFor="email" className="text-sm font-medium text-brand-black">Email Address</label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="john@example.com"
-                      className="w-full h-11 px-4 rounded-xl border border-brand-border bg-brand-surface focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-black transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="subject" className="text-sm font-medium text-brand-black">Subject</label>
-                  <input
-                    id="subject"
-                    name="subject"
-                    type="text"
-                    required
-                    value={form.subject}
-                    onChange={handleChange}
-                    placeholder="Order Inquiry / Custom Design / General"
-                    className="w-full h-11 px-4 rounded-xl border border-brand-border bg-brand-surface focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-black transition-all"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="message" className="text-sm font-medium text-brand-black">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={handleChange}
-                    placeholder="How can we help you today?"
-                    className="w-full px-4 py-3 rounded-xl border border-brand-border bg-brand-surface focus:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-black transition-all resize-y"
-                  />
-                </div>
-
-                <Button type="submit" variant="accent" size="lg" className="w-full" loading={loading}>
-                  Send Email
-                </Button>
-              </form>
-            )}
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }
