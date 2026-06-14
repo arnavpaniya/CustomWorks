@@ -1154,7 +1154,6 @@ export default function AdminDashboard() {
                         <option value="paid">PAID</option>
                         <option value="partial">PARTIAL</option>
                         <option value="pending">PENDING</option>
-                        <option value="cod">COD</option>
                       </select>
                     </div>
                   </div>

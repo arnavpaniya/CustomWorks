@@ -19,7 +19,6 @@ const STEPS = [
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
-  const [selectedMethod, setSelectedMethod] = useState("ONLINE");
   
   const { items, subtotal, total, getShippingCharge, setShippingCharge } = useCartStore();
 
@@ -59,7 +58,7 @@ export default function CheckoutPage() {
         gst,
         shipping,
         total: finalTotal,
-        paymentMethod: selectedMethod === "COD" ? "COD" : "ONLINE"
+        paymentMethod: "ONLINE"
       };
 
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/orders/checkout` : "https://customworks.onrender.com/api/orders/checkout", {
@@ -71,11 +70,7 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to initiate checkout");
 
-      if (data.paymentMethod === "COD") {
-        toast.success("Order placed successfully via Cash on Delivery!");
-        window.location.href = `/order-success?order_id=${data.orderId}`;
-        return;
-      }
+
 
       // Initialize Cashfree and open hosted checkout (handles UPI, Card, NetBanking, Wallets)
       const cashfree = await load({
@@ -177,17 +172,11 @@ export default function CheckoutPage() {
                   <div className="space-y-3">
                     {/* Pay Online */}
                     <div 
-                      onClick={() => setSelectedMethod("ONLINE")}
-                      className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all",
-                        selectedMethod !== "COD" 
-                          ? "border-[#0A0A0A] bg-[#0A0A0A]/5 ring-1 ring-[#0A0A0A]" 
-                          : "border-zinc-200 hover:border-zinc-300"
-                      )}
+                      className="border rounded-xl p-4 border-[#0A0A0A] bg-[#0A0A0A]/5 ring-1 ring-[#0A0A0A]"
                     >
                       <div className="flex items-center gap-3">
                         <div className="h-5 w-5 rounded-full border-2 border-zinc-300 flex items-center justify-center flex-shrink-0">
-                          {selectedMethod !== "COD" && <div className="h-2.5 w-2.5 rounded-full bg-[#0A0A0A]" />}
+                          <div className="h-2.5 w-2.5 rounded-full bg-[#0A0A0A]" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm font-bold text-[#0A0A0A]">Pay Online</p>
@@ -199,31 +188,7 @@ export default function CheckoutPage() {
                           <Landmark size={16} className="text-[#6B6B6B]" />
                         </div>
                       </div>
-                      {selectedMethod !== "COD" && (
-                        <p className="text-xs text-[#6B6B6B] mt-3 ml-8">You'll be redirected to Cashfree's secure payment page to complete your payment.</p>
-                      )}
-                    </div>
-
-                    {/* COD */}
-                    <div 
-                      onClick={() => setSelectedMethod("COD")}
-                      className={cn(
-                        "border rounded-xl p-4 cursor-pointer transition-all",
-                        selectedMethod === "COD" 
-                          ? "border-[#0A0A0A] bg-[#0A0A0A]/5 ring-1 ring-[#0A0A0A]" 
-                          : "border-zinc-200 hover:border-zinc-300"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="h-5 w-5 rounded-full border-2 border-zinc-300 flex items-center justify-center flex-shrink-0">
-                          {selectedMethod === "COD" && <div className="h-2.5 w-2.5 rounded-full bg-[#0A0A0A]" />}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-bold text-[#0A0A0A]">Cash on Delivery</p>
-                          <p className="text-xs text-[#6B6B6B] mt-0.5">Pay when your order arrives at your doorstep.</p>
-                        </div>
-                        <MapPin size={18} className="text-[#6B6B6B] flex-shrink-0" />
-                      </div>
+                      <p className="text-xs text-[#6B6B6B] mt-3 ml-8">You'll be redirected to Cashfree's secure payment page to complete your payment.</p>
                     </div>
                   </div>
 

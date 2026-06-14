@@ -54,12 +54,7 @@ router.post('/checkout', async (req, res) => {
       throw new Error("Failed to create order in database");
     }
 
-    if (paymentMethod === "COD") {
-      return res.json({
-        orderId: newOrder.id,
-        paymentMethod: "COD"
-      });
-    }
+
 
     // Create Cashfree session
     const cashfreeSession = await cashfreeService.createPaymentSession(newOrder);

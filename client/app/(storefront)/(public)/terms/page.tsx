@@ -74,8 +74,7 @@ const sections = [
         <ul className="list-disc list-inside space-y-1">
           <li>All prices are displayed in <strong>Indian Rupees (₹/INR)</strong> and are inclusive of GST where applicable.</li>
           <li>Prices are subject to change without prior notice. The price at the time of order placement applies.</li>
-          <li>Payments are processed securely through <strong>Razorpay</strong> supporting UPI, credit/debit cards, net banking, and wallets.</li>
-          <li><strong>Cash on Delivery (COD)</strong> is available for select products and pin codes.</li>
+          <li>Payments are processed securely through <strong>Cashfree</strong> supporting UPI, credit/debit cards, net banking, and wallets.</li>
           <li>Full payment is required before production begins for all online payment orders.</li>
           <li>Bulk/corporate orders may have <strong>custom pricing tiers</strong> based on quantity.</li>
         </ul>

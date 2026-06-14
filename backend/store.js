@@ -337,9 +337,9 @@ module.exports = {
   createOrder: async (orderData) => {
     const nextNum = Math.floor(100000 + Math.random() * 900000);
     const id = `CW-${nextNum}`;
-    const paymentMethod = orderData.paymentMethod === "COD" ? "cod" : "cashfree";
-    const status = orderData.paymentMethod === "COD" ? "processing" : "pending_payment";
-    const statusNote = orderData.paymentMethod === "COD" ? "Order placed via Cash on Delivery." : "Order created. Awaiting payment.";
+    const paymentMethod = "cashfree";
+    const status = "pending_payment";
+    const statusNote = "Order created. Awaiting payment.";
     
     const dbOrder = {
       id,
