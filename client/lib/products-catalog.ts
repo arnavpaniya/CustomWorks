@@ -273,7 +273,11 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 1.85,
     description: "Compact and stylish mini business cards designed for a modern and minimal presentation.\n\n• Material: Premium 300 GSM Card Stock\n• Card Size: Mini Business Card Format",
     moq: 300,
-    images: ["/products/mini-business-card/card-1.png", "/products/mini-business-card/card-2.png", "/products/mini-business-card/visiting-card-guide.png"],
+    images: [
+      "/products/mini-business-card/ChatGPT Image Jun 14, 2026, 11_49_56 AM.png",
+      "/products/mini-business-card/ChatGPT Image Jun 14, 2026, 11_50_01 AM.png",
+      "/products/mini-business-card/ChatGPT Image Jun 14, 2026, 11_50_05 AM.png"
+    ],
     rating: 4.8,
     reviewCount: 31,
     customizerType: "business-cards",
@@ -832,7 +836,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 20.00,
     description: "Professionally printed brochures (Single Fold - 2 Panels). Printed on high-quality art paper with precision folding.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/brochures-bifold/ChatGPT Image Jun 14, 2026, 12_08_56 PM.png",
+      "/products/brochures-bifold/ChatGPT Image Jun 14, 2026, 12_09_06 PM.png",
+      "/products/brochures-bifold/ChatGPT Image Jun 14, 2026, 12_09_13 PM.png",
+      "/products/brochures-bifold/ChatGPT Image Jun 14, 2026, 12_09_17 PM.png"
+    ],
     rating: 4.7,
     reviewCount: 65,
     customizerType: "standard-tiers",
@@ -866,7 +875,11 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 25.00,
     description: "Professionally printed brochures (3 Panels - Letter Fold). Ideal for restaurant menus, event details, and corporate services.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/brochures-trifold/ChatGPT Image Jun 14, 2026, 12_02_44 PM.png",
+      "/products/brochures-trifold/ChatGPT Image Jun 14, 2026, 12_02_49 PM.png",
+      "/products/brochures-trifold/ChatGPT Image Jun 14, 2026, 12_02_54 PM.png"
+    ],
     rating: 4.8,
     reviewCount: 88,
     customizerType: "standard-tiers",
@@ -888,7 +901,12 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 25.00,
     description: "Professionally printed brochures (Z-Fold Accordion Style). Ideal for product catalogues and technical information.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/brochures-zfold/ChatGPT Image Jun 14, 2026, 12_03_33 PM.png",
+      "/products/brochures-zfold/ChatGPT Image Jun 14, 2026, 12_03_42 PM.png",
+      "/products/brochures-zfold/ChatGPT Image Jun 14, 2026, 12_03_51 PM.png",
+      "/products/brochures-zfold/ChatGPT Image Jun 14, 2026, 12_03_55 PM.png"
+    ],
     rating: 4.7,
     reviewCount: 42,
     customizerType: "standard-tiers",
@@ -1000,7 +1018,11 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
     basePrice: 20.00,
     description: "Professionally printed table top tent cards designed for promotional displays, menu presentations, and event branding.",
     moq: 10,
-    images: ["/images/placeholder-product.jpg"],
+    images: [
+      "/products/table-tent-cards/ChatGPT Image Jun 14, 2026, 12_29_10 PM.png",
+      "/products/table-tent-cards/ChatGPT Image Jun 14, 2026, 12_29_16 PM.png",
+      "/products/table-tent-cards/ChatGPT Image Jun 14, 2026, 12_29_20 PM.png"
+    ],
     rating: 4.8,
     reviewCount: 54,
     customizerType: "standard-tiers",
