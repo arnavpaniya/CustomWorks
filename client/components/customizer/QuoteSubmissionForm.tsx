@@ -97,6 +97,8 @@ export default function QuoteSubmissionForm({ productId, productName, onClose }:
       quantity,
       variant: (serialized || "Standard"),
       customSummary: summary,
+      gstExempt: product?.gstExempt,
+      freeShipping: product?.freeShipping,
     });
     
     design.reset();

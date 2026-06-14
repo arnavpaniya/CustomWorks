@@ -12,6 +12,8 @@ export interface CartItem {
   variant?: string;
   customSummary?: string;
   designPreviewUrl?: string;
+  gstExempt?: boolean;
+  freeShipping?: boolean;
 }
 
 interface CartState {
@@ -80,8 +82,14 @@ export const useCartStore = create<CartState>()(
       total: () => {
         const s = get();
         const sub = s.subtotal();
-        const gst = sub * 0.18;
-        const shipping = s.getShippingCharge();
+        // Compute GST only on items that are NOT gst-exempt
+        const taxableSubtotal = s.items
+          .filter((i) => !i.gstExempt)
+          .reduce((sum, i) => sum + i.price * i.quantity, 0);
+        const gst = taxableSubtotal * 0.18;
+        // If ALL items are free-shipping, force shipping to 0
+        const allFreeShipping = s.items.length > 0 && s.items.every((i) => i.freeShipping);
+        const shipping = allFreeShipping ? 0 : s.getShippingCharge();
         return sub + gst + shipping - s.couponDiscount;
       },
 

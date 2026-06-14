@@ -29,8 +29,13 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const sub = subtotal();
-  const gst = sub * 0.18;
-  const shipping = getShippingCharge();
+  // Compute GST only on non-exempt items
+  const taxableSubtotal = items
+    .filter((i) => !i.gstExempt)
+    .reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const gst = taxableSubtotal * 0.18;
+  const allFreeShipping = items.length > 0 && items.every((i) => i.freeShipping);
+  const shipping = allFreeShipping ? 0 : getShippingCharge();
   const finalTotal = total();
 
   // Dynamically calculate and update shipping charge based on address location

@@ -15,8 +15,13 @@ export default function CartPage() {
   const [couponError, setCouponError] = useState("");
 
   const sub = subtotal();
-  const gst = sub * 0.18;
-  const shipping = sub >= 999 ? 0 : 99;
+  // Compute GST only on non-exempt items
+  const taxableSubtotal = items
+    .filter((i) => !i.gstExempt)
+    .reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const gst = taxableSubtotal * 0.18;
+  const allFreeShipping = items.length > 0 && items.every((i) => i.freeShipping);
+  const shipping = allFreeShipping ? 0 : (sub >= 999 ? 0 : 99);
   const finalTotal = total();
 
   const handleCoupon = () => {
