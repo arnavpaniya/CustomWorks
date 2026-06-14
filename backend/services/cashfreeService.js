@@ -34,7 +34,7 @@ const createPaymentSession = async (order) => {
         customer_name: order.customerSnapshot.name || "Guest Customer",
       },
       order_meta: {
-        return_url: `${process.env.FRONTEND_URL || "https://localhost:3000"}/order-success?order_id={order_id}`
+        return_url: `${process.env.FRONTEND_URL || "https://www.customworks.in"}/order-success?order_id={order_id}`
       }
     };
 

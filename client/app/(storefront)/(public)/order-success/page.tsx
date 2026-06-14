@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { CheckCircle2, Loader2, XCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
+import { useCartStore } from "@/store/cart.store";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -27,6 +28,8 @@ function SuccessContent() {
 
       if (res.ok && data.success) {
         setStatus("success");
+        // Clear cart since payment succeeded
+        useCartStore.getState().clearCart();
       } else {
         // Retry logic: try 3 times, every 3 seconds
         if (retryCountRef.current < 3) {

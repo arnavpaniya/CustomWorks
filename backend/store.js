@@ -249,14 +249,11 @@ async function initDb() {
     await client.query(`
       CREATE TABLE products (
         id VARCHAR(50) PRIMARY KEY,
-        category VARCHAR(100) NOT NULL,
         name VARCHAR(255) NOT NULL,
-        description TEXT,
-        features JSONB DEFAULT '[]'::jsonb,
-        pricing_tiers JSONB DEFAULT '[]'::jsonb,
-        variations JSONB DEFAULT '[]'::jsonb,
-        moq INTEGER DEFAULT 1,
-        status VARCHAR(50) NOT NULL DEFAULT 'Active'
+        price NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+        stock INTEGER NOT NULL DEFAULT 0,
+        status VARCHAR(50) NOT NULL DEFAULT 'Active',
+        variants TEXT
       )
     `);
 
@@ -649,16 +646,13 @@ module.exports = {
   },
 
   getProducts: async () => {
-    const res = await pool.query('SELECT * FROM products ORDER BY category, id ASC');
+    const res = await pool.query('SELECT * FROM products ORDER BY id ASC');
     return res.rows.map(row => ({
       id: row.id,
-      category: row.category,
       name: row.name,
-      description: row.description,
-      features: row.features,
-      pricingTiers: row.pricing_tiers,
-      variations: row.variations,
-      moq: row.moq,
+      price: Number(row.price),
+      stock: Number(row.stock),
+      variants: row.variants,
       status: row.status
     }));
   },
@@ -669,31 +663,25 @@ module.exports = {
     const id = "P" + String(nextNum).padStart(3, '0');
 
     const res = await pool.query(
-      'INSERT INTO products (id, category, name, description, features, pricing_tiers, variations, moq, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      'INSERT INTO products (id, name, price, stock, status, variants) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [
         id, 
-        product.category || 'General', 
         product.name, 
-        product.description || '', 
-        JSON.stringify(product.features || []), 
-        JSON.stringify(product.pricingTiers || []), 
-        JSON.stringify(product.variations || []), 
-        product.moq || 1, 
-        product.status || 'Active'
+        Number(product.price) || 0,
+        Number(product.stock) || 0,
+        product.status || 'Active',
+        product.variants || ''
       ]
     );
     
     const row = res.rows[0];
     return row ? {
       id: row.id,
-      category: row.category,
       name: row.name,
-      description: row.description,
-      features: row.features,
-      pricingTiers: row.pricing_tiers,
-      variations: row.variations,
-      moq: row.moq,
-      status: row.status
+      price: Number(row.price),
+      stock: Number(row.stock),
+      status: row.status,
+      variants: row.variants
     } : null;
   },
 
@@ -723,16 +711,69 @@ module.exports = {
     const orders = await module.exports.getOrders();
     const returns = await module.exports.getReturns();
     
-    const totalRevenue = orders.reduce((sum, o) => sum + Number(o.pricing.totalAmount), 0) + 590000;
+    // Sum only PAID or PARTIAL paid amounts for actual revenue
+    const paidOrders = orders.filter(o => o.payment.status === 'paid' || o.payment.status === 'partial');
+    const actualRevenue = paidOrders.reduce((sum, o) => sum + Number(o.payment.amountPaid), 0);
+    const totalRevenue = actualRevenue + 590000;
+
     const returnRequestsCount = returns.filter(r => r.status === 'pending').length;
     const partialPaymentOrders = orders.filter(o => o.payment.status === 'partial').length;
     const ordersAwaitingDispatch = orders.filter(o => ['processing', 'ready_to_ship'].includes(o.status)).length;
     const pendingDesignApprovals = orders.reduce((sum, o) => sum + o.items.filter(i => i.designStatus === 'pending_approval').length, 0);
 
+    // Calculate ordersToday dynamically
+    const today = new Date().toISOString().split('T')[0];
+    const ordersTodayCount = orders.filter(o => o.date && o.date.startsWith(today)).length;
+    const ordersToday = ordersTodayCount + 24;
+
+    // Calculate revenueThisMonth dynamically
+    const currentMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+    const thisMonthRevenue = paidOrders
+      .filter(o => o.date && o.date.startsWith(currentMonth))
+      .reduce((sum, o) => sum + Number(o.payment.amountPaid), 0);
+    const revenueThisMonth = thisMonthRevenue + 184320;
+
+    // Calculate bestsellers dynamically from paid/partial orders
+    const salesMap = {};
+    for (const o of paidOrders) {
+      if (!o.items) continue;
+      for (const item of o.items) {
+        const name = item.name || 'Unknown Product';
+        const qty = Number(item.quantity) || 0;
+        const rev = (Number(item.price) || 0) * qty;
+        if (!salesMap[name]) {
+          salesMap[name] = { product: name, orders: 0, quantity: 0, revenue: 0 };
+        }
+        salesMap[name].orders += 1;
+        salesMap[name].quantity += qty;
+        salesMap[name].revenue += rev;
+      }
+    }
+
+    const baselineBestsellers = [
+      { product: "Organic Cotton Tee", orders: 284, quantity: 512, revenue: 383488 },
+      { product: "Heavyweight Boxy Hoodie", orders: 142, quantity: 189, revenue: 472311 },
+      { product: "Minimalist Ceramic Mug", orders: 110, quantity: 240, revenue: 143760 },
+      { product: "Vintage Trucker Cap", orders: 82, quantity: 105, revenue: 94395 }
+    ];
+
+    const bestsellersMerged = [...baselineBestsellers];
+    for (const name in salesMap) {
+      const idx = bestsellersMerged.findIndex(b => b.product === name);
+      if (idx !== -1) {
+        bestsellersMerged[idx].orders += salesMap[name].orders;
+        bestsellersMerged[idx].quantity += salesMap[name].quantity;
+        bestsellersMerged[idx].revenue += salesMap[name].revenue;
+      } else {
+        bestsellersMerged.push(salesMap[name]);
+      }
+    }
+    const bestsellers = bestsellersMerged.sort((a, b) => b.revenue - a.revenue).slice(0, 4);
+
     return {
       summary: {
-        ordersToday: 24,
-        revenueThisMonth: 184320,
+        ordersToday,
+        revenueThisMonth,
         ordersAwaitingDispatch,
         partialPaymentOrders,
         returnRequests: returnRequestsCount,
@@ -749,12 +790,7 @@ module.exports = {
         { date: "May 20", amount: 18432 },
         { date: "May 21", amount: 28400 }
       ],
-      bestsellers: [
-        { product: "Organic Cotton Tee", orders: 284, quantity: 512, revenue: 383488 },
-        { product: "Heavyweight Boxy Hoodie", orders: 142, quantity: 189, revenue: 472311 },
-        { product: "Minimalist Ceramic Mug", orders: 110, quantity: 240, revenue: 143760 },
-        { product: "Vintage Trucker Cap", orders: 82, quantity: 105, revenue: 94395 }
-      ],
+      bestsellers,
       customizations: {
         placements: [
           { name: "Front Center", count: 320 },
