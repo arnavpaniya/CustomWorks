@@ -11,6 +11,9 @@ import { cn } from "@/lib/utils";
 import { load } from "@cashfreepayments/cashfree-js";
 import { toast } from "sonner";
 
+import { useAuth } from "@/lib/useAuth";
+import { getUserProfile } from "@/lib/profile-service";
+
 const STEPS = [
   { id: 1, label: "Address", icon: MapPin },
   { id: 2, label: "Payment", icon: CreditCard },
@@ -19,6 +22,7 @@ const STEPS = [
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(1);
+  const { user } = useAuth();
   
   const { items, subtotal, total, getShippingCharge, setShippingCharge } = useCartStore();
 
@@ -26,6 +30,29 @@ export default function CheckoutPage() {
     name: "", phone: "", line1: "", line2: "", city: "", state: "", pincode: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      getUserProfile(user.uid).then((profile) => {
+        if (profile) {
+          setAddress({
+            name: profile.name || user.displayName || "",
+            phone: profile.phone || "",
+            line1: profile.line1 || "",
+            line2: profile.line2 || "",
+            city: profile.city || "",
+            state: profile.state || "",
+            pincode: profile.pincode || "",
+          });
+        } else if (user.displayName) {
+          setAddress((a) => ({
+            ...a,
+            name: user.displayName || "",
+          }));
+        }
+      });
+    }
+  }, [user]);
 
   const sub = subtotal();
   // Compute GST only on non-exempt items

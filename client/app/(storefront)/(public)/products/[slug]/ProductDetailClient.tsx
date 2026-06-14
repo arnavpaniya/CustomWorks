@@ -194,6 +194,12 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 min={product.moq}
                 value={quantity || ""}
                 onChange={(e) => setQuantity(Number(e.target.value))}
+                onBlur={() => {
+                  if (quantity < product.moq) {
+                    setQuantity(product.moq);
+                    toast.error(`Quantity adjusted to minimum order quantity (${product.moq})`);
+                  }
+                }}
                 className="w-32 h-10 px-3 border border-brand-border rounded-lg bg-white text-brand-black font-semibold text-center focus:outline-none focus:ring-2 focus:ring-brand-black"
               />
               {quantity < product.moq && (
@@ -214,7 +220,14 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                   variant="accent"
                   size="lg"
                   className="flex-1"
-                  onClick={() => setShowWizard(true)}
+                  onClick={() => {
+                    if (quantity < product.moq) {
+                      toast.error(`Minimum order quantity for this product is ${product.moq}`);
+                      setQuantity(product.moq);
+                      return;
+                    }
+                    setShowWizard(true);
+                  }}
                 >
                   Customise & Get Quote
                 </Button>
@@ -239,7 +252,14 @@ export default function ProductDetailClient({ slug }: ProductDetailClientProps) 
                 variant="accent"
                 size="lg"
                 className="flex-1"
-                onClick={() => setShowWizard(true)}
+                onClick={() => {
+                  if (quantity < product.moq) {
+                    toast.error(`Minimum order quantity for this product is ${product.moq}`);
+                    setQuantity(product.moq);
+                    return;
+                  }
+                  setShowWizard(true);
+                }}
               >
                 Customise and Add to Cart
               </Button>

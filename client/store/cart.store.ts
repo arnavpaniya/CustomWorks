@@ -14,6 +14,7 @@ export interface CartItem {
   designPreviewUrl?: string;
   gstExempt?: boolean;
   freeShipping?: boolean;
+  moq?: number;
 }
 
 interface CartState {
@@ -55,7 +56,9 @@ export const useCartStore = create<CartState>()(
           items:
             quantity < 1
               ? s.items.filter((i) => i.id !== id)
-              : s.items.map((i) => (i.id === id ? { ...i, quantity } : i)),
+              : s.items.map((i) =>
+                  i.id === id ? { ...i, quantity: Math.max(i.moq || 1, quantity) } : i
+                ),
         })),
 
       clearCart: () => set({ items: [], couponCode: "", couponDiscount: 0, shippingCharge: null }),

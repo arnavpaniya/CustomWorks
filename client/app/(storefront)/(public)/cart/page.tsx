@@ -87,7 +87,8 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="h-7 w-7 rounded-lg border border-[#E5E5E5] flex items-center justify-center hover:border-[#0A0A0A] transition-colors"
+                        disabled={item.quantity <= (item.moq || 1)}
+                        className="h-7 w-7 rounded-lg border border-[#E5E5E5] flex items-center justify-center hover:border-[#0A0A0A] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-[#E5E5E5] transition-colors"
                         aria-label="Decrease quantity"
                       >
                         <Minus size={12} />

@@ -2,12 +2,13 @@
 
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, MessageCircle, ShoppingCart, Info, Palette } from "lucide-react";
+import { X, Upload, MessageCircle, ShoppingCart, Info, Palette, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDesignStore } from "@/store/design.store";
 import { useCartStore } from "@/store/cart.store";
 import { PRODUCTS_CATALOG } from "@/lib/products-catalog";
+import { toast } from "sonner";
 
 interface Props {
   productId: string;
@@ -99,9 +100,49 @@ export default function QuoteSubmissionForm({ productId, productName, onClose }:
       customSummary: summary,
       gstExempt: product?.gstExempt,
       freeShipping: product?.freeShipping,
+      moq: product?.moq || 1,
     });
     
     design.reset();
+    onClose();
+  };
+
+  const handleSaveDesign = () => {
+    const serialized = getSerializedOptions();
+    let summary = serialized;
+    if (uploadedFile) summary += ` | Artwork: ${uploadedFile.name}`;
+    if (needDesignHelp) summary += ` | Needs Design Help`;
+    if (designSpecs) summary += ` | Specs: ${designSpecs}`;
+
+    const gradients = [
+      { from: "from-purple-500", to: "to-indigo-500" },
+      { from: "from-pink-500", to: "to-rose-500" },
+      { from: "from-blue-500", to: "to-cyan-500" },
+      { from: "from-amber-500", to: "to-orange-500" },
+      { from: "from-emerald-500", to: "to-teal-500" }
+    ];
+    const grad = gradients[Math.floor(Math.random() * gradients.length)];
+
+    const newDesign = {
+      id: "D-" + Math.floor(100000 + Math.random() * 900000),
+      productName: productName,
+      variant: serialized || "Standard",
+      customSummary: summary,
+      savedAt: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      gradientFrom: grad.from,
+      gradientTo: grad.to
+    };
+
+    try {
+      const existing = localStorage.getItem("customworks_saved_designs");
+      const list = existing ? JSON.parse(existing) : [];
+      list.unshift(newDesign);
+      localStorage.setItem("customworks_saved_designs", JSON.stringify(list));
+      toast.success("Design saved to drafts successfully!");
+    } catch (err) {
+      console.error("Failed to save design:", err);
+      toast.error("Could not save design draft.");
+    }
     onClose();
   };
 
@@ -159,7 +200,6 @@ export default function QuoteSubmissionForm({ productId, productName, onClose }:
                             ))}
                           </select>
                         )}
-                        {/* Add logic for inputs like banner dimensions if needed */}
                         {opt.key === "bannerDimensions" && (
                           <div className="flex gap-2">
                             <input
@@ -251,13 +291,22 @@ export default function QuoteSubmissionForm({ productId, productName, onClose }:
               onClick={handleWhatsApp}
             >
               <MessageCircle size={18} className="text-green-600" />
-              Quote via WhatsApp
+              WhatsApp
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="flex-1 flex items-center justify-center gap-2"
+              onClick={handleSaveDesign}
+            >
+              <Bookmark size={18} className="text-zinc-600" />
+              Save Draft
             </Button>
             {!priceResult.isEmailEnquiry && (
               <Button
                 variant="accent"
                 size="lg"
-                className="flex-1 flex items-center justify-center gap-2"
+                className="flex-grow-[1.5] flex items-center justify-center gap-2"
                 onClick={handleAddToCart}
               >
                 <ShoppingCart size={18} />
