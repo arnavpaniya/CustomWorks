@@ -21,7 +21,7 @@ function SuccessContent() {
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://customworks.onrender.com/api";
       const res = await fetch(`${apiUrl}/orders/${orderId}/verify-payment`);
       const data = await res.json();
 
