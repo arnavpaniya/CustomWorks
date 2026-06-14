@@ -15,6 +15,11 @@ const firebaseConfig = {
 // Initialize Firebase with SSR safety
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
-const db = getFirestore(app);
+let db: any = null;
+try {
+  db = getFirestore(app);
+} catch (error) {
+  console.error("Firebase Firestore initialization failed:", error);
+}
 
 export { app, auth, db };
