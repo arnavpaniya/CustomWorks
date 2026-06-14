@@ -18,6 +18,8 @@ export interface ProductCatalogItem {
   badge?: string;
   isNew?: boolean;
   isQuoteOnly?: boolean;
+  gstExempt?: boolean;
+  freeShipping?: boolean;
   
   // Custom metadata for our pricing engine & UI options
   customizerType: "apparel" | "business-cards" | "envelopes" | "banners" | "lanyards" | "standard-tiers" | "area-tiers" | "email-quote-only" | "upload-only";
@@ -1299,6 +1301,24 @@ export const PRODUCTS_CATALOG: ProductCatalogItem[] = [
       { min: 250, max: 299, price: 15.00 },
       { min: 300, max: 499, price: 14.00 },
       { min: 500, max: 999999, price: 12.00 }
+    ]
+  },
+  {
+    id: "dummy-test-product",
+    slug: "dummy-test-product",
+    name: "Test Product (₹1)",
+    category: "Test",
+    basePrice: 1.00,
+    description: "A ₹1 dummy product designed for testing secure payment flow integrations.",
+    moq: 1,
+    images: ["/images/placeholder-product.jpg"],
+    rating: 5.0,
+    reviewCount: 1,
+    gstExempt: true,
+    freeShipping: true,
+    customizerType: "upload-only",
+    priceTiers: [
+      { min: 1, max: 999999, price: 1.00 }
     ]
   },
 ];
